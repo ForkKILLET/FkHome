@@ -75,10 +75,12 @@ fun! VimAnn()
   	inor <buffer> 》 >
 	
 	nnor <buffer> 。 :call UpdAnn()<CR>:lop<CR>
-	inor <buffer> 。 <ESC>:call UpdAnn()<CR>:lop<CR>a
+	inor <buffer> 。 <ESC>:call UpdAnn()<CR>:lop<CR><C-w>ka
+
+	inor <buffer> 、 <ESC>maviwy`aa
 
 	setl	iskeyword+=-
-	iabb via-h 
+	iabb	via-h 
 		\(Title          @)<CR>
 		\(LocaleTitle    @)<CR>
 		\(Author         @)<CR>
@@ -90,7 +92,7 @@ fun! VimAnn()
 		let i = 0 | whi i < len(ls)
 			let aR = { 'R': i, 'ann': [] }
 			let j = 0 | whi 1
-				let r = matchstrpos(ls[i], '(.\{-})', j)
+				let r = matchstrpos(ls[i], '[A-Za-z\-]\{-}(.\{-})', j)
 				let j = r[2]
 				if j == -1 | brea | endif
 				let aC = { 'C': r[1], 'txt': r[0] }
@@ -111,10 +113,11 @@ fun! VimAnn()
 
 	fun! UpdAnn()
 		fun! EngAnn(t)
-			let r = a:t[1:-2]
-			let n = { 'raw': r }
-			if match(r, '@') != -1
-				let n.meta = split(r, '\s\?@')
+			let r = split(a:t[:-2], '(')
+			if len(r) == 1 | let r = [ "" ] + r | endif
+			let n = { 'tar': r[0], 'ann': r[1] }
+			if match(r[1], '@') != -1
+				let n.meta = split(r[1], '\s\?@')
 			endif
 			retu n
 		endfun
@@ -126,21 +129,24 @@ fun! VimAnn()
 				let it = is[i]
 				call add(ls,
 					\ it.type . '|' .
-					\ StrSpace(it.lnum, 4) . ', ' . StrSpace(it.col, 5) . '| ' .
+					\ StrSpace(it.lnum, 4) . ', ' .
+					\ StrSpace(it.col, 5) . '| ' .
 					\ it.text)
 			endfor
 			retu ls
 		endfun
 
+		call setloclist(0, []) " clear
+		
 		let a = GetAnn(funcref('EngAnn'))
 		let is = []
 		for aR in a
 			for aC in aR.ann
-				let m = exists("aC.meta")
+				let m = aC.tar == "" && exists("aC.meta")
 				let it = {
 					\ 'lnum': (aR.R + 1), 'col': (aC.C + 1),
 					\ 'type': (m ? 'M' : 'A'),
-					\ 'text': (m ? aC.meta[0] . ' @ ' . aC.meta[1] : aC.raw),
+					\ 'text': (m ? aC.meta[0] . ' @ ' . aC.meta[1] : aC.txt),
 					\ 'bufnr': bufnr() }
 				call add(is, it)
 			endfor
