@@ -119,22 +119,42 @@ fun! VimAnn()
 			retu n
 		endfun
 
+		fun! TxtAnn(d)
+			let is = getloclist(0, { 'id': a:d.id, 'items': 1 }).items
+			let ls = []
+			for i in range(a:d.start_idx - 1, a:d.end_idx - 1)
+				let it = is[i]
+				call add(ls,
+					\ it.type . '|' .
+					\ StrSpace(it.lnum, 4) . ', ' . StrSpace(it.col, 5) . '| ' .
+					\ it.text)
+			endfor
+			retu ls
+		endfun
+
 		let a = GetAnn(funcref('EngAnn'))
-		let ls = []
+		let is = []
 		for aR in a
 			for aC in aR.ann
 				let m = exists("aC.meta")
-				let l = {
+				let it = {
 					\ 'lnum': (aR.R + 1), 'col': (aC.C + 1),
 					\ 'type': (m ? 'M' : 'A'),
 					\ 'text': (m ? aC.meta[0] . ' @ ' . aC.meta[1] : aC.raw),
 					\ 'bufnr': bufnr() }
-				call add(ls, l)
+				call add(is, it)
 			endfor
 		endfor
 		" debug | echo l
 		call setloclist(0, [], 'r', {
-			\ 'title': 'Annotations', 'items': ls })
+			\ 'title': 'Annotations', 'items': is,
+			\ 'quickfixtextfunc': 'TxtAnn' })
 	endfun
+endfun
+
+" Utility Funs
+
+fun! StrSpace(s, n)
+	retu a:s . repeat(' ', a:n - strlen(a:s))
 endfun
 
