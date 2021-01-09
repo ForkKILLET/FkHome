@@ -124,16 +124,17 @@ fun! VimAnn()
 		for aR in a
 			for aC in aR.ann
 				let m = exists("aC.meta")
-				let l = (m ? 'M' : 'A') . '|'
-					\ . (aR.R + 1) . ', ' . (aC.C + 1) . '|'
-					\ . (m ? aC.meta[0] . ' @ ' . aC.meta[1] : aC.raw)
+				let l = {
+					\ 'lnum': (aR.R + 1), 'col': (aC.C + 1),
+					\ 'type': (m ? 'M' : 'A'),
+					\ 'text': (m ? aC.meta[0] . ' @ ' . aC.meta[1] : aC.raw),
+					\ 'bufnr': bufnr() }
 				call add(ls, l)
 			endfor
 		endfor
 		" debug | echo l
 		call setloclist(0, [], 'r', {
-			\ 'title': 'Annotations', 'lines': ls,
-			\ 'efm': '%t|%l\, %c|%m' })
+			\ 'title': 'Annotations', 'items': ls })
 	endfun
 endfun
 
