@@ -27,7 +27,7 @@ nnor	zA za
 " FtDetect
 aug FtDetect | au!
 	au BufRead,BufNewFile	*.via	setf via " VIm Annotated
-	au FileType				via		call VimAnn()
+	au FileType				via		cal VimAnn()
 aug END
 
 " Highlight
@@ -51,15 +51,17 @@ fun! VimAnn()
 	setl	nofoldenable
 
 	" Syntaxing
-	sy clear
-	sy match	Annotation			/(.\{-})/				contains=
-				\AnnotationBracket,AnnotationSymbol,AnnotationComma,
-				\AnnotationType,AnnotationNote
-	sy match	AnnotationBracket	/[()]/					contained
-	sy match	AnnotationSymbol	/[@*!=<>#\-|:]/			contained
-	sy match	AnnotationComma		/,/						contained
-	sy match	AnnotationType		/#[^()@*!=<>#\-|:]\+\./	contained
-	sy match	AnnotationNote		/\(:\)\@<=[^)]\+/		contained
+	fun! SynAnn()
+		sy match	Annotation			/(.\{-})/				contains=
+			\AnnotationBracket,AnnotationSymbol,AnnotationComma,
+			\AnnotationType,AnnotationNote
+		sy match	AnnotationBracket	/[()]/					contained
+		sy match	AnnotationSymbol	/[@*!=<>#\-|:]/			contained
+		sy match	AnnotationComma		/,/						contained
+		sy match	AnnotationType		/#[^()@*!=<>#\-|:]\+\./	contained
+		sy match	AnnotationNote		/\(:\)\@<=[^)]\+/		contained
+	endfun
+	cal SynAnn()
 
 	" Operating annotations
 	inor <buffer> ； <Right>()<Left>
@@ -74,8 +76,8 @@ fun! VimAnn()
   	inor <buffer> 《 <
   	inor <buffer> 》 >
 	
-	nnor <buffer> 。 :call UpdAnn()<CR>:lop<CR>
-	inor <buffer> 。 <ESC>:call UpdAnn()<CR>:lop<CR><C-w>ka
+	nnor <buffer> 。 :cal UpdAnn()<CR>:lop<CR>:cal SynAnn()<CR>
+	inor <buffer> 。 <ESC>:cal UpdAnn()<CR>:lop<CR>:cal SynAnn()<CR><C-w>ka
 
 	inor <buffer> 、 <ESC>maviwy`aa
 
@@ -102,10 +104,10 @@ fun! VimAnn()
 						let aC[k] = f[k]
 					endfor
 				endif
-				call add(aR.ann, aC)
+				cal add(aR.ann, aC)
 			endwhi
 			if len(aR.ann) > 0
-				call add(a, aR)
+				cal add(a, aR)
 			endif
 		let i += 1 | endwhi
 		retu a
@@ -127,7 +129,7 @@ fun! VimAnn()
 			let ls = []
 			for i in range(a:d.start_idx - 1, a:d.end_idx - 1)
 				let it = is[i]
-				call add(ls,
+				cal add(ls,
 					\ it.type . '|' .
 					\ StrSpace(it.lnum, 4) . ', ' .
 					\ StrSpace(it.col, 5) . '| ' .
@@ -136,7 +138,7 @@ fun! VimAnn()
 			retu ls
 		endfun
 
-		call setloclist(0, []) " clear
+		cal setloclist(0, []) " clear
 		
 		let a = GetAnn(funcref('EngAnn'))
 		let is = []
@@ -148,11 +150,11 @@ fun! VimAnn()
 					\ 'type': (m ? 'M' : 'A'),
 					\ 'text': (m ? aC.meta[0] . ' @ ' . aC.meta[1] : aC.txt),
 					\ 'bufnr': bufnr() }
-				call add(is, it)
+				cal add(is, it)
 			endfor
 		endfor
 		" debug | echo l
-		call setloclist(0, [], 'r', {
+		cal setloclist(0, [], 'r', {
 			\ 'title': 'Annotations', 'items': is,
 			\ 'quickfixtextfunc': 'TxtAnn' })
 	endfun
