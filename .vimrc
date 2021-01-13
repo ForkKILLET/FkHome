@@ -12,9 +12,6 @@ nnor	<silent> <ESC>/ :set hlsearch!<CR>
 nnor	?? :h 
 
 nnor	Q :q<CR>
-nnor	<C-l>- :lprevious<CR>
-nnor	<C-l>= :lnext<CR>
-nnor	<C-l>0 :lopen<CR>
 
 set		shiftwidth=4
 set		tabstop=4
@@ -52,6 +49,10 @@ fun! VimAnn()
 
 	" Syntaxing
 	fun! SynAnn()
+		if exists('b:via_syn') | retu | endif
+		let b:via_syn = 1
+		" echom '[via] Syn: ' . (&ft == 'via' ? 'main' : 'loc') . '.'
+
 		sy match	Annotation			/(.\{-})/				contains=
 			\AnnotationBracket,AnnotationSymbol,AnnotationComma,
 			\AnnotationType,AnnotationNote
@@ -76,10 +77,19 @@ fun! VimAnn()
   	inor <buffer> 《 <
   	inor <buffer> 》 >
 	
-	nnor <buffer> 。 :cal UpdAnn()<CR>:lop<CR>:cal SynAnn()<CR>
-	inor <buffer> 。 <ESC>:cal UpdAnn()<CR>:lop<CR>:cal SynAnn()<CR><C-w>ka
+	nnor <buffer> <silent> 。 :lop<CR><C-w>k
+	inor <buffer> <silent> 。 <ESC>:lop<CR><C-w>ka
+	nnor <buffer> <silent> 。。 :cal UpdAnn()<CR>:lop<CR>:cal SynAnn()<CR><C-w>k
+	inor <buffer> <silent> 。。 <ESC>:cal UpdAnn()<CR>:lop<CR>:cal SynAnn()<CR><C-w>ka
+	nnor <buffer> <silent> 。， :lclose<CR>
+	inor <buffer> <silent> 。， <ESC>:lclose<CR>a
 
-	inor <buffer> 、 <ESC>maviwy`aa
+	nnor <buffer> <silent> ｛ :lprev<CR>
+	inor <buffer> <silent> ｛ <ESC>:lprev<CR>a
+	nnor <buffer> <silent> ｝ :lnext<CR>
+	inor <buffer> <silent> ｝ <ESC>:lnext<CR>a
+
+	inor <buffer> 、 <ESC>mayiw`aa
 
 	setl	iskeyword+=-
 	iabb	via-h 
@@ -138,7 +148,8 @@ fun! VimAnn()
 			retu ls
 		endfun
 
-		cal setloclist(0, []) " clear
+		cal setloclist(0, [])
+		" echom '[via] Clr.'
 		
 		let a = GetAnn(funcref('EngAnn'))
 		let is = []
@@ -148,15 +159,18 @@ fun! VimAnn()
 				let it = {
 					\ 'lnum': (aR.R + 1), 'col': (aC.C + 1),
 					\ 'type': (m ? 'M' : 'A'),
-					\ 'text': (m ? aC.meta[0] . ' @ ' . aC.meta[1] : aC.txt),
+					\ 'text': (m ? aC.meta[0] . ' @ ' . aC.meta[1]
+					\			 : aC.txt),
 					\ 'bufnr': bufnr() }
 				cal add(is, it)
 			endfor
 		endfor
-		" debug | echo l
+		
 		cal setloclist(0, [], 'r', {
 			\ 'title': 'Annotations', 'items': is,
 			\ 'quickfixtextfunc': 'TxtAnn' })
+		" echom '[via] Upd.'
+		if exists("b:via_syn") | unlet b:via_syn | endif
 	endfun
 endfun
 
