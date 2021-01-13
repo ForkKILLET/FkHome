@@ -10,6 +10,8 @@ export PS1="\033[32m\w\033[36m`__git_ps1` \033[1;35mL\033[0;30m "
 
 alias v="$VIM/vim.exe"
 
+alias m="ssh forkkillet@0.masnn.ml"
+
 c_ansi() {
 	echo "\033[3"{0..7}"m"
 	echo -e "\033[3"{0..7}"mText    "
