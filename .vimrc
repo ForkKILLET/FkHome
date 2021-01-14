@@ -176,7 +176,7 @@ endfun
 
 " Utility Funs
 
-fun! StrSpace(s, n)
+fun! s:space(s, n)
 	retu a:s . repeat(' ', a:n - strlen(a:s))
 endfun
 
