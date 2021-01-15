@@ -45,7 +45,8 @@ w fkub &&   export RVM_HOME="$H/src/rvm"
    
 w fkub &&   export NPM_G="$H/lib/node_modules"
 w fkub &&   export NODE_PATH="$NPM_G"
-   
+
+w x1le ||
 w fkub &&   export VIM="$H/app/vim"
 			export VIMRC="$H/.vimrc"
 			export VIM_VUDDLE="$VIM/bundle"
@@ -88,7 +89,7 @@ w fkub &&   export HISTFILE="$H/log/log-hist"
 
 # :::: CHECK
 
-div() {
+div () {
 	echo "===================="
 }
 
@@ -120,40 +121,40 @@ c_ansi ()
 
 c_env () 
 { 
-	div -s;
-	echo "
-	WHERE				= $WHERE
-	PATH				= (
+    div -s;
+    echo "
+    WHERE               = $WHERE
+    PATH                = \`
 $PATH
-)
+'
 
-	HOME				= $HOME
-	
-	VIM				 = $VIM
-	VIMRC			   = $VIMRC
-	VIM_VUDDLE		  = $VIM_VUDDLE
-	
-	MASNN			   = $MASNN
-	MHOME			   = $MHOME
+    HOME                = $HOME
+    
+    VIM                 = $VIM
+    VIMRC               = $VIMRC
+    VIM_VUDDLE          = $VIM_VUDDLE
+    
+    MASNN               = $MASNN
+    MHOME               = $MHOME
 
-	RVM_HOME			= $RVM_HOME
+    RVM_HOME            = $RVM_HOME
 
-	NPM_G			   = $NPM_G
-	NODE_PATH		   = $NODE_PATH
+    NPM_G               = $NPM_G
+    NODE_PATH           = $NODE_PATH
 
-	XBQG_DATA		   = $XBQG_DATA
+    XBQG_DATA           = $XBQG_DATA
 
-	JAVA_HOME		   = $JAVA_HOME
-	KOTLIN_HOME		 = $KOTLIN_HOME
-	GRADLE_HOME		 = $GRADLE_HOME
-	GRADLE_USER_HOME	= $GRADLE_USER_HOME
+    JAVA_HOME           = $JAVA_HOME
+    KOTLIN_HOME         = $KOTLIN_HOME
+    GRADLE_HOME         = $GRADLE_HOME
+    GRADLE_USER_HOME    = $GRADLE_USER_HOME
 
-	PS1				 = $PS1
+    PS1                 = $PS1
 
-	HISTFILE			= $HISTFILE
-	HISTFILESIZE		= $HISTFILESIZE
+    HISTFILE            = $HISTFILE
+    HISTFILESIZE        = $HISTFILESIZE
 ";
-	div -s
+    div -s
 }
 
 yn () {
@@ -188,25 +189,25 @@ cdbin () { cd "$H/bin/$1"; }
 cdsrc () { 
 	local p
 	case "$1" in 
-		v)	  p=vim						   ;;
+		v)		p=vim							;;
 
-		x)	  p=xbqg						  ;;
+		x)		p=xbqg							;;
 
-		n)	  p=nodejs						;;
-		nx)	 p=nodejs/xbqg				   ;;
-		tdb)	p=nodejs/TerminalDashboard	  ;;
-		nu)	 p=nodejs/Util				   ;;
-		lh)	 p=nodejs/Localhost			  ;;
-		hb)	 p=nodejs/HydroBot			   ;;
-		nc)	 p=nodejs/nodecpp				;;
+		n)		p=nodejs						;;
+		nx)		p=nodejs/xbqg					;;
+		tdb)	p=nodejs/TerminalDashboard		;;
+		nu)		p=nodejs/Util					;;
+		lh)	 	p=nodejs/Localhost				;;
+		hb)	 	p=nodejs/HydroBot				;;
+		nc)	 	p=nodejs/nodecpp				;;
 
-		k)	  p=kotlin						;;
-		md)	 p=kotlin/MiraiDemo/mirai-demos  ;;
+		k)		p=kotlin						;;
+		md)		p=kotlin/MiraiDemo/mirai-demos  ;;
 
-		a)	  p=artcmds					   ;;
-		c)	  p=cpp						   ;;
+		a)		p=artcmds						;;
+		c)		p=cpp							;;
 
-		*)	  p="$1"						  ;;
+		*)		p="$1"							;;
 	esac
 	cd "$H/src/$p"
 }
@@ -240,12 +241,13 @@ lsp () {
 	esac
 }
 
-csf() {
+csf () {
 	for i in "$(ls *.$1)"; do
 		mv $i "${i%.*}.$2"
 	done
 }
 
+w x1le ||
 w msml && alias ls="ls -a --color"
 
 tree () {
@@ -289,16 +291,17 @@ PS1_PATH_toggle () {
 	}
 }
 
+w msml ||
 w fktx && alias c=clear
 
-psp() {
+psp () {
 	ps | grep "$1" | grep -v "grep $1"
 }
 
 # :::: APP
 
-alias gr='gradle'
-alias grb='v build.gradle'
+alias gr="gradle"
+alias grb="v build.gradle"
 
 w fktx && alias xbqg="node $H/src/xbqg/main.js"
 
@@ -311,32 +314,31 @@ ktc () {
 npm_source () {
 	local s="$1"
 	case "$1" in
-		t | taobao) s="http://registry.npm.taobao.org/" ;;
-		o | origin) s="http://registry.npmjs.org/"	  ;;
+		t | taobao) s="http://registry.npm.taobao.org/"	;;
+		o | origin) s="http://registry.npmjs.org/"		;;
 	esac
 	npm config set registry "$s"
 }
 
 alias tdb="node $H/src/nodejs/TerminalDashboard/dashboard.js"
-w msml && alias xbqg="node $H/src/nodejs/xbqg/main.js"
 
 # :::: VIM CAT
 
 alias v="vim"
 vn () {
 	v "$1"
-	node --unhandled-rejections=strict --trace-warnings "$1"
+	noded "$1"
 }
-vr () { v "$1"; dotpath "$@";   }
-vs () { v "$1"; . "$1";		 }
+vr () { v "$1"; dotpath "$@"; }
+vs () { v "$1"; . "$1"; }
 
 fk () {
 	local f="$H/.bashrc"
 	case "$1" in
 		s)  . $f					;;
 		v)  v $f					;;
-		vs) vs $f				   ;;
-		S)  PATH_FK=RESET; . $f	 ;;
+		vs) vs $f					;;
+		S)  PATH_FK=RESET; . $f		;;
 		vS) PATH_FK=RESET; vs $f	;;
 		*)  w fkub && echo "fk: ForkKILLET" || "fk: not at home"
 	esac
@@ -389,7 +391,7 @@ log () {
 hi () {
 	case "$1" in
 		c)  cat $HISTFILE   ;;
-		v)  v $HISTFILE	 ;;
+		v)  v $HISTFILE		;;
 		*)  history "$@"	;;
 	esac
 }
@@ -420,7 +422,7 @@ nw () {
 alias noded="node --unhandled-rejections=strict --trace-warnings"
 alias nodei="node --inspect"
 
-debug() {
+debug () {
 	case "$1" in
 		tdb | t)
 			noded "$H/src/nodejs/TerminalDashboard/dashboard.js"
@@ -440,6 +442,10 @@ th () { # test here
 	[ -f test.sh ] && bash "$testdir/test.sh"
 	[ -f test.js ] && noded "$testdir/test.js"
 }
+
+## :::: Git
+
+alias g="git"
 
 ## :::: MASNN
 
