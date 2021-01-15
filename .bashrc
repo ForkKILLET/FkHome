@@ -78,7 +78,7 @@ w msml &&   export LS_COLORS="di=4:fi=1:ln=35;4:or=35;5:mi=35;2:ex=36;1:*.msg=34
 
 w fkub &&   export PS1="\033[1;34m\u\033[0;32m\w\033[1;35mΨ\[\033[0m "
 w msml &&   export PS1="\033[1;34m\u\033[0;32m\w\033[1;35mM\[\033[0m "
-w x1le &&	export PS1="\033[32m\w\033[36m`__git_ps1` \033[1;35mL\033[0m "
+w x1le &&	export PS1="\033[32m\w\033[36m\`__git_ps1\` \033[1;35mL\033[0m "
 			export PS1_PATH=true
 
 w fkub &&   export HISTFILE="$H/log/log-hist"
