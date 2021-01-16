@@ -21,6 +21,12 @@ set		foldmethod=indent
 nnor	za zA
 nnor	zA za
 
+" Learner
+map <Left>	<Nop>
+map <Right>	<Nop>
+map <Up>	<Nop>
+map <Down>	<Nop>
+
 " FtDetect
 aug FtDetect | au!
 	au BufRead,BufNewFile	*.via	setf via " VIm Annotated
