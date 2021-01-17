@@ -248,6 +248,7 @@ csf () {
 }
 
 w x1le ||
+w fktx ||
 w msml && alias ls="ls -a --color"
 
 tree () {
@@ -291,8 +292,7 @@ PS1_PATH_toggle () {
 	}
 }
 
-w msml ||
-w fktx && alias c=clear
+w msml && alias c=clear
 
 psp () {
 	ps | grep "$1" | grep -v "grep $1"
@@ -331,6 +331,7 @@ vn () {
 }
 vr () { v "$1"; dotpath "$@"; }
 vs () { v "$1"; . "$1"; }
+ve () { v "$VIMRC"; }
 
 fk () {
 	local f="$H/.bashrc"

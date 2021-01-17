@@ -3,15 +3,17 @@ set mouse=a
 
 set nu
 
-inor	<C-z> <ESC>ua
+inor	<C-Z> <ESC>ua
 nnor	ve :vnew $VIMRC<CR> 
 nnor	vs :source $VIMRC<CR> 
 
 set		hlsearch
 nnor	<silent> <ESC>/ :set hlsearch!<CR>
-nnor	?? :h 
 
+nnor	; :
+nnor	?? :h 
 nnor	Q :q<CR>
+nnor	S :w<CR>
 
 set		shiftwidth=4
 set		tabstop=4
@@ -26,12 +28,6 @@ map <Left>	<Nop>
 map <Right>	<Nop>
 map <Up>	<Nop>
 map <Down>	<Nop>
-
-" FtDetect
-aug FtDetect | au!
-	au BufRead,BufNewFile	*.via	setf via " VIm Annotated
-	au FileType				via		cal VimAnn()
-aug END
 
 " Highlight
 
@@ -48,12 +44,19 @@ hi AnnotationComma			ctermfg=Grey
 hi AnnotationType			ctermfg=DarkBlue	cterm=underline
 hi AnnotationNote			ctermfg=DarkGrey
 
+" FtDetect
+aug FtDetect | au!
+	au BufRead,BufNewFile	*.via	setf via " VIm Annotated
+	au FileType				via		cal VimAnn()
+aug END
+
 " Via
 
+let g:via_map = 'Chinese'
 fun! VimAnn()
 	setl	nofoldenable
 
-	" Syntaxing
+	" Syntax
 	fun! SynAnn()
 		if exists('b:via_syn') | retu | endif
 		let b:via_syn = 1
@@ -70,32 +73,54 @@ fun! VimAnn()
 	endfun
 	cal SynAnn()
 
-	" Operating annotations
-	inor <buffer> ； <Right>()<Left>
-  	nnor <buffer> ； a()<Left>
-  	inor <buffer> 】 <ESC>f(a
-  	nnor <buffer> 】 f(
-  	inor <buffer> 【 <ESC>F(a
-  	nnor <buffer> 【 F(
+	" Map
 
-  	inor <buffer> ！ !
-  	inor <buffer> ， ,
-  	inor <buffer> 《 <
-  	inor <buffer> 》 >
+	let s:umap_dict = g:via_map
+	if s:umap_dict == 'English'
+		let s:umap_dict = #{
+		\ InsertAnn: '<C-A>a',
+		\ OpenAnnWin: '<C-A>o',
+		\ UpdOpenAnnWin: '<C-A>p',
+		\ CloseAnnWin: '<C-A>q',
+		\ NextAnnWin: '<C-A>]',
+		\ PrevAnnWin: '<C-A>[',
+		\ }
+	elseif s:umap_dict == 'Chinese'
+		let s:umap_dict = #{
+		\ InsertAnn: '；',
+		\ NextAnnInl: '】',
+		\ PrevAnnInl: '【',
+		\ EscBang: '！',
+		\ EscComma: '，',
+		\ EscAngleL: '《',
+		\ EscAngleR: '》',
+		\ OpenAnnWin: '。',
+		\ UpdOpenAnnWin: '。。',
+		\ CloseAnnWin: '。，',
+		\ NextAnnWin: '｝',
+		\ PrevAnnWin: '｛',
+		\ CopyCurWord: '、'
+		\ }
+	endif
+
+	cal _umap('InsertAnn', '<Right>()<Left>', 'i', { 'necessary': 1 })
+	cal _umap('InsertAnn', 'a()<Left>', 'n')
+	cal _umap('NextAnnInl', 'f(', 'ni')
+	cal _umap('PrevAnnInl', 'F(', 'ni')
+
+  	cal _umap('EscBang', '!', 'i')
+  	cal _umap('EscBang', ',', 'i')
+  	cal _umap('EscBang', '<', 'i')
+  	cal _umap('EscBang', '>', 'i')
 	
-	nnor <buffer> <silent> 。 :lop<CR><C-w>k
-	inor <buffer> <silent> 。 <ESC>:lop<CR><C-w>ka
-	nnor <buffer> <silent> 。。 :cal UpdAnn()<CR>:lop<CR>:cal SynAnn()<CR><C-w>k
-	inor <buffer> <silent> 。。 <ESC>:cal UpdAnn()<CR>:lop<CR>:cal SynAnn()<CR><C-w>ka
-	nnor <buffer> <silent> 。， :lclose<CR>
-	inor <buffer> <silent> 。， <ESC>:lclose<CR>a
+	cal _umap('OpenAnnWin', ':lop<CR><C-W>k', 'ni', { 'silent': 1 })
+	cal _umap('UpdOpenAnnWin', ':cal UpdAnn()<CR>:lop<CR>:cal SynAnn()<CR><C-W>k', 'ni', { 'silent': 1 })
+	cal _umap('CloseAnnWin', ':lclose<CR>', 'ni')
 
-	nnor <buffer> <silent> ｛ :lprev<CR>
-	inor <buffer> <silent> ｛ <ESC>:lprev<CR>a
-	nnor <buffer> <silent> ｝ :lnext<CR>
-	inor <buffer> <silent> ｝ <ESC>:lnext<CR>a
+	cal _umap('NextAnnWin', ':lnext<CR>', 'ni', { 'silent': 1 })
+	cal _umap('PrevAnnWin', ':lprev<CR>', 'ni', { 'silent': 1 })
 
-	inor <buffer> 、 <ESC>mayiw`aa
+	cal _umap('CopyCurWord', '<ESC>mUyiw`Ua', 'i')
 
 	setl	iskeyword+=-
 	iabb	via-h 
@@ -147,8 +172,8 @@ fun! VimAnn()
 				let it = is[i]
 				cal add(ls,
 					\ it.type . '|' .
-					\ StrSpace(it.lnum, 4) . ', ' .
-					\ StrSpace(it.col, 5) . '| ' .
+					\ _space(it.lnum, 4) . ', ' .
+					\ _space(it.col, 5) . '| ' .
 					\ it.text)
 			endfor
 			retu ls
@@ -180,9 +205,31 @@ fun! VimAnn()
 	endfun
 endfun
 
-" Utility Funs
+" Utility
 
-fun! s:space(s, n)
+fun! _space(s, n)
 	retu a:s . repeat(' ', a:n - strlen(a:s))
+endfun
+
+fun! _umap(id, act, mode, opt = {})
+	let o = a:opt
+	
+	if ! exists('s:umap_dict[a:id]')
+		if exists('o.necessary')
+			throw '_umap: map id `' . a:id . '` is empty.'
+		endif
+		retu
+	endif
+
+	let cmd = (exists('o.recusive') ? 'map' : 'nor') . ' ' .
+			\ (exists('o.global') ? '' : '<buffer> ') .
+			\ (exists('o.silent') ? '<silent> ' : '') .
+			\ s:umap_dict[a:id] . ' '
+	
+	exe a:mode[0] . cmd . a:act
+
+	if	a:mode == "ni"
+		exe 'i' . cmd . '<ESC>' . a:act . 'a'
+	endif
 endfun
 
