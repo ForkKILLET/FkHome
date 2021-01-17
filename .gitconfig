@@ -6,12 +6,14 @@
 [alias]
 	m	= !vim ~/.gitconfig		; Map
 	l 	= log --graph --all
+	lo	= log --graph --all --oneline
 	s	= status
 	d 	= diff
 	dc	= diff --cached
 	a 	= add
 	rc	= rm --cached
 	c	= commit
+	ca	= commit --amend
 	co	= checkout
 	b	= branch
 	bs 	= switch
