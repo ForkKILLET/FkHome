@@ -56,7 +56,7 @@ w fkub &&   export GIT_RES="$H/share/git-core"
 			export GITRC="$H/.gitconfig"
 w fkub &&   export GIT_SSL_NO_VERIFY=1
    
-w fkub &&   export XBQG_DATA="$H/res/xbqg"
+w fkub ||
 w fktx &&   export XBQG_DATA="$H/res/xbqg"
 
 w fkub &&   export MANPATH="$H/share/man"
@@ -79,6 +79,7 @@ w msml &&   export LS_COLORS="di=4:fi=1:ln=35;4:or=35;5:mi=35;2:ex=36;1:*.msg=34
 w fkub &&   export PS1="\033[1;34m\u\033[0;32m\w\033[1;35mΨ\[\033[0m "
 w msml &&   export PS1="\033[1;34m\u\033[0;32m\w\033[1;35mM\[\033[0m "
 w x1le &&	export PS1="\033[32m\w\033[36m\`__git_ps1\` \033[1;35mL\033[0m "
+w fktx &&	export PS1="\033[32m\w\033[1;35mX\[\033[0m "
 			export PS1_PATH=true
 
 w fkub &&   export HISTFILE="$H/log/log-hist"
@@ -242,8 +243,8 @@ lsp () {
 }
 
 csf () {
-	for i in "$(ls *.$1)"; do
-		mv $i "${i%.*}.$2"
+	for i in $(ls *.$1); do
+		mv $i "${i%%.*}.$2"
 	done
 }
 
@@ -303,7 +304,10 @@ psp () {
 alias gr="gradle"
 alias grb="v build.gradle"
 
-w fktx && alias xbqg="node $H/src/xbqg/main.js"
+w fktx && {
+	alias xbqg="node $H/src/xbqg/main.js"
+	alias xbqg-go="c;xbqg fn"
+}
 
 ktc () {
 	kotlinc z"$1.kt" -d "$1.jar"
@@ -442,6 +446,10 @@ th () { # test here
 	[ -d 'test' ] && testdir="./test"
 	[ -f test.sh ] && bash "$testdir/test.sh"
 	[ -f test.js ] && noded "$testdir/test.js"
+}
+
+w fktx && img () {
+	termux-open "$1" --content-type=image/${1:-jpeg}
 }
 
 ## :::: Git
