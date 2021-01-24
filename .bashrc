@@ -25,43 +25,46 @@ w () {
 
 # :::: PLACES
 
-w fkub &&   export HOME="/Volumes/FORKUB/Safety"
-w x1le &&   export HOME="/c/_"
+w fkub &&	export HOME="/Volumes/FORKUB/Safety"
+w x1le &&	export HOME="/c/_"
 			export H="$HOME"
 
-w fkub &&   export RUIN="/Volumes/FORKUB/Backups.backupdb/MacBook Pro/Latest/"
+w fkub &&	export RUIN="/Volumes/FORKUB/Backups.backupdb/MacBook Pro/Latest/"
 
 			export MASNN="forkkillet@0.masnn.ml"
 			export MHOME="$MASNN:/home/forkkillet"
 			
-w fkub &&   export JAVA_HOME="$H/app/Java/Contents/Home"
+w fkub &&	export JAVA_HOME="$H/app/Java/Contents/Home"
    
-w fkub &&   export KOTLIN_HOME="$H/app/kotlinc"
+w fkub &&	export KOTLIN_HOME="$H/app/kotlinc"
    
-w fkub &&   export GRADLE_HOME="$H/app/gradle"
-w fkub &&   export GRADLE_USER_HOME="$H/.gradle"
+w fkub &&	export GRADLE_HOME="$H/app/gradle"
+w fkub &&	export GRADLE_USER_HOME="$H/.gradle"
    
-w fkub &&   export RVM_HOME="$H/src/rvm"
+w fkub &&	export RVM_HOME="$H/src/rvm"
    
-w fkub &&   export NPM_G="$H/lib/node_modules"
-w fkub &&   export NODE_PATH="$NPM_G"
+w fkub &&	export NPM_G="$H/lib/node_modules"
+w fkub &&	export NODE_PATH="$NPM_G"
 
 w x1le ||
-w fkub &&   export VIM="$H/app/vim"
-			export VIMRC="$H/.vimrc"
-			export VIM_VUDDLE="$VIM/bundle"
+w fkub &&	export VIM="$H/app/vim"
+w fktx &&	export VIMRUNTIME="$H/../usr/share/vim/vim82"
+			export VIMRC="$H/.vim/vimrc"
+			export VIM_VUDDLE="$H/bundle"
    
-w fkub &&   export GIT_BIN="$H/libexec/git-core"
-w fkub &&   export GIT_RES="$H/share/git-core"
+w fkub &&	export GIT_BIN="$H/libexec/git-core"
+w fkub &&	export GIT_RES="$H/share/git-core"
 			export GITRC="$H/.gitconfig"
-w fkub &&   export GIT_SSL_NO_VERIFY=1
+w fkub &&	export GIT_SSL_NO_VERIFY=1
    
 w fkub ||
-w fktx &&   export XBQG_DATA="$H/res/xbqg"
+w fktx &&	export XBQG_DATA="$H/res/xbqg"
 
-w fkub &&   export MANPATH="$H/share/man"
+w fktx &&	export MOLI_DATA="$H/res/www/0"
 
-w msml &&   export LS_COLORS="di=4:fi=1:ln=35;4:or=35;5:mi=35;2:ex=36;1:*.msg=34"
+w fkub &&	export MANPATH="$H/share/man"
+
+w msml &&	export LS_COLORS="di=4:fi=1:ln=35;4:or=35;5:mi=35;2:ex=36;1:*.msg=34"
 
 # :::: PATH
 
@@ -76,13 +79,13 @@ w msml &&   export LS_COLORS="di=4:fi=1:ln=35;4:or=35;5:mi=35;2:ex=36;1:*.msg=34
 
 # :::: ELSE
 
-w fkub &&   export PS1="\033[1;34m\u\033[0;32m\w\033[1;35mΨ\[\033[0m "
-w msml &&   export PS1="\033[1;34m\u\033[0;32m\w\033[1;35mM\[\033[0m "
+w fkub &&	export PS1="\033[1;34m\u\033[0;32m\w\033[1;35mΨ\[\033[0m "
+w msml &&	export PS1="\033[1;34m\u\033[0;32m\w\033[1;35mM\[\033[0m "
 w x1le &&	export PS1="\033[32m\w\033[36m\`__git_ps1\` \033[1;35mL\033[0m "
 w fktx &&	export PS1="\033[32m\w\033[1;35mX\[\033[0m "
 			export PS1_PATH=true
 
-w fkub &&   export HISTFILE="$H/log/log-hist"
+w fkub &&	export HISTFILE="$H/log/log-hist"
 			export HISTFILESIZE=1919810
 			export HISTSIZE=1919810
 
@@ -97,7 +100,7 @@ div () {
 c_256 () { 
 	for whatg in 38 48; do
 		for color in {0..255}; do
-			printf "\e[${whatg};5;%sm  %3s  \e[0m" $color $color;
+			printf "\e[${whatg};5;%sm  %3s	\e[0m" $color $color;
 			[ $((($color + 1) % 6)) == 4 ] && echo
 		done; echo
 	done
@@ -122,40 +125,40 @@ c_ansi ()
 
 c_env () 
 { 
-    div -s;
-    echo "
-    WHERE               = $WHERE
-    PATH                = \`
+	div -s;
+	echo "
+	WHERE				= $WHERE
+	PATH				= \`
 $PATH
 '
 
-    HOME                = $HOME
-    
-    VIM                 = $VIM
-    VIMRC               = $VIMRC
-    VIM_VUDDLE          = $VIM_VUDDLE
-    
-    MASNN               = $MASNN
-    MHOME               = $MHOME
+	HOME				= $HOME
+	
+	VIM					= $VIM
+	VIMRC				= $VIMRC
+	VIM_VUDDLE			= $VIM_VUDDLE
+	
+	MASNN				= $MASNN
+	MHOME				= $MHOME
 
-    RVM_HOME            = $RVM_HOME
+	RVM_HOME			= $RVM_HOME
 
-    NPM_G               = $NPM_G
-    NODE_PATH           = $NODE_PATH
+	NPM_G				= $NPM_G
+	NODE_PATH			= $NODE_PATH
 
-    XBQG_DATA           = $XBQG_DATA
+	XBQG_DATA			= $XBQG_DATA
 
-    JAVA_HOME           = $JAVA_HOME
-    KOTLIN_HOME         = $KOTLIN_HOME
-    GRADLE_HOME         = $GRADLE_HOME
-    GRADLE_USER_HOME    = $GRADLE_USER_HOME
+	JAVA_HOME			= $JAVA_HOME
+	KOTLIN_HOME			= $KOTLIN_HOME
+	GRADLE_HOME			= $GRADLE_HOME
+	GRADLE_USER_HOME	= $GRADLE_USER_HOME
 
-    PS1                 = $PS1
+	PS1					= $PS1
 
-    HISTFILE            = $HISTFILE
-    HISTFILESIZE        = $HISTFILESIZE
+	HISTFILE			= $HISTFILE
+	HISTFILESIZE		= $HISTFILESIZE
 ";
-    div -s
+	div -s
 }
 
 yn () {
@@ -164,9 +167,9 @@ yn () {
 	read -p "$info(y/n) " -n 1 res;
 	echo
 	case "$res" in
-		y)  return 0	;;
-		n)  return 1	;;
-		*)  return 2	;;
+		y)	return 0	;;
+		n)	return 1	;;
+		*)	return 2	;;
 	esac
 }
 
@@ -193,17 +196,18 @@ cdsrc () {
 		v)		p=vim							;;
 
 		x)		p=xbqg							;;
+		m)		p=moli							;;
 
 		n)		p=nodejs						;;
 		nx)		p=nodejs/xbqg					;;
 		tdb)	p=nodejs/TerminalDashboard		;;
 		nu)		p=nodejs/Util					;;
-		lh)	 	p=nodejs/Localhost				;;
-		hb)	 	p=nodejs/HydroBot				;;
-		nc)	 	p=nodejs/nodecpp				;;
+		lh)		p=nodejs/Localhost				;;
+		hb)		p=nodejs/HydroBot				;;
+		nc)		p=nodejs/nodecpp				;;
 
 		k)		p=kotlin						;;
-		md)		p=kotlin/MiraiDemo/mirai-demos  ;;
+		md)		p=kotlin/MiraiDemo/mirai-demos	;;
 
 		a)		p=artcmds						;;
 		c)		p=cpp							;;
@@ -213,7 +217,7 @@ cdsrc () {
 	cd "$H/src/$p"
 }
 cddl () { cd "$H/dl"; lsp; }
-cdruin () { cd "$RUIN"; PS1_PATH_toggle; }
+w fkub && cdruin () { cd "$RUIN"; PS1_PATH_toggle; }
 
 alias md="mkdir"
 mcd () {
@@ -250,7 +254,7 @@ csf () {
 
 w x1le ||
 w fktx ||
-w msml && alias ls="ls -a --color"
+w msml && alias l="ls -a --color"
 
 tree () {
 	find "${1:-.}" -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'
@@ -293,7 +297,7 @@ PS1_PATH_toggle () {
 	}
 }
 
-w msml && alias c=clear
+w fktx || w msml && alias c=clear
 
 psp () {
 	ps | grep "$1" | grep -v "grep $1"
@@ -326,6 +330,8 @@ npm_source () {
 
 alias tdb="node $H/src/nodejs/TerminalDashboard/dashboard.js"
 
+w fktx && source "$H/src/moli/moli.sh"
+
 # :::: VIM CAT
 
 alias v="vim"
@@ -340,12 +346,12 @@ ve () { v "$VIMRC"; }
 fk () {
 	local f="$H/.bashrc"
 	case "$1" in
-		s)  . $f					;;
-		v)  v $f					;;
+		s)	. $f					;;
+		v)	v $f					;;
 		vs) vs $f					;;
-		S)  PATH_FK=RESET; . $f		;;
+		S)	PATH_FK=RESET; . $f		;;
 		vS) PATH_FK=RESET; vs $f	;;
-		*)  w fkub && echo "fk: ForkKILLET" || "fk: not at home"
+		*)	w fkub && echo "fk: ForkKILLET" || "fk: not at home"
 	esac
 }
 
@@ -358,7 +364,7 @@ log () {
 			local list
 			case "$2" in
 				r | reverse)	list=$(ls -r $/log) ;;
-				o | order | *)  list=$(ls $/log)	;;
+				o | order | *)	list=$(ls $/log)	;;
 			esac
 			for file in $list; do
 				div -s
@@ -395,9 +401,9 @@ log () {
 
 hi () {
 	case "$1" in
-		c)  cat $HISTFILE   ;;
-		v)  v $HISTFILE		;;
-		*)  history "$@"	;;
+		c)	cat $HISTFILE	;;
+		v)	v $HISTFILE		;;
+		*)	history "$@"	;;
 	esac
 }
 
@@ -451,6 +457,10 @@ th () { # test here
 w fktx && img () {
 	termux-open "$1" --content-type=image/${1:-jpeg}
 }
+w fktx && url () {
+	local u="$1"
+	termux-open-url "$u"
+}
 
 ## :::: Git
 
@@ -471,9 +481,9 @@ w msml && mm () {
 			-c)
 				read -p "(ye5/n0) " opt
 				case "$opt" in
-					ye5)	echo > "$H/msg"				 ;;
-					n0)	 echo "OK, calm down."		   ;;
-					*)	  echo "I can't understand you."  ;;
+					ye5)	echo > "$H/msg"					;;
+					n0)		echo "OK, calm down."			;;
+					*)		echo "I can't understand you."	;;
 				esac
 			;;
 			-v)

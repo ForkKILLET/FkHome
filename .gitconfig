@@ -2,7 +2,7 @@
 	email = fork_killet@qq.com
 	name = ForkΨKILLET
 [core]
-	editor = $VIM/vim
+	editor = env vim
 [alias]
 	m	= !vim ~/.gitconfig		; Map
 	l 	= log --graph --all
