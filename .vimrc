@@ -14,10 +14,15 @@ nnor	; :
 nnor	?? :h 
 nnor	Q :q<CR>
 nnor	S :w<CR>
+nnor	Sq :wq<CR>
+nnor	Sg :w<CR>:!gulp<CR>
 
 set		shiftwidth=4
 set		tabstop=4
 set		softtabstop=4
+
+set		nowrap
+nnor	<silent> <ESC>w :set wrap!<CR>
 
 set		foldmethod=indent
 nnor	za zA
@@ -46,13 +51,14 @@ hi AnnotationNote			ctermfg=DarkGrey
 
 " FtDetect
 aug FtDetect | au!
-	au BufRead,BufNewFile	*.via	setf via " VIm Annotated
-	au FileType				via		cal VimAnn()
+	au BufRead,BufNewFile	*.via		setf via " VIm Annotated
+	au FileType				via			cal VimAnn()
+	au FileType				javascript	cal JS()
 aug END
 
 " Via
 
-let g:via_map = 'Chinese'
+let g:via_map = 'English'
 fun! VimAnn()
 	setl	nofoldenable
 
@@ -204,6 +210,20 @@ fun! VimAnn()
 		if exists("b:via_syn") | unlet b:via_syn | endif
 	endfun
 endfun
+
+" JS
+
+fun! JS()
+	inor cl console.log()<Left>
+endfun
+
+" Vundle
+
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'rust-lang/rust.vim'
 
 " Utility
 

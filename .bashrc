@@ -86,6 +86,7 @@ w fktx &&	export PS1="\033[32m\w\033[1;35mX\[\033[0m "
 			export PS1_PATH=true
 
 w fkub &&	export HISTFILE="$H/log/log-hist"
+w fktx &&	export HISTFILE="$H/.bash_history"
 			export HISTFILESIZE=1919810
 			export HISTSIZE=1919810
 
@@ -212,6 +213,11 @@ cdsrc () {
 		a)		p=artcmds						;;
 		c)		p=cpp							;;
 
+		r)		p=rust							;;
+		rs)		p=rust/study					;;
+
+		hwn)	p=IceLavaTop/HardWayNazo		;;
+
 		*)		p="$1"							;;
 	esac
 	cd "$H/src/$p"
@@ -227,7 +233,7 @@ mcd () {
 
 alias rm='rm -i'
 rmswp () {
-	rm -f "${1:-.}/.*.sw"{o,p}
+	rm -f ${1:-.}/.*.sw{o,p}
 }
 rmd () {
 	mv "$1" "$H/rbin/$2"
@@ -256,14 +262,19 @@ w x1le ||
 w fktx ||
 w msml && alias l="ls -a --color"
 
+w fkub ||
+w x1le ||
+w msml &&
 tree () {
 	find "${1:-.}" -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'
 }
 
 # :::: ELSE
 
-alias zip='tar -Zcvf'
-alias unzip='tar -Zxvf'
+w fkub && {
+	alias zip='tar -Zcvf'
+	alias unzip='tar -Zxvf'
+}
 
 dotpath () {
 	local path
@@ -287,7 +298,7 @@ title () {
 
 PS1_PATH_toggle () {
 	$PS1_PATH && {
-		PS1="\033[1;34m\u\033[1;35mΨ\[\033[00m "
+		PS1="\033[1;35mΨ\[\033[00m "
 		PS1_PATH=false
 		echo "PATH is hidden."
 	} || {
@@ -319,7 +330,7 @@ ktc () {
 	kotlin -classpath "$1.jar" "$classname"
 }
 
-npm_source () {
+npm-s () {
 	local s="$1"
 	case "$1" in
 		t | taobao) s="http://registry.npm.taobao.org/"	;;
@@ -329,19 +340,20 @@ npm_source () {
 }
 
 alias tdb="node $H/src/nodejs/TerminalDashboard/dashboard.js"
+alias hwn="c; node $H/src/IceLavaTop/HardWayNazo/dep/server.js"
 
 w fktx && source "$H/src/moli/moli.sh"
 
 # :::: VIM CAT
 
 alias v="vim"
-vn () {
-	v "$1"
-	noded "$1"
-}
+vn () { v "$1"; node "$1"; }
+vnd () { v "$1"; noded "$1"; }
 vr () { v "$1"; dotpath "$@"; }
 vs () { v "$1"; . "$1"; }
 ve () { v "$VIMRC"; }
+
+w fktx && vh () { v "$1"; htm "$1"; }
 
 fk () {
 	local f="$H/.bashrc"
@@ -462,9 +474,21 @@ w fktx && url () {
 	termux-open-url "$u"
 }
 
+w fktx && htm () {
+	termux-open "$1" --content-type=text/html
+}
+
+w fktx && share () {
+	termux-open "$1" --send
+}
+
 ## :::: Git
 
 alias g="git"
+
+## :::: Rust
+
+alias C=cargo
 
 ## :::: MASNN
 

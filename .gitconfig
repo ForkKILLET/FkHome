@@ -1,6 +1,8 @@
 [user]
 	email = fork_killet@qq.com
 	name = ForkΨKILLET
+[credential]
+	helper = store
 [core]
 	editor = env vim
 [alias]
