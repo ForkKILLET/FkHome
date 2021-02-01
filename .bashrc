@@ -10,7 +10,7 @@ case "$HOME" in
 	/home/forkkillet)
 		export WHERE="msml"	;;
 	/home|/data/data/com.termux/files/home)
-		export WHERE="fktx"	;;
+		export WHERE="x1tx"	;;
 	/c/_|/c/Users/lenovo)
 		export WHERE="x1le"	;;
 	*)
@@ -48,7 +48,7 @@ w fkub &&	export NODE_PATH="$NPM_G"
 
 w x1le ||
 w fkub &&	export VIM="$H/app/vim"
-w fktx &&	export VIMRUNTIME="$H/../usr/share/vim/vim82"
+w x1tx &&	export VIMRUNTIME="$H/../usr/share/vim/vim82"
 			export VIMRC="$H/.vim/vimrc"
 			export VIM_VUDDLE="$H/bundle"
    
@@ -58,9 +58,9 @@ w fkub &&	export GIT_RES="$H/share/git-core"
 w fkub &&	export GIT_SSL_NO_VERIFY=1
    
 w fkub ||
-w fktx &&	export XBQG_DATA="$H/res/xbqg"
+w x1tx &&	export XBQG_DATA="$H/res/xbqg"
 
-w fktx &&	export MOLI_DATA="$H/res/www/0"
+w x1tx &&	export MOLI_DATA="$H/res/www/0"
 
 w fkub &&	export MANPATH="$H/share/man"
 
@@ -82,11 +82,11 @@ w msml &&	export LS_COLORS="di=4:fi=1:ln=35;4:or=35;5:mi=35;2:ex=36;1:*.msg=34"
 w fkub &&	export PS1="\033[1;34m\u\033[0;32m\w\033[1;35mΨ\[\033[0m "
 w msml &&	export PS1="\033[1;34m\u\033[0;32m\w\033[1;35mM\[\033[0m "
 w x1le &&	export PS1="\033[32m\w\033[36m\`__git_ps1\` \033[1;35mL\033[0m "
-w fktx &&	export PS1="\033[32m\w\033[1;35mX\[\033[0m "
+w x1tx &&	export PS1="\033[32m\w\033[1;35mX\[\033[0m "
 			export PS1_PATH=true
 
 w fkub &&	export HISTFILE="$H/log/log-hist"
-w fktx &&	export HISTFILE="$H/.bash_history"
+w x1tx &&	export HISTFILE="$H/.bash_history"
 			export HISTFILESIZE=1919810
 			export HISTSIZE=1919810
 
@@ -259,7 +259,7 @@ csf () {
 }
 
 w x1le ||
-w fktx ||
+w x1tx ||
 w msml && alias l="ls -a --color"
 
 w fkub ||
@@ -308,7 +308,7 @@ PS1_PATH_toggle () {
 	}
 }
 
-w fktx || w msml && alias c=clear
+w x1tx || w msml && alias c=clear
 
 psp () {
 	ps | grep "$1" | grep -v "grep $1"
@@ -319,7 +319,7 @@ psp () {
 alias gr="gradle"
 alias grb="v build.gradle"
 
-w fktx && {
+w x1tx && {
 	alias xbqg="node $H/src/xbqg/main.js"
 	alias xbqg-go="c;xbqg fn"
 }
@@ -340,9 +340,23 @@ npm-s () {
 }
 
 alias tdb="node $H/src/nodejs/TerminalDashboard/dashboard.js"
-alias hwn="c; node $H/src/IceLavaTop/HardWayNazo/dep/server.js"
 
-w fktx && source "$H/src/moli/moli.sh"
+hwn () {
+	case "$1" in
+		s|server)
+			cdsrc hwn
+			c
+			node "$H/src/IceLavaTop/HardWayNazo/dep/server.js"
+			;;
+		d|develop)
+			cdsrc hwn
+			PS1_PATH_toggle
+			c
+			;;
+	esac
+}
+
+w x1tx && source "$H/src/moli/moli.sh"
 
 # :::: VIM CAT
 
@@ -353,7 +367,7 @@ vr () { v "$1"; dotpath "$@"; }
 vs () { v "$1"; . "$1"; }
 ve () { v "$VIMRC"; }
 
-w fktx && vh () { v "$1"; htm "$1"; }
+w x1tx && vh () { v "$1"; htm "$1"; }
 
 fk () {
 	local f="$H/.bashrc"
@@ -466,19 +480,19 @@ th () { # test here
 	[ -f test.js ] && noded "$testdir/test.js"
 }
 
-w fktx && img () {
+w x1tx && img () {
 	termux-open "$1" --content-type=image/${1:-jpeg}
 }
-w fktx && url () {
+w x1tx && url () {
 	local u="$1"
 	termux-open-url "$u"
 }
 
-w fktx && htm () {
+w x1tx && htm () {
 	termux-open "$1" --content-type=text/html
 }
 
-w fktx && share () {
+w x1tx && share () {
 	termux-open "$1" --send
 }
 
