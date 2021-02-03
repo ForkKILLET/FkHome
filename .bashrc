@@ -33,6 +33,8 @@ w fkub &&	export RUIN="/Volumes/FORKUB/Backups.backupdb/MacBook Pro/Latest/"
 
 			export MASNN="forkkillet@0.masnn.ml"
 			export MHOME="$MASNN:/home/forkkillet"
+
+			export BHJGIT="git@194.56.226.21"
 			
 w fkub &&	export JAVA_HOME="$H/app/Java/Contents/Home"
    
@@ -216,8 +218,10 @@ cdsrc () {
 		r)		p=rust							;;
 		rs)		p=rust/study					;;
 
-		hwn)	p=IceLavaTop/HardWayNazo		;;
-
+		hwn)	p=IceLava/HardWayNazo			;;
+		it)		p=IceLava/Top					;;
+		ib)		p=IceLava/Btm					;;
+		
 		*)		p="$1"							;;
 	esac
 	cd "$H/src/$p"
@@ -346,7 +350,7 @@ hwn () {
 		s|server)
 			cdsrc hwn
 			c
-			node "$H/src/IceLavaTop/HardWayNazo/dep/server.js"
+			node "$H/src/IceLava/HardWayNazo/dep/server.js"
 			;;
 		d|develop)
 			cdsrc hwn
