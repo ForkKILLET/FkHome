@@ -13,8 +13,10 @@ case "$HOME" in
 		export WHERE="x1tx"	;;
 	/c/_|/c/Users/lenovo)
 		export WHERE="x1le"	;;
+	/c/home|/c/Users/ForkKILLET)
+		export WHERE="fkhw" ;;
 	*)
-		echo "Unknown host \"$HOSTNAME\"."
+		echo "Unknown device @ $HOME."
 		return 1
 esac
 
@@ -27,6 +29,7 @@ w () {
 
 w fkub &&	export HOME="/Volumes/FORKUB/Safety"
 w x1le &&	export HOME="/c/_"
+w fkhw &&	export HOME="/c/home"
 			export H="$HOME"
 
 w fkub &&	export RUIN="/Volumes/FORKUB/Backups.backupdb/MacBook Pro/Latest/"
@@ -47,6 +50,8 @@ w fkub &&	export RVM_HOME="$H/src/rvm"
    
 w fkub &&	export NPM_G="$H/lib/node_modules"
 w fkub &&	export NODE_PATH="$NPM_G"
+w x1le ||
+w fkhw &&	export NODE_PATH="$H/app/nodejs"
 
 w x1le ||
 w fkub &&	export VIM="$H/app/vim"
@@ -75,7 +80,7 @@ w msml &&	export LS_COLORS="di=4:fi=1:ln=35;4:or=35;5:mi=35;2:ex=36;1:*.msg=34"
 	PATH_ORI="$PATH"
 }
 [ "$PATH_FK" = "RESET" ] && {
-	export PATH="$PATH_ORI:$H/bin:$RVM_HOME:$JAVA_HOME:$KOTLIN_HOME/bin:$GRADLE_HOME:$GIT_BIN"
+	export PATH="$PATH_ORI:$H/bin:$NODE_PATH:$RVM_HOME:$JAVA_HOME:$KOTLIN_HOME/bin:$GRADLE_HOME:$GIT_BIN"
 	PATH_FK=UPDATED
 }
 
@@ -85,6 +90,7 @@ w fkub &&	export PS1="\033[1;34m\u\033[0;32m\w\033[1;35mΨ\[\033[0m "
 w msml &&	export PS1="\033[1;34m\u\033[0;32m\w\033[1;35mM\[\033[0m "
 w x1le &&	export PS1="\033[32m\w\033[36m\`__git_ps1\` \033[1;35mL\033[0m "
 w x1tx &&	export PS1="\033[32m\w\033[1;35mX\[\033[0m "
+w fkhw &&	export PS1="\033[32m\w\033[36m\`__git_ps1\` \033[1;35mΨ\033[0m "
 			export PS1_PATH=true
 
 w fkub &&	export HISTFILE="$H/log/log-hist"
@@ -264,6 +270,7 @@ csf () {
 
 w x1le ||
 w x1tx ||
+w fkhw ||
 w msml && alias l="ls -a --color"
 
 w fkub ||
@@ -312,7 +319,9 @@ PS1_PATH_toggle () {
 	}
 }
 
-w x1tx || w msml && alias c=clear
+w x1tx ||
+w fkhw ||
+w msml && alias c=clear
 
 psp () {
 	ps | grep "$1" | grep -v "grep $1"
