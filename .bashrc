@@ -71,8 +71,6 @@ w x1tx &&	export MOLI_DATA="$H/res/www/0"
 
 w fkub &&	export MANPATH="$H/share/man"
 
-w msml &&	export LS_COLORS="di=4:fi=1:ln=35;4:or=35;5:mi=35;2:ex=36;1:*.msg=34"
-
 # :::: PATH
 
 [ -z "$PATH_FK" ] && {
@@ -80,18 +78,25 @@ w msml &&	export LS_COLORS="di=4:fi=1:ln=35;4:or=35;5:mi=35;2:ex=36;1:*.msg=34"
 	PATH_ORI="$PATH"
 }
 [ "$PATH_FK" = "RESET" ] && {
-	export PATH="$PATH_ORI:$H/bin:$NODE_PATH:$RVM_HOME:$JAVA_HOME:$KOTLIN_HOME/bin:$GRADLE_HOME:$GIT_BIN"
+	export PATH="$PATH_ORI:$H/bin:$NODE_PATH:$RVM_HOME:$JAVA_HOME:$KOTLIN_HOME/bin:$GRADLE_HOME:$GIT_BIN:$H/app/7-Zip"
 	PATH_FK=UPDATED
 }
 
-# :::: ELSE
+# :::: PS1
 
-w fkub &&	export PS1="\033[1;34m\u\033[0;32m\w\033[1;35mΨ\[\033[0m "
-w msml &&	export PS1="\033[1;34m\u\033[0;32m\w\033[1;35mM\[\033[0m "
-w x1le &&	export PS1="\033[32m\w\033[36m\`__git_ps1\` \033[1;35mL\033[0m "
-w x1tx &&	export PS1="\033[32m\w\033[1;35mX\[\033[0m "
-w fkhw &&	export PS1="\033[32m\w\033[36m\`__git_ps1\` \033[1;35mΨ\033[0m "
-			export PS1_PATH=true
+PS1_SWITCH () {
+	[ -n "$1" ] && PS1_STYLE=$1 || {
+		[ $PS1_STYLE == LONG ] && PS1_STYLE=SHORT || PS1_STYLE=LONG
+	}
+	PS1="$(eval echo -e \$PS1_${1:-$PS1_STYLE}) "
+}
+
+w fkub &&	export PS1_LONG="\033[1;34m\u\033[0;32m\w\033[1;35mΨ\[\033[0m"			&& export PS1_SHORT="\033[1;35mΨ\033[0m"
+w msml &&	export PS1_LONG="\033[1;34m\u\033[0;32m\w\033[1;35mM\[\033[0m"			&& export PS1_SHORT="\033[1;35mM\033[0m"
+w x1le &&	export PS1_LONG="\033[32m\w\033[36m\`__git_ps1\` \033[1;35mL\033[0m"	&& export PS1_SHORT="\033[1;35mL\033[0m"
+w x1tx &&	export PS1_LONG="\033[32m\w\033[1;35mX\[\033[0m"						&& export PS1_SHORT="\033[1;35mX\033[0m"
+w fkhw &&	export PS1_LONG="\033[32m\w\033[36m\`__git_ps1\` \033[1;35mΨ\033[0m"	&& export PS1_SHORT="\033[1;35mΨ\033[0m"
+			PS1_SWITCH LONG
 
 w fkub &&	export HISTFILE="$H/log/log-hist"
 w x1tx &&	export HISTFILE="$H/.bash_history"
@@ -233,7 +238,7 @@ cdsrc () {
 	cd "$H/src/$p"
 }
 cddl () { cd "$H/dl"; lsp; }
-w fkub && cdruin () { cd "$RUIN"; PS1_PATH_toggle; }
+w fkub && cdruin () { cd "$RUIN"; PS1_SWITCH SHORT; }
 
 alias md="mkdir"
 mcd () {
@@ -272,6 +277,7 @@ w x1le ||
 w x1tx ||
 w fkhw ||
 w msml && alias l="ls -a --color"
+w msml && export LS_COLORS="di=4:fi=1:ln=35;4:or=35;5:mi=35;2:ex=36;1:*.msg=34"
 
 w fkub ||
 w x1le ||
@@ -305,18 +311,6 @@ title () {
 	[ -z "$ORI_PS1" ] && ORI_PS1=$PS1
 	local TITLE="\[\e]2;$*\a\]";
 	export PS1="${ORI_PS1}${TITLE}"
-}
-
-PS1_PATH_toggle () {
-	$PS1_PATH && {
-		PS1="\033[1;35mΨ\[\033[00m "
-		PS1_PATH=false
-		echo "PATH is hidden."
-	} || {
-		PS1="\033[1;34m\u\033[0;32m\w\033[1;35mΨ\[\033[00m "
-		PS1_PATH=true
-		echo "PATH is shown."
-	}
 }
 
 w x1tx ||
