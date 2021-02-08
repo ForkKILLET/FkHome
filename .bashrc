@@ -357,7 +357,7 @@ hwn () {
 			;;
 		d|develop)
 			cdsrc hwn
-			PS1_PATH_toggle
+			PS1_SWITCH
 			c
 			;;
 	esac
