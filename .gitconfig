@@ -13,6 +13,7 @@
 	d 	= diff
 	dc	= diff --cached
 	a 	= add
+	aa  = add .
 	rc	= rm --cached
 	c	= commit
 	ca	= commit --amend

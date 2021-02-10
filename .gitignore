@@ -3,5 +3,6 @@
 !.gitignore
 !.gitconfig
 !.bashrc
+!.zshrc
 !.vimrc
 

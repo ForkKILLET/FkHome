@@ -7,6 +7,8 @@ inor	<C-Z> <ESC>ua
 nnor	ve :vnew $VIMRC<CR> 
 nnor	vs :source $VIMRC<CR> 
 
+set		clipboard^=unnamed,unnamedplus
+
 set		hlsearch
 nnor	<silent> <ESC>/ :set hlsearch!<CR>
 
@@ -36,6 +38,7 @@ map <Down>	<Nop>
 
 " Highlight " Vim
 set t_Co=256
+syntax on
 
 hi LineNr					ctermfg=Black
 hi CursorLine									cterm=underline

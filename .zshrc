@@ -88,7 +88,7 @@ w fkub &&	export MANPATH="$H/share/man"
 
 PS1_SWITCH () {
 	[ -n "$1" ] && PS1_STYLE=$1 || {
-		[ "$PS1_STYLE" == LONG ] && PS1_STYLE=SHORT || PS1_STYLE=LONG
+		[ "$PS1_STYLE" = LONG ] && PS1_STYLE=SHORT || PS1_STYLE=LONG
 	}
 	PS1="$(eval echo -e \$PS1_${1:-$PS1_STYLE}) "
 }
@@ -117,7 +117,7 @@ w fkar && {
 # :: UTIL
 
 div () {
-	echo "===================="
+	echo "========================="
 }
 
 yn () {
@@ -149,7 +149,7 @@ c_256 () {
 	for whatg in 38 48; do
 		for color in {0..255}; do
 			printf "\e[${whatg};5;%sm  %3s	\e[0m" $color $color;
-			[ $((($color + 1) % 6)) == 4 ] && echo
+			[ $((($color + 1) % 6)) = 4 ] && echo
 		done; echo
 	done
 }
@@ -349,7 +349,7 @@ npm-s () {
 
 dotpath () {
 	local path
-	if [ $1 == "-e" ]; then
+	if [ $1 = "-e" ]; then
 		path="echo "
 		shift
 	fi
@@ -536,7 +536,7 @@ w msml && mm () {
 	else
 		case "$1" in
 			-d)
-				echo "-----=====$2=====-----" >> "$H/msg"
+				echo "-----===$2===-----" >> "$H/msg"
 			;;
 			-c)
 				read -p "(ye5/n0) " opt
