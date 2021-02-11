@@ -5,9 +5,12 @@
 	helper = store
 [core]
 	editor = env vim
+[init]
+	defaultBranch = main
 [alias]
 	m	= !vim ~/.gitconfig		; Map
 	l 	= log --graph --all
+	la	= log -1 HEAD
 	lo	= log --graph --all --oneline
 	s	= status
 	d 	= diff

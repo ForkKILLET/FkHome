@@ -2,7 +2,9 @@
 
 !.gitignore
 !.gitconfig
+
 !.bashrc
 !.zshrc
-!.vimrc
+
+!FkVim/
 

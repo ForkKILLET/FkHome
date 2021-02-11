@@ -27,6 +27,8 @@ w () {
 	return 1
 }
 
+alias gohome=". $H/_/gohome.sh"
+
 # :::: PLACES
 
 w fkub &&	export HOME="/Volumes/FORKUB/Safety"
@@ -213,6 +215,7 @@ $PATH
 alias ..="cd .."
 alias ...="cd ../.."
 
+cd_ () { cd "$H/_"; } # cd dash, cdda sh! 
 cdbin () { cd "$H/bin/$1"; }
 cddl () { cd "$H/dl"; lsp; }
 cdsrc () { 
@@ -247,6 +250,9 @@ cdsrc () {
 		u)		p=userscript					;;
 		uw)		p=userscript/WhereIsMyForm		;;
 		us)		p=userscript/SFAR				;;
+
+		t)		p=typescript					;;
+		tt)		p=typescript/test				;;
 		
 		*)		p="$1"							;;
 	esac
@@ -519,7 +525,7 @@ share () {
 			esac
 		;;
 		*)
-			echo "--: no such task \"$1\""
+			echo "--: no such task \"$1\"."
 		;;
 	esac
 }
