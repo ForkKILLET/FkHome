@@ -75,6 +75,8 @@ w x1tx &&	export MOLI_DATA="$H/res/www/0"
 
 w fkub &&	export MANPATH="$H/share/man"
 
+w fkar &&	export IDEA_HOME="$H/app/idea-IC-203.7148.57/bin"
+
 # :::: PATH
 
 [ -z "$PATH_STATE" ] && {
@@ -82,7 +84,7 @@ w fkub &&	export MANPATH="$H/share/man"
 	PATH_ORI="$PATH"
 }
 [ "$PATH_STATE" = "RESET" ] && {
-	export PATH="$PATH_ORI:$H/bin:$NODE_PATH:$RVM_HOME:$JAVA_HOME:$KOTLIN_HOME/bin:$GRADLE_HOME:$GIT_BIN:$H/app/7-Zip"
+	export PATH="$PATH_ORI:$H/bin:$NODE_PATH:$RVM_HOME:$JAVA_HOME:$KOTLIN_HOME/bin:$GRADLE_HOME:$GIT_BIN:$H/app/7-Zip:/$IDEA_HOME"
 	PATH_STATE=UPDATED
 }
 
@@ -95,12 +97,13 @@ PS1_SWITCH () {
 	PS1="$(eval echo -e \$PS1_${1:-$PS1_STYLE}) "
 }
 
-w fkar &&	export PS1_LONG="%{$fg[green]%}%~ %{$fg_bold[magenta]%}Ψ%{$reset_color%}"	&& export PS1_SHORT="%F{magenta}Ψ%f"
-w fkub &&	export PS1_LONG="\033[1;34m\u\033[0;32m\w\033[1;35mΨ\[\033[0m"			&& export PS1_SHORT="\033[1;35mΨ\033[0m"
-w msml &&	export PS1_LONG="\033[1;34m\u\033[0;32m\w\033[1;35mM\[\033[0m"			&& export PS1_SHORT="\033[1;35mM\033[0m"
-w x1le &&	export PS1_LONG="\033[32m\w\033[36m\`__git_ps1\` \033[1;35mL\033[0m"	&& export PS1_SHORT="\033[1;35mL\033[0m"
-w x1tx &&	export PS1_LONG="\033[32m\w\033[1;35mX\[\033[0m"						&& export PS1_SHORT="\033[1;35mX\033[0m"
-w fkhw &&	export PS1_LONG="\033[32m\w\033[36m\`__git_ps1\` \033[1;35mΨ\033[0m"	&& export PS1_SHORT="\033[1;35mΨ\033[0m"
+w fkar &&	autoload -U colors && colors &&
+			export PS1_LONG="%{$fg[green]%}%~ %{$fg_bold[magenta]%}Ψ%{$reset_color%}"	&& export PS1_SHORT="%{$fg_bold[magenta]%}Ψ%{$reset_color%}"
+w fkub &&	export PS1_LONG="\033[1;34m\u\033[0;32m\w\033[1;35mΨ\[\033[0m"				&& export PS1_SHORT="\033[1;35mΨ\033[0m"
+w msml &&	export PS1_LONG="\033[1;34m\u\033[0;32m\w\033[1;35mM\[\033[0m"				&& export PS1_SHORT="\033[1;35mM\033[0m"
+w x1le &&	export PS1_LONG="\033[32m\w\033[36m\`__git_ps1\` \033[1;35mL\033[0m"		&& export PS1_SHORT="\033[1;35mL\033[0m"
+w x1tx &&	export PS1_LONG="\033[32m\w\033[1;35mX\[\033[0m"							&& export PS1_SHORT="\033[1;35mX\033[0m"
+w fkhw &&	export PS1_LONG="\033[32m\w\033[36m\`__git_ps1\` \033[1;35mΨ\033[0m"		&& export PS1_SHORT="\033[1;35mΨ\033[0m"
 			PS1_SWITCH LONG
 
 w fkub &&	export HISTFILE="$H/log/log-hist"
@@ -123,9 +126,9 @@ div () {
 }
 
 yn () {
-	local res info;
-	[ "$1" ] && info="$1 ";
-	read -p "$info(y/n) " -n 1 res;
+	local info
+	[ "$1" ] && info="$1 "
+	read -p "$info(y/n) " -n 1 res
 	echo
 	case "$res" in
 		y)	return 0	;;
@@ -135,9 +138,9 @@ yn () {
 }
 
 yn50 () {
-	local res info;
-	[ "$1" ] && info="$1 ";
-	read -ep "$info(ye5/n0) " res;
+	local info
+	[ "$1" ] && info="$1 "
+	read -ep "$info(ye5/n0) " res
 	case "$res" in
 		ye5)	return 0	;;
 		n0)	 return 1		;;
@@ -224,7 +227,7 @@ cdsrc () {
 		v)		p=vim							;;
 
 		x)		p=xbqg							;;
-		m)		p=moli							;;
+		ml)		p=moli							;;
 
 		n)		p=nodejs						;;
 		nx)		p=nodejs/xbqg					;;
@@ -235,7 +238,8 @@ cdsrc () {
 		nc)		p=nodejs/nodecpp				;;
 
 		k)		p=kotlin						;;
-		md)		p=kotlin/MiraiDemo/mirai-demos	;;
+
+		m)		p=mirai							;;
 
 		a)		p=artcmds						;;
 		c)		p=cpp							;;
@@ -375,8 +379,8 @@ log () {
 		-t | --travel)
 			local list
 			case "$2" in
-				r | reverse)	list=$(ls -r $/log) ;;
-				o | order | *)	list=$(ls $/log)	;;
+				r | reverse)	list=$(ls -r $H/log) ;;
+				o | order | *)	list=$(ls $H/log)	;;
 			esac
 			for file in $list; do
 				div -s
@@ -403,9 +407,9 @@ log () {
 		;;
 		*)
 			if [[ $1 =~ ^[+-][0-9]+$ || -z "$1" ]]; then
-				v "$H/log/log-$(cdate $1)"
+				vim "$H/log/log-$(cdate $1)"
 			else
-				v "$H/log/log-$1"
+				vim "$H/log/log-$1"
 			fi
 		;;
 	esac
@@ -454,8 +458,6 @@ w x1tx && vh () { v "$1"; htm "$1"; }
 
 # :: DESKTOP
 
-w fkar && export GDK_NATIVE_WINDOWS=true
-
 w fkub && {
 
 safari () {
@@ -499,6 +501,15 @@ share () {
 
 }
 
+w fkar && {
+
+idea () {
+	idea.sh > /dev/null 2> /dev/null &
+	disown "%$(jobs | grep idea.sh | grep -oE '\[[0-9]+\]' | grep -oE '[0-9]+')"
+}
+
+}
+
 # :: WORK
 
 -- () {
@@ -516,6 +527,9 @@ share () {
 					cdsrc hwn
 					c
 					node "$H/src/IceLava/HardWayNazo/dep/server.js"
+				;;
+				sq | server-quiet)
+					-- hwn s > /dev/null 2> /dev/null &
 				;;
 				d | develop)
 					cdsrc hwn

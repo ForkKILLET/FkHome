@@ -7,6 +7,8 @@
 	editor = env vim
 [init]
 	defaultBranch = main
+[pull]
+	rebase = false
 [alias]
 	m	= !vim ~/.gitconfig		; Map
 	l 	= log --graph --all
