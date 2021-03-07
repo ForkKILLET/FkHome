@@ -10,23 +10,23 @@
 [pull]
 	rebase = false
 [alias]
-	m	= !vim ~/.gitconfig		; Map
-	l 	= log --graph --all
-	la	= log -1 HEAD
-	lo	= log --graph --all --oneline
-	s	= status
-	d 	= diff
-	dc	= diff --cached
-	a 	= add
-	aa  = add .
-	rc	= rm --cached
-	c	= commit
-	ca	= commit --amend
-	co	= checkout
-	b	= branch
-	bs 	= switch
-	dl 	= clone					; Download
-	p 	= push
-	b	= branch
-	ig	= !vim ./.gitignore && git a .gitignore
+	m	= !vim ~/.gitconfig						; Map
+	l 	= log --graph --all						; Log
+	la	= log -1 HEAD							; Log LAst
+	lo	= log --graph --all --oneline			; Log Oneline
+	s	= status								; Status
+	d 	= diff									; Different
+	dc	= diff --cached							; Different Cached
+	a 	= add									; Add
+	aa  = add .									; Add All
+	ac	= !git aa && git c						; Add all and Commit
+	rc	= rm --cached							; Remove Cached
+	c	= commit								; Commit
+	ca	= commit --amend						; Commit Amend
+	co	= checkout								; CheckOut
+	b	= branch								; Branch
+	bs 	= switch								; Branch Switch
+	dl 	= clone	https://github.com/				; DownLoad
+	p 	= push									; Push
+	ig	= !vim ./.gitignore && git a .gitignore	; IGnore
 

@@ -44,6 +44,7 @@ w fkub &&	export RUIN="/Volumes/FORKUB/Backups.backupdb/MacBook Pro/Latest/"
 			export BHJGIT="git@194.56.226.21"
 			
 w fkub &&	export JAVA_HOME="$H/app/Java/Contents/Home"
+w fkar &&	export JAVA_HOME="/usr/lib/jvm/java-15-openjdk"
    
 w fkub &&	export KOTLIN_HOME="$H/app/kotlinc"
    
@@ -67,9 +68,11 @@ w fkub &&	export GIT_BIN="$H/libexec/git-core"
 w fkub &&	export GIT_RES="$H/share/git-core"
 			export GITRC="$H/.gitconfig"
 w fkub &&	export GIT_SSL_NO_VERIFY=1
+			export GIT_EDITOR="vim"
    
 w fkub ||
 w x1tx &&	export XBQG_DATA="$H/res/xbqg"
+w fkar &&	export XBQG_DATA="$H/.config/xbqg"
 
 w x1tx &&	export MOLI_DATA="$H/res/www/0"
 
@@ -220,8 +223,14 @@ alias ...="cd ../.."
 
 cd_ () { cd "$H/_"; } # cd dash, cdda sh! 
 cdbin () { cd "$H/bin/$1"; }
-cddl () { cd "$H/dl"; lsp; }
+cddl () {
+	w fkar && cd "$H/Downloads" || cd "$H/dl"
+	w fkub && lsp
+}
 cdsrc () { 
+	[ "$1" = -m ] && {
+		shift; local make=1
+	}
 	local p
 	case "$1" in 
 		v)		p=vim							;;
@@ -237,6 +246,10 @@ cdsrc () {
 		hb)		p=nodejs/HydroBot				;;
 		nc)		p=nodejs/nodecpp				;;
 
+		cg)		p=nodejs/golf					;;
+
+		tpe)	p=TrainProblemEmulator			;;
+
 		k)		p=kotlin						;;
 
 		m)		p=mirai							;;
@@ -251,16 +264,19 @@ cdsrc () {
 		it)		p=IceLava/Top					;;
 		ib)		p=IceLava/Btm					;;
 
+		pi)		p=piterator						;;
+
 		u)		p=userscript					;;
 		uw)		p=userscript/WhereIsMyForm		;;
 		us)		p=userscript/SFAR				;;
+		ue)		p=userscript/extend-luogu		;;
 
 		t)		p=typescript					;;
 		tt)		p=typescript/test				;;
 		
 		*)		p="$1"							;;
 	esac
-	cd "$H/src/$p"
+	[ $make ] && mcd "$H/src/$p" || cd "$H/src/$p"
 }
 w fkub && cdruin () { cd "$RUIN"; PS1_SWITCH SHORT; }
 
@@ -330,9 +346,9 @@ psp () {
 alias gr="gradle"
 alias grb="v build.gradle"
 
-w x1tx && {
-	alias xbqg="node $H/src/xbqg/main.js"
-	alias xbqg-go="c;xbqg fn"
+w fkar || w x1tx && {
+	alias xbqg-go="c && xbqg ]"
+	alias xbqg-go-less="c && xbqg -n ] | less"
 }
 
 ktc () {
@@ -344,7 +360,7 @@ ktc () {
 # :::: nodejs
 
 alias noded="node --unhandled-rejections=strict --trace-warnings"
-alias nodei="node --inspect"
+alias nodei="node --inspect-brk=1629"
 
 npm-s () {
 	local s="$1"
@@ -376,13 +392,11 @@ log () {
 		-l | --list)
 			ls "$H/log"
 		;;
-		-t | --travel)
-			local list
-			case "$2" in
-				r | reverse)	list=$(ls -r $H/log) ;;
-				o | order | *)	list=$(ls $H/log)	;;
-			esac
-			for file in $list; do
+		-t | --traverse)
+			shift
+			local rev
+			[ "$1" = -r || "$1" = --reverse ] && rev=" -r"
+			for file in $(ls$rev $H/log); do
 				div -s
 				yn "Cat <$file> ?" && {
 					div -s;
@@ -406,6 +420,7 @@ log () {
 			}
 		;;
 		*)
+			
 			if [[ $1 =~ ^[+-][0-9]+$ || -z "$1" ]]; then
 				vim "$H/log/log-$(cdate $1)"
 			else
@@ -453,6 +468,10 @@ vnd () { v "$1"; noded "$1"; }
 vr () { v "$1"; dotpath "$@"; }
 vs () { v "$1"; . "$1"; }
 ve () { v "$VIMRC"; }
+vm () {
+	[ -f main.js ] && v main.js
+	[ -f src/main.js ] && v src/main.js
+}
 
 w x1tx && vh () { v "$1"; htm "$1"; }
 
@@ -508,6 +527,14 @@ idea () {
 	disown "%$(jobs | grep idea.sh | grep -oE '\[[0-9]+\]' | grep -oE '[0-9]+')"
 }
 
+url () {
+	google-chrome-unstable $@
+}
+
+minecraft () {
+	hmcl > /dev/null 2> /dev/null &
+}
+
 }
 
 # :: WORK
@@ -533,7 +560,8 @@ idea () {
 				;;
 				d | develop)
 					cdsrc hwn
-					PS1_SWITCH
+					PS1_SWITCH SHORT
+					-- hwn sq
 					c
 				;;
 			esac
@@ -596,10 +624,10 @@ w fkub && {
 }
 
 w fkar && {
-	[ -f "$H/log/log-$today" ] || {
+	[ -f "$H/log/log-$today" -o "$TERM" = linux ] || {
 		touch "$H/log/log-$today"
 
-		fcitx -r > /dev/null 2> /dev/null &
+		# fcitx -r > /dev/null 2> /dev/null &
 	}
 }
 
