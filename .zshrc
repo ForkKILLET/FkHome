@@ -50,6 +50,8 @@ w fkub &&	export KOTLIN_HOME="$H/app/kotlinc"
    
 w fkub &&	export GRADLE_HOME="$H/app/gradle"
 w fkub &&	export GRADLE_USER_HOME="$H/.gradle"
+
+w fkar &&	export CARGO_HOME="$H/.cargo/bin"
    
 w fkub &&	export RVM_HOME="$H/src/rvm"
    
@@ -63,7 +65,8 @@ w fkub &&	export VIM="$H/app/vim"
 w x1tx &&	export VIMRUNTIME="$H/../usr/share/vim/vim82"
 			export VIMRC="$H/.vim/vimrc"
 			export VIM_VUDDLE="$H/bundle"
-   
+
+			export GITHUB="https://github.com"
 w fkub &&	export GIT_BIN="$H/libexec/git-core"
 w fkub &&	export GIT_RES="$H/share/git-core"
 			export GITRC="$H/.gitconfig"
@@ -78,8 +81,6 @@ w x1tx &&	export MOLI_DATA="$H/res/www/0"
 
 w fkub &&	export MANPATH="$H/share/man"
 
-w fkar &&	export IDEA_HOME="$H/app/idea-IC-203.7148.57/bin"
-
 # :::: PATH
 
 [ -z "$PATH_STATE" ] && {
@@ -87,7 +88,7 @@ w fkar &&	export IDEA_HOME="$H/app/idea-IC-203.7148.57/bin"
 	PATH_ORI="$PATH"
 }
 [ "$PATH_STATE" = "RESET" ] && {
-	export PATH="$PATH_ORI:$H/bin:$NODE_PATH:$RVM_HOME:$JAVA_HOME:$KOTLIN_HOME/bin:$GRADLE_HOME:$GIT_BIN:$H/app/7-Zip:/$IDEA_HOME"
+	export PATH="$PATH_ORI:$H/bin:$NODE_PATH:$RVM_HOME:$JAVA_HOME:$KOTLIN_HOME/bin:$GRADLE_HOME:$GIT_BIN:$H/app/7-Zip:/$IDEA_HOME:$CARGO_HOME"
 	PATH_STATE=UPDATED
 }
 
@@ -201,6 +202,8 @@ $PATH
 	NPM_G				= $NPM_G
 	NODE_PATH			= $NODE_PATH
 
+	CARGO_HOME			= $CARGO_HOME
+
 	XBQG_DATA			= $XBQG_DATA
 
 	JAVA_HOME			= $JAVA_HOME
@@ -243,12 +246,22 @@ cdsrc () {
 		tdb)	p=nodejs/TerminalDashboard		;;
 		nu)		p=nodejs/Util					;;
 		lh)		p=nodejs/Localhost				;;
-		hb)		p=nodejs/HydroBot				;;
+
+		h)		p=nodejs/Hydro					;;
+		hb)		p=nodejs/Hydro/HydroBot			;;
+		hu)		p=nodejs/Hydro/ui-default		;;
+
 		nc)		p=nodejs/nodecpp				;;
 
 		cg)		p=nodejs/golf					;;
 
-		tpe)	p=TrainProblemEmulator			;;
+
+        il)		p=IceLava							;;
+		it)		p=IceLava/Top						;;
+		ib)		p=IceLava/Bottom					;;
+		id)		p=IceLava/Top/FkData				;;
+		tpe)	p=IceLava/Top/TrainProblemEmulator	;;
+		hwn)	p=IceLava/Top/HardWayNazo			;;
 
 		k)		p=kotlin						;;
 
@@ -260,7 +273,6 @@ cdsrc () {
 		r)		p=rust							;;
 		rs)		p=rust/study					;;
 
-		hwn)	p=IceLava/HardWayNazo			;;
 		it)		p=IceLava/Top					;;
 		ib)		p=IceLava/Btm					;;
 
@@ -335,6 +347,8 @@ w fkhw ||
 w msml ||
 w fkar && alias c=clear
 
+w fkar && alias xclipc="xclip -selection c"
+
 psp () {
 	ps | grep "$1" | grep -v "grep $1"
 }
@@ -370,6 +384,8 @@ npm-s () {
 	esac
 	npm config set registry "$s"
 }
+
+alias snowpack="yarn run snowpack"
 
 # :::: shell
 
@@ -435,7 +451,7 @@ fk () {
 	case "$1" in
 		s)	. $f					;;
 		v)	v $f					;;
-		vs) vs $f					;;
+		vs) vs $f; w fkar && rehash	;;
 		S)	PATH_STATE=RESET; . $f	;;
 		vS) PATH_STATE=RESET; vs $f	;;
 		*)	w fkub || w fkar && echo "fk: ForkKILLET" || "fk: not at home"
@@ -450,7 +466,11 @@ hi () {
 	esac
 }
 
-w x1tx && source "$H/src/moli/moli.sh"
+w x1tx && . "$H/src/moli/moli.sh"
+
+w fkar && proxy() {
+	sudo systemctl start shadowsocks@bhj
+}
 
 # :::: git
 
@@ -459,18 +479,23 @@ alias g="git"
 # :::: rust
 
 alias C=cargo
+w fkar && . "$H/.cargo/env"
 
 # :::: vim
 
 alias v="vim"
 vn () { v "$1"; node "$1"; }
 vnd () { v "$1"; noded "$1"; }
+vni () { v "$1"; nodei "$1"; }
 vr () { v "$1"; dotpath "$@"; }
 vs () { v "$1"; . "$1"; }
+vC () { v "$1"; C "$1"; }
 ve () { v "$VIMRC"; }
 vm () {
 	[ -f main.js ] && v main.js
 	[ -f src/main.js ] && v src/main.js
+	[ -f src/main.ts ] && v src/main.ts
+	[ -f src/main.rs ] && v src/main.rs
 }
 
 w x1tx && vh () { v "$1"; htm "$1"; }
@@ -535,41 +560,11 @@ minecraft () {
 	hmcl > /dev/null 2> /dev/null &
 }
 
+discord () {
+	/opt/discord/Discord --proxy-server=socks5://127.0.0.1:1630 > /dev/null 2> /dev/null &
+	disown "%$(jobs | grep /opt/discord/Discord | grep -o -E '\[[0-9]+\]' | grep -o -E '[0-9]+')"
 }
 
-# :: WORK
-
--- () {
-	case "$1" in
-		tdb | t)
-			noded "$H/src/nodejs/TerminalDashboard/dashboard.js"
-		;;
-		xbqg | x)
-			noded "$H/src/nodejs/xbqg/main.js" $@
-		;;
-		hwn | h)
-			shift
-			case "$1" in
-				s | server)
-					cdsrc hwn
-					c
-					node "$H/src/IceLava/HardWayNazo/dep/server.js"
-				;;
-				sq | server-quiet)
-					-- hwn s > /dev/null 2> /dev/null &
-				;;
-				d | develop)
-					cdsrc hwn
-					PS1_SWITCH SHORT
-					-- hwn sq
-					c
-				;;
-			esac
-		;;
-		*)
-			echo "--: no such task \"$1\"."
-		;;
-	esac
 }
 
 ## :: SERVER
@@ -626,7 +621,7 @@ w fkub && {
 w fkar && {
 	[ -f "$H/log/log-$today" -o "$TERM" = linux ] || {
 		touch "$H/log/log-$today"
-
+		proxy
 		# fcitx -r > /dev/null 2> /dev/null &
 	}
 }
