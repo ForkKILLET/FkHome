@@ -224,6 +224,11 @@ $PATH
 alias ..="cd .."
 alias ...="cd ../.."
 
+ln() { # for windows
+	[ $1 = -s ] && break
+	cmd "/C mklink '$2' '$1'"$'\r\n'
+}
+
 cd_ () { cd "$H/_"; } # cd dash, cdda sh! 
 cdbin () { cd "$H/bin/$1"; }
 cddl () {
@@ -447,7 +452,7 @@ log () {
 }
 
 fk () {
-	w fkar && local f="$H/.zshrc" || local f="$H/.bashrc"
+	w fkar || w x1le || w x1tx && local f="$H/.zshrc" || local f="$H/.bashrc"
 	case "$1" in
 		s)	. $f					;;
 		v)	v $f					;;
@@ -600,7 +605,7 @@ w msml && mm () {
 
 # :: INIT
 
-today=$(cdate)
+w fkub && today=$(cdate) || today=$(date +%Y%m%d)
 
 w fkub && {
 	[ -f "$H/log/log-$today" ] || {
