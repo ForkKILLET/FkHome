@@ -5,34 +5,45 @@
 	helper = store
 [core]
 	editor = env vim
+	commentChar = "#"
 [init]
 	defaultBranch = main
 [pull]
 	rebase = false
-[alias]
-	m	= !vim ~/.gitconfig						; Map
-	l 	= log --graph --all						; Log
-	la	= log -1 HEAD							; Log LAst
-	lo	= log --graph --all --oneline			; Log Oneline
-	s	= status								; Status
-	d 	= diff									; Different
-	dc	= diff --cached							; Different Cached
-	a 	= add									; Add
-	aa  = add .									; Add All
-	ac	= !git aa && git c						; Add all and Commit
-	rc	= rm --cached							; Remove Cached
-	c	= commit								; Commit
-	ca	= commit --amend						; Commit Amend
-	aca = !git aa && git ca						; Add all and Commit Amend
-	co	= checkout								; CheckOut
-	b	= branch								; Branch
-	bs 	= switch								; Branch Switch
-	dl 	= clone	https://github.com/				; DownLoad
-	p 	= push									; Push
-	ig	= !vim ./.gitignore && git a .gitignore	; IGnore
-    r   = rebase								; Rebase
-	rc	= rebase --continue						; Rebase Continue
-	ra	= rebase --abort						; Remove Abort
 [http]
 	proxy = socks5://127.0.0.1:1630
-
+[alias]
+	m	= !vim ~/.gitconfig						# Map
+	l 	= log --graph --all						# Log
+	la	= log -1 HEAD							# Log LAst
+	lo	= log --graph --all --oneline			# Log Oneline
+	s	= status								# Status
+	d 	= diff									# Different
+	dc	= diff --cached							# Different Cached
+	a 	= add									# Add
+	aa	= add .									# Add All
+	ac	= !git aa && git c						# Add all and Commit
+	rc	= rm --cached							# Remove Cached
+	c	= commit								# Commit
+	ca	= commit --amend						# Commit Amend
+	aca = !git aa && git ca						# Add all and Commit Amend
+	co	= checkout								# CheckOut
+	b	= branch								# Branch
+	bs 	= switch								# Branch Switch
+	dl 	= clone	https://github.com/				# DownLoad
+	p 	= push									# Push
+	ig	= !vim ./.gitignore && git a .gitignore	# IGnore
+	r	= rebase								# Rebase
+	rc	= rebase --continue						# Rebase Continue
+	ra	= rebase --abort						# Remove Abort
+	pxy	= "!\
+		c=\"$(cat ~/.gitconfig)\";\
+		c_=\"${c/\tproxy =/\t# proxy =}\";\
+		if [ \"$c\" = \"$c_\" ]; then\
+			c_=\"${c/\t# proxy =/\tproxy =}\";\
+			echo \"git proxy on\";\
+		else\
+			echo \"git proxy off\";\
+		fi;\
+		echo \"$c_\" > ~/.gitconfig;\
+	"
