@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 # :: ENV
 
@@ -252,6 +252,8 @@ cdsrc () {
 		nu)		p=nodejs/Util					;;
 		lh)		p=nodejs/Localhost				;;
 
+		d)		p=nodejs/FkDice					;;
+
 		h)		p=nodejs/Hydro					;;
 		hb)		p=nodejs/Hydro/HydroBot			;;
 		hu)		p=nodejs/Hydro/ui-default		;;
@@ -260,6 +262,8 @@ cdsrc () {
 
 		cg)		p=nodejs/golf					;;
 
+		e)		p=electron						;;
+		eq)		p=electron/electron-qq			;;
 
         il)		p=IceLava							;;
 		it)		p=IceLava/Top						;;
@@ -283,10 +287,13 @@ cdsrc () {
 
 		pi)		p=piterator						;;
 
+		soap)	p=py/StackOverflowAnalyseProgram	;;
+
 		u)		p=userscript					;;
 		uw)		p=userscript/WhereIsMyForm		;;
 		us)		p=userscript/SFAR				;;
 		ue)		p=userscript/extend-luogu		;;
+		ut)		p=userscript/TM-dat				;;
 
 		t)		p=typescript					;;
 		tt)		p=typescript/test				;;
@@ -561,14 +568,22 @@ url () {
 	google-chrome-unstable $@
 }
 
-minecraft () {
-	hmcl > /dev/null 2> /dev/null &
+MC () {
+	sudo /usr/bin/hmcl > /dev/null 2> /dev/null &
+	disown "%$(jobs | grep sudo /usr/bin/hmcl | grep -o -E '\[[0-9]+\]' | grep -o -E '[0-9]+')"
 }
 
 discord () {
 	/opt/discord/Discord --proxy-server=socks5://127.0.0.1:1630 > /dev/null 2> /dev/null &
 	disown "%$(jobs | grep /opt/discord/Discord | grep -o -E '\[[0-9]+\]' | grep -o -E '[0-9]+')"
 }
+
+QQ () {
+	/usr/bin/electron-qq > /dev/null 2> /dev/null &
+	disown "%$(jobs | grep /usr/bin/electron-qq | grep -o -E '\[[0-9]+\]' | grep -o -E '[0-9]+')"
+}
+
+alias o="xdg-open"
 
 }
 
