@@ -35,6 +35,7 @@
 	p	= push									# Push
 	ig	= !vim ./.gitignore && git a .gitignore	# IGnore
 	r	= rebase								# Rebase
+	bk	= reset --hard							# BacK
 	ri	= rebase -i								# Rebase Interactive
 	rc	= rebase --continue						# Rebase Continue
 	ra	= rebase --abort						# Remove Abort
@@ -49,3 +50,4 @@
 		fi;\
 		echo \"$c_\" > ~/.gitconfig;\
 	"
+

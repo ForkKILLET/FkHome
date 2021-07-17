@@ -27,7 +27,7 @@ w () {
 	return 1
 }
 
-alias gohome=". $H/_/gohome.sh"
+alias gohome="zsh $H/_/gohome.sh"
 
 # :::: PLACES
 
@@ -132,7 +132,7 @@ div () {
 yn () {
 	local info
 	[ "$1" ] && info="$1 "
-	read -p "$info(y/n) " -n 1 res
+	read -k1 "res?$info(y/n) "
 	echo
 	case "$res" in
 		y)	return 0	;;
@@ -144,11 +144,11 @@ yn () {
 yn50 () {
 	local info
 	[ "$1" ] && info="$1 "
-	read -ep "$info(ye5/n0) " res
+	read "res?$info(ye5/n0) "
 	case "$res" in
 		ye5)	return 0	;;
-		n0)	 return 1		;;
-		*)	  return 2		;;
+		n0)		return 1	;;
+		*)		return 2	;;
 	esac
 }
 
@@ -235,72 +235,81 @@ cddl () {
 	w fkar && cd "$H/Downloads" || cd "$H/dl"
 	w fkub && lsp
 }
-cdsrc () { 
+cdsrc () {
 	[ "$1" = -m ] && {
 		shift; local make=1
 	}
-	local p
+	[ "$1" = -s ] && {
+		shift; local server=1
+	}
+	local d
 	case "$1" in 
-		v)		p=vim							;;
+		v)		d=vim									;;
 
-		x)		p=xbqg							;;
-		ml)		p=moli							;;
+		x)		d=xbqg									;;
+		ml)		d=moli									;;
 
-		n)		p=nodejs						;;
-		nx)		p=nodejs/xbqg					;;
-		tdb)	p=nodejs/TerminalDashboard		;;
-		nu)		p=nodejs/Util					;;
-		lh)		p=nodejs/Localhost				;;
+		n)		d=nodejs								;;
+		nx)		d=nodejs/xbqg							;;
+		tdb)	d=nodejs/TerminalDashboard				;;
+		nu)		d=nodejs/Util							;;
+		lh)		d=nodejs/Localhost						;;
 
-		d)		p=nodejs/FkDice					;;
+		d)		d=nodejs/FkDice							;;
 
-		h)		p=nodejs/Hydro					;;
-		hb)		p=nodejs/Hydro/HydroBot			;;
-		hu)		p=nodejs/Hydro/ui-default		;;
+		gcis)	d=FkGitCommitInfoStd					;;
 
-		nc)		p=nodejs/nodecpp				;;
+		h)		d=nodejs/Hydro							;;
+		hb)		d=nodejs/Hydro/HydroBot					;;
+		hu)		d=nodejs/Hydro/ui-default				;;
 
-		cg)		p=nodejs/golf					;;
+		nc)		d=nodejs/nodecpp						;;
 
-		e)		p=electron						;;
-		eq)		p=electron/electron-qq			;;
+		cg)		d=nodejs/golf							;;
 
-        il)		p=IceLava							;;
-		it)		p=IceLava/Top						;;
-		ib)		p=IceLava/Bottom					;;
-		id)		p=IceLava/Top/FkData				;;
-		tpe)	p=IceLava/Top/TrainProblemEmulator	;;
-		hwn)	p=IceLava/Top/HardWayNazo			;;
+		e)		d=electron								;;
+		eq)		d=electron/electron-qq					;;
 
-		k)		p=kotlin						;;
+		il)		d=IceLava								;;
+		it)		d=IceLava/Top							;	p=1628	;;
+		ib)		d=IceLava/Bottom						;;
+		id)		d=IceLava/Top/FkData					;;
+		tpe)	d=IceLava/Top/TrainProblemEmulator		;;
+		hwn)	d=IceLava/Top/HardWayNazo				;	p=1631	;;
 
-		m)		p=mirai							;;
+		k)		d=kotlin								;;
 
-		a)		p=artcmds						;;
-		c)		p=cpp							;;
+		m)		d=mirai									;;
 
-		r)		p=rust							;;
-		rs)		p=rust/study					;;
+		a)		d=artcmds								;;
+		c)		d=cpp									;;
 
-		it)		p=IceLava/Top					;;
-		ib)		p=IceLava/Btm					;;
+		r)		d=rust									;;
+		rs)		d=rust/study							;;
 
-		pi)		p=piterator						;;
+		pi)		d=piterator								;	p=1632	;;
 
-		soap)	p=py/StackOverflowAnalyseProgram	;;
+		soap)	d=py/StackOverflowAnalyseProgram		;;
 
-		u)		p=userscript					;;
-		uw)		p=userscript/WhereIsMyForm		;;
-		us)		p=userscript/SFAR				;;
-		ue)		p=userscript/extend-luogu		;;
-		ut)		p=userscript/TM-dat				;;
+		u)		d=userscript							;;
+		uw)		d=userscript/WhereIsMyForm				;;
+		us)		d=userscript/SFAR						;;
+		ue)		d=userscript/extend-luogu				;;
+		ued)	d=userscript/extend-luogu/dashboard		;	p=1634	;;
+		ut)		d=userscript/TM-dat						;	p=1633	;; 
 
-		t)		p=typescript					;;
-		tt)		p=typescript/test				;;
+		t)		d=typescript							;;
+		tt)		d=typescript/test						;;
 		
-		*)		p="$1"							;;
+		*)		d="$1"									;;
 	esac
-	[ $make ] && mcd "$H/src/$p" || cd "$H/src/$p"
+	[ $make ] && mcd "$H/src/$d" || cd "$H/src/$d"
+	[ $server ] && {
+		[ -z $p ] && echo "Server not matched." || {
+            xdg-open http://localhost:$p
+            http-server -p $p
+        }
+	}
 }
 w fkub && cdruin () { cd "$RUIN"; PS1_SWITCH SHORT; }
 
@@ -401,20 +410,6 @@ alias snowpack="yarn run snowpack"
 
 # :::: shell
 
-dotpath () {
-	local path
-	if [ $1 = "-e" ]; then
-		path="echo "
-		shift
-	fi
-	if [ ${1:0:1} = "/" ]; then
-		path="$path$@"
-	else
-		path="$path./$@"
-	fi
-	$path
-}
-
 log () {
 	case "$1" in
 		-l | --list)
@@ -423,8 +418,8 @@ log () {
 		-t | --traverse)
 			shift
 			local rev
-			[ "$1" = -r || "$1" = --reverse ] && rev=" -r"
-			for file in $(ls$rev $H/log); do
+			[ "$1" = -r ] && rev="-r"
+			for file in $(ls $rev "$H/log"); do
 				div -s
 				yn "Cat <$file> ?" && {
 					div -s;
@@ -499,7 +494,7 @@ alias v="vim"
 vn () { v "$1"; node "$1"; }
 vnd () { v "$1"; noded "$1"; }
 vni () { v "$1"; nodei "$1"; }
-vr () { v "$1"; dotpath "$@"; }
+vr () { v "$1"; "$@"; }
 vs () { v "$1"; . "$1"; }
 vC () { v "$1"; C "$1"; }
 ve () { v "$VIMRC"; }

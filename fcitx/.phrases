@@ -1,0 +1,15 @@
+# For fcitx and fcitx-sogou-pinyin, by ForkKILLET
+# [ Latex ]
+
+latex				LaTeX
+exists				∃
+forall				∀
+land				∧
+lor					∨
+neg					¬
+rightarrow			→
+leftarrow			←
+uparrow				↑
+downarrow			↓
+leftrightarrow		↔
+
