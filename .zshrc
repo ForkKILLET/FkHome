@@ -16,7 +16,7 @@ case "$HOME" in
 	/c/_|/c/Users/lenovo)
 		export WHERE="x1le"	;;
 	/c/home|/c/Users/ForkKILLET)
-		export WHERE="fkhw" 	;;
+		export WHERE="fkhw" ;;
 	*)
 		echo "Unknown device @ $HOME."
 		return 1
@@ -35,6 +35,7 @@ w fkub &&	export HOME="/Volumes/FORKUB/Safety"
 w x1le &&	export HOME="/c/_"
 w fkhw &&	export HOME="/c/home"
 			export H="$HOME"
+			export FK="$HOME"
 
 w fkub &&	export RUIN="/Volumes/FORKUB/Backups.backupdb/MacBook Pro/Latest/"
 
