@@ -12,7 +12,7 @@ case "$HOME" in
 	/home/forkkillet)
 		export WHERE="msml"	;;
 	/home|/data/data/com.termux/files/home)
-		export WHERE="x1tx"	;;
+		export WHERE="xxtx"	;;
 	/c/_|/c/Users/lenovo)
 		export WHERE="x1le"	;;
 	/c/home|/c/Users/ForkKILLET)
@@ -45,7 +45,7 @@ w fkub &&	export RUIN="/Volumes/FORKUB/Backups.backupdb/MacBook Pro/Latest/"
 			export BHJGIT="git@194.56.226.21"
 			
 w fkub &&	export JAVA_HOME="$H/app/Java/Contents/Home"
-w fkar &&	export JAVA_HOME="/usr/lib/jvm/java-15-openjdk"
+w fkar &&	export JAVA_HOME="/usr/lib/jvm/java-16-openjdk"
    
 w fkub &&	export KOTLIN_HOME="$H/app/kotlinc"
    
@@ -63,9 +63,9 @@ w fkhw &&	export NODE_PATH="$H/app/nodejs"
 
 w x1le ||
 w fkub &&	export VIM="$H/app/vim"
-w x1tx &&	export VIMRUNTIME="$H/../usr/share/vim/vim82"
-			export VIMRC="$H/.vim/vimrc"
-			export VIM_VUDDLE="$H/bundle"
+w xxtx &&	export VIMRUNTIME="$H/../usr/share/vim/vim82"
+			export VIMFILES="$H/.vim"
+			export VIMRC="$VIMFILES/vimrc"
 
 			export GITHUB="https://github.com"
 w fkub &&	export GIT_BIN="$H/libexec/git-core"
@@ -75,23 +75,40 @@ w fkub &&	export GIT_SSL_NO_VERIFY=1
 			export GIT_EDITOR="vim"
    
 w fkub ||
-w x1tx &&	export XBQG_DATA="$H/res/xbqg"
+w xxtx &&	export XBQG_DATA="$H/res/xbqg"
 w fkar &&	export XBQG_DATA="$H/.config/xbqg"
 
-w x1tx &&	export MOLI_DATA="$H/res/www/0"
+w xxtx &&	export MOLI_DATA="$H/res/www/0"
 
 w fkub &&	export MANPATH="$H/share/man"
 
+w fkar &&	export BROWSER_DEV="firefox"
+w fkar &&	export EDITOR="vim"
+
+			export BAIDU_FANYI_APPID=20200920000569502
+			export BAIDU_FANYI_SECRET=59ejpZc1QWPoaVrssd5c
+
 # :::: PATH
 
-[ -z "$PATH_STATE" ] && {
-	PATH_STATE="RESET"
+[ -z "$FK_PATH" ] && {
+	FK_PATH="RESET"
 	PATH_ORI="$PATH"
 }
-[ "$PATH_STATE" = "RESET" ] && {
-	export PATH="$PATH_ORI:$H/bin:$NODE_PATH:$RVM_HOME:$JAVA_HOME:$KOTLIN_HOME/bin:$GRADLE_HOME:$GIT_BIN:$H/app/7-Zip:/$IDEA_HOME:$CARGO_HOME"
-	PATH_STATE=UPDATED
+[ "$FK_PATH" = "RESET" ] && {
+	export PATH="$PATH_ORI:$H/bin:$NODE_PATH:$RVM_HOME:$JAVA_HOME/bin:$KOTLIN_HOME/bin:$GRADLE_HOME:$GIT_BIN:$H/app/7-Zip:/$IDEA_HOME:$CARGO_HOME"
+	FK_PATH=UPDATED
 }
+
+# :::: ZSH
+
+export ZSH="$HOME/.oh-my-zsh"
+
+ZSH_THEME="robbyrussell"
+plugins=(copypath thefuck yarn fancy-ctrl-z gh)
+
+[ -z "$NO_OMZ" ] && source $ZSH/oh-my-zsh.sh
+
+eval $(thefuck --alias)
 
 # :::: PS1
 
@@ -103,18 +120,27 @@ PS1_SWITCH () {
 }
 
 w fkar &&	autoload -U colors && colors &&
-			export PS1_LONG="%{$fg[green]%}%~ %{$fg_bold[magenta]%}Ψ%{$reset_color%}"	&& export PS1_SHORT="%{$fg_bold[magenta]%}Ψ%{$reset_color%}"
+			export PS1_LONG="%{$fg[green]%}%~ %{$fg_bold[magenta]%}Ψ%{$reset_color%}"	&& export PS1_SHORT="%{$fg_bold[magenta]%}Ψ%{$reset_color%}" &&
+			export RPS1="%{$fg_bold[red]%}%?%{$reset_color%}"
 w fkub &&	export PS1_LONG="\033[1;34m\u\033[0;32m\w\033[1;35mΨ\[\033[0m"				&& export PS1_SHORT="\033[1;35mΨ\033[0m"
 w msml &&	export PS1_LONG="\033[1;34m\u\033[0;32m\w\033[1;35mM\[\033[0m"				&& export PS1_SHORT="\033[1;35mM\033[0m"
 w x1le &&	export PS1_LONG="\033[32m\w\033[36m\`__git_ps1\` \033[1;35mL\033[0m"		&& export PS1_SHORT="\033[1;35mL\033[0m"
-w x1tx &&	export PS1_LONG="\033[32m\w\033[1;35mX\[\033[0m"							&& export PS1_SHORT="\033[1;35mX\033[0m"
+w xxtx &&	export PS1_LONG="\033[32m\w\033[1;35mX\[\033[0m"							&& export PS1_SHORT="\033[1;35mX\033[0m"
 w fkhw &&	export PS1_LONG="\033[32m\w\033[36m\`__git_ps1\` \033[1;35mΨ\033[0m"		&& export PS1_SHORT="\033[1;35mΨ\033[0m"
 			PS1_SWITCH LONG
 
+w fkar ||
 w fkub &&	export HISTFILE="$H/log/log-hist"
-w x1tx &&	export HISTFILE="$H/.bash_history"
-			export HISTFILESIZE=1919810
-			export HISTSIZE=1919810
+w xxtx &&	export HISTFILE="$H/.bash_history"
+			export HISTFILESIZE=1000000
+			export HISTSIZE=1000000
+			export SAVEHIST=$HISTSIZE
+
+# :::: ZSH
+
+w fkar && {
+	setopt AUTO_CD
+}
 
 # :::: fcitx
 
@@ -164,19 +190,31 @@ c_256 () {
 	done
 }
 
-c_ansi () { 
+c_csi () { 
 	div
-	echo "Color:"
+	echo "Foreground:"
 	echo -n "| "
-	echo "^["{30..37}"m |"
+	echo "^[["{30..37}"m |"
 	echo -n "| "
-	echo -e "\033["{30..37}"mText\033[0m  |"
+	echo -e "\033["{30..37}"mText\033[0m   |"
+	div
+	echo "Background:"
+	echo -n "| "
+	echo "^[["{40..47}"m |"
+	echo -n "| "
+	echo -e "\033["{40..47}"mText\033[0m   |"
+	div
+	echo "Foreground Style 1:"
+	echo -n "| "
+	echo "^[[1;3"{0..9}"m |"
+	echo -n "| "
+	echo -e "\033[1;3"{0..9}"mText\033[0m     |"
 	div
 	echo "Style:"
 	echo -n "| "
-	echo "^["{0..13}"; |"
+	echo "^[["{0..9}"m |"
 	echo -n "| "
-	echo -e "\033["{0..13}";30mText\033[0m |"
+	echo -e "\033["{0..9}"mText\033[0m  |"
 	div
 }
 
@@ -184,99 +222,106 @@ c_env ()
 { 
 	div -s;
 	echo "
-	WHERE				= $WHERE
-	PATH				= \`
+WHERE               = $WHERE
+PATH                = \`
 $PATH
 '
 
-	HOME				= $HOME
-	
-	VIM					= $VIM
-	VIMRC				= $VIMRC
-	VIM_VUDDLE			= $VIM_VUDDLE
-	
-	MASNN				= $MASNN
-	MHOME				= $MHOME
+HOME                = $HOME
 
-	RVM_HOME			= $RVM_HOME
+VIM                 = $VIM
+VIMRC               = $VIMRC
+VIM_VUDDLE          = $VIM_VUDDLE
 
-	NPM_G				= $NPM_G
-	NODE_PATH			= $NODE_PATH
+MASNN               = $MASNN
+MHOME               = $MHOME
 
-	CARGO_HOME			= $CARGO_HOME
+RVM_HOME            = $RVM_HOME
 
-	XBQG_DATA			= $XBQG_DATA
+NPM_G               = $NPM_G
+NODE_PATH           = $NODE_PATH
 
-	JAVA_HOME			= $JAVA_HOME
-	KOTLIN_HOME			= $KOTLIN_HOME
-	GRADLE_HOME			= $GRADLE_HOME
-	GRADLE_USER_HOME	= $GRADLE_USER_HOME
+CARGO_HOME          = $CARGO_HOME
 
-	PS1					= $PS1
+XBQG_DATA           = $XBQG_DATA
 
-	HISTFILE			= $HISTFILE
-	HISTFILESIZE		= $HISTFILESIZE
+JAVA_HOME           = $JAVA_HOME
+KOTLIN_HOME         = $KOTLIN_HOME
+GRADLE_HOME         = $GRADLE_HOME
+GRADLE_USER_HOME    = $GRADLE_USER_HOME
+
+PS1                 = $PS1
+
+HISTFILE            = $HISTFILE
+HISTFILESIZE        = $HISTFILESIZE
+SAVEHIST            = $SAVEHIST
 ";
 	div -s
 }
 
 # :: FILE
 
-alias ..="cd .."
-alias ...="cd ../.."
-
-ln() { # for windows
-	[ $1 = -s ] && break
-	cmd "/C mklink '$2' '$1'"$'\r\n'
-}
-
-cd_ () { cd "$H/_"; } # cd dash, cdda sh! 
-cdbin () { cd "$H/bin/$1"; }
+cdd () { cd "$H/_"; } # cd dash, cdda sh! 
+cdb () { cd "$H/bin/$1"; }
 cddl () {
-	w fkar && cd "$H/Downloads" || cd "$H/dl"
+	w fkar && cd "$H/Downloads"
+	w fkub && cd "$H/dl"
 	w fkub && lsp
 }
-cdsrc () {
+cds () {
 	[ "$1" = -m ] && {
 		shift; local make=1
 	}
 	[ "$1" = -s ] && {
 		shift; local server=1
 	}
+	[ "$1" = -S ] && {
+		shift; local server=2
+	}
 	local d
-	case "$1" in 
+	local p
+	case "$1" in
+		# ::::	SRC BEGIN
 		v)		d=vim									;;
 
 		x)		d=xbqg									;;
 		ml)		d=moli									;;
 
 		n)		d=nodejs								;;
+		wb)		d=nodejs/WillBot						;;
 		nx)		d=nodejs/xbqg							;;
 		tdb)	d=nodejs/TerminalDashboard				;;
-		nu)		d=nodejs/Util							;;
-		lh)		d=nodejs/Localhost						;;
+		nu)		d=nodejs/fkutil							;;
+		lh)		d=nodejs/l627							;;
 
-		d)		d=nodejs/FkDice							;;
-
-		gcis)	d=FkGitCommitInfoStd					;;
+		gt)		d=FkGitTest								;;
+		gcms)	d=FkGitCommitMsgStd						;;
 
 		h)		d=nodejs/Hydro							;;
 		hb)		d=nodejs/Hydro/HydroBot					;;
 		hu)		d=nodejs/Hydro/ui-default				;;
+		hh)		d=nodejs/Hydro/Hydro					;;
 
 		nc)		d=nodejs/nodecpp						;;
+		np)		d=nodejs/pow-logic						;;
 
 		cg)		d=nodejs/golf							;;
+
+		rstt)	d=nodejs/rSTTranslator					;;
 
 		e)		d=electron								;;
 		eq)		d=electron/electron-qq					;;
 
 		il)		d=IceLava								;;
-		it)		d=IceLava/Top							;	p=1628	;;
+		it)		d=IceLava/Top							;	p=1628						;;
+		mt)		d=IceLava/Top/MazeTest					;	p=1635						;;
 		ib)		d=IceLava/Bottom						;;
 		id)		d=IceLava/Top/FkData					;;
-		tpe)	d=IceLava/Top/TrainProblemEmulator		;;
-		hwn)	d=IceLava/Top/HardWayNazo				;	p=1631	;;
+		tpe)	d=IceLava/Top/TrolleyProblemEmulator	;	p=1636/docs/?debug=1		;;
+		tped)	d=IceLava/Top/TrolleyProblemEmulator	;	p=1636/docs/debug?debug=1	;;
+		hwn)	d=IceLava/Top/HardWayNazo				;	p=1631						;;
+		jc)		d=IceLava/Top/JCer						;;
+		som)	d=IceLava/Top/SudoerOfMyself			;	p=1637/docs					;;
 
 		k)		d=kotlin								;;
 
@@ -286,9 +331,10 @@ cdsrc () {
 		c)		d=cpp									;;
 
 		r)		d=rust									;;
-		rs)		d=rust/study							;;
+		rl)		d=rust/learn							;;
+		rp)		d=rust/pow-logic						;;
 
-		pi)		d=piterator								;	p=1632	;;
+		pi)		d=piterator								;;
 
 		soap)	d=py/StackOverflowAnalyseProgram		;;
 
@@ -296,19 +342,29 @@ cdsrc () {
 		uw)		d=userscript/WhereIsMyForm				;;
 		us)		d=userscript/SFAR						;;
 		ue)		d=userscript/extend-luogu				;;
-		ued)	d=userscript/extend-luogu/dashboard		;	p=1634	;;
-		ut)		d=userscript/TM-dat						;	p=1633	;; 
+		ues)	d=userscript/exlg-setting-new			;	p=1634						;;
+		ut)		d=userscript/TM-dat						;	p=1633/test.html			;; 
 
 		t)		d=typescript							;;
 		tt)		d=typescript/test						;;
-		
+
+		p)		d=prolog								;;
+		# ::::	SRC END
 		*)		d="$1"									;;
 	esac
 	[ $make ] && mcd "$H/src/$d" || cd "$H/src/$d"
 	[ $server ] && {
-		[ -z $p ] && echo "Server not matched." || {
-            xdg-open http://localhost:$p
-            http-server -p $p
+		[ -z $p ] && echo "Server not defined." || {
+			local url="http://localhost:$p"
+			echo "$url"
+            case "$server" in
+				1)	http-server -p ${p%%/*} &
+				;;
+				2)	nohup http-server -p ${p%%/*} &
+				;;
+			esac
+			echo "Opening <$url> with $BROWSER_DEV"
+            $BROWSER_DEV "$url"
         }
 	}
 }
@@ -347,42 +403,65 @@ csf () {
 	done
 }
 
-w fkub || alias l="ls -a --color"
-w msml && export LS_COLORS="di=4:fi=1:ln=35;4:or=35;5:mi=35;2:ex=36;1:*.msg=34"
+w fkub || alias l="ls -A --color"
+w msml && export LS_COLORS="di=4:fi=1:ln=35;4:or=35;5:mi=35;2:ex=36:*.msg=35"
+w fkar && export LS_COLORS="$LS_COLORS:*.idea=35"
 
-w fkub ||
-w x1le ||
-w msml &&
+w fkub || w x1le || w msml &&
 tree () {
 	find "${1:-.}" -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'
 }
 
+export LESS="-Xr"
+
 # :::: ELSE
 
 w fkub && {
-	alias zip='tar -Zcvf'
-	alias unzip='tar -Zxvf'
+	zip() { tar -Zcvf }
+	unzip() { tar -Zxvf }
 }
 
-w x1tx ||
+w xxtx ||
 w fkhw ||
 w msml ||
 w fkar && alias c=clear
 
-w fkar && alias xclipc="xclip -selection c"
+w fkar && {
+	xcopy() {
+		xclip -selection c "$1"
+	}
+	xcwd () {
+		pwd | xcopy
+	}
+}
 
 psp () {
-	ps | grep "$1" | grep -v "grep $1"
+	ps aux | grep "$1" | grep -v "grep $1"
 }
 
 # :: APP
 
+w fkar && {
+	pacman-re-S () {
+		pacman -Qs "$1"	\
+		| grep local	\
+		| xargs node -e \
+		'
+		console.log(process
+			.argv
+			.slice(1)
+			.filter((_, k) => k % 2 === 0)
+			.map(s => s.split("/")[1])
+			.join("\n")
+		)
+		' \
+		| xargs sudo pacman -S --noconfirm
+	}
+}
+
 # :::: kotlin
 
-alias gr="gradle"
-alias grb="v build.gradle"
-
-w fkar || w x1tx && {
+w fkar || w xxtx && {
 	alias xbqg-go="c && xbqg ]"
 	alias xbqg-go-less="c && xbqg -n ] | less"
 }
@@ -395,19 +474,15 @@ ktc () {
 
 # :::: nodejs
 
-alias noded="node --unhandled-rejections=strict --trace-warnings"
-alias nodei="node --inspect-brk=1629"
-
-npm-s () {
-	local s="$1"
-	case "$1" in
-		t | taobao) s="http://registry.npm.taobao.org/"	;;
-		o | origin) s="http://registry.npmjs.org/"		;;
-	esac
-	npm config set registry "$s"
+noded() {
+	node --unhandled-rejections=strict --trace-warnings "$1"
+}
+nodei() {
+	node --inspect-brk=1629 "$1"
 }
 
-alias snowpack="yarn run snowpack"
+npm-taobao() { npm set registry https://registry.npm.taobao.org/ }
+npm-origin() { npm set registry https://registry.npmjs.org/ }
 
 # :::: shell
 
@@ -419,7 +494,7 @@ log () {
 		-t | --traverse)
 			shift
 			local rev
-			[ "$1" = -r ] && rev="-r"
+			[[ "$1" = -r || "$1" = --reversed ]] && rev="-r"
 			for file in $(ls $rev "$H/log"); do
 				div -s
 				yn "Cat <$file> ?" && {
@@ -444,25 +519,37 @@ log () {
 			}
 		;;
 		*)
-			
-			if [[ $1 =~ ^[+-][0-9]+$ || -z "$1" ]]; then
-				vim "$H/log/log-$(cdate $1)"
-			else
-				vim "$H/log/log-$1"
+			local cmd=vim
+			if [[ "$1" = -c || "$1" = --cat ]]; then
+				shift
+				cmd=cat
 			fi
+			if [[ "$1" = -s || "$1" = --sudo ]]; then
+				shift
+				cmd="sudo -E $cmd"
+			fi
+
+			local name="$1"
+			if [[ $1 =~ ^[+-][0-9]+$ || -z "$1" ]]; then
+				name="$(cdate $1)"
+			fi
+			
+			zsh -c "$cmd $H/log/log-$name"
 		;;
 	esac
 }
 
 fk () {
-	w fkar || w x1le || w x1tx && local f="$H/.zshrc" || local f="$H/.bashrc"
+	w fkar || w x1le || w xxtx && local f="$H/.zshrc" || local f="$H/.bashrc"
 	case "$1" in
-		s)	. $f					;;
-		v)	v $f					;;
-		vs) vs $f; w fkar && rehash	;;
-		S)	PATH_STATE=RESET; . $f	;;
-		vS) PATH_STATE=RESET; vs $f	;;
-		*)	w fkub || w fkar && echo "fk: ForkKILLET" || "fk: not at home"
+		s)	. $f						;;
+		v)	v $f						;;
+		vs) vs $f; w fkar && rehash		;;
+		S)	FK_PATH=RESET; fk s			;;
+		vS) FK_PATH=RESET; fk vs		;;
+		i)	FK_INIT=INIT; fk s			;;
+		
+		*)	w fkub || w fkar && echo "$WHERE: at home" || "$WHERE: not at home"
 	esac
 }
 
@@ -474,11 +561,7 @@ hi () {
 	esac
 }
 
-w x1tx && . "$H/src/moli/moli.sh"
-
-w fkar && proxy() {
-	sudo systemctl start shadowsocks@bhj
-}
+w xxtx && . "$H/src/moli/moli.sh"
 
 # :::: git
 
@@ -491,7 +574,7 @@ w fkar && . "$H/.cargo/env"
 
 # :::: vim
 
-alias v="vim"
+alias v="/usr/bin/vim"
 vn () { v "$1"; node "$1"; }
 vnd () { v "$1"; noded "$1"; }
 vni () { v "$1"; nodei "$1"; }
@@ -505,8 +588,16 @@ vm () {
 	[ -f src/main.ts ] && v src/main.ts
 	[ -f src/main.rs ] && v src/main.rs
 }
+vpl () { v "$H/.plrc" }
 
-w x1tx && vh () { v "$1"; htm "$1"; }
+host-ban () {
+	echo "0.0.0.0\t\t\t\t$1" | sudo tee -a /etc/hosts
+}
+host-unban () {
+	echo "No way."
+}
+
+w xxtx && vh () { v "$1"; htm "$1"; }
 
 # :: DESKTOP
 
@@ -533,7 +624,7 @@ nw () {
 
 }
 
-w x1tx && {
+w xxtx && {
 
 img () {
 	termux-open "$1" --content-type=image/${1:-jpeg}
@@ -556,22 +647,22 @@ share () {
 w fkar && {
 
 idea () {
-	idea.sh > /dev/null 2> /dev/null &
-	disown "%$(jobs | grep idea.sh | grep -oE '\[[0-9]+\]' | grep -oE '[0-9]+')"
+	nohup idea.sh &
+	disown
+}
+
+webstorm () {
+	nohup webstorm.sh &
+	disown
 }
 
 url () {
 	google-chrome-unstable $@
 }
 
-MC () {
-	sudo /usr/bin/hmcl > /dev/null 2> /dev/null &
-	disown "%$(jobs | grep sudo /usr/bin/hmcl | grep -o -E '\[[0-9]+\]' | grep -o -E '[0-9]+')"
-}
-
 discord () {
-	/opt/discord/Discord --proxy-server=socks5://127.0.0.1:1630 > /dev/null 2> /dev/null &
-	disown "%$(jobs | grep /opt/discord/Discord | grep -o -E '\[[0-9]+\]' | grep -o -E '[0-9]+')"
+	/usr/bin/discord --proxy-server=socks5://127.0.0.1:1630 > /dev/null 2> /dev/null &
+	disown "%$(jobs | grep /usr/bin/discord | grep -o -E '\[[0-9]+\]' | grep -o -E '[0-9]+')"
 }
 
 QQ () {
@@ -580,6 +671,18 @@ QQ () {
 }
 
 alias o="xdg-open"
+
+alias hmcl="echo Don\\'t play Minecraft!"
+unalias hmcl
+
+export MINECRAFT="$H/.config/hmcl/.minecraft"
+export MINECRAFT_ASSETS="$MINECRAFT/versions/1.16.5/1.16.5.jar.unzip/assets/minecraft"
+export MINECRAFT_RES_CELESTE="$MINECRAFT/resourcepacks/Celeste"
+
+willbot () {
+	cds wb
+	node src -is
+}
 
 }
 
@@ -635,10 +738,11 @@ w fkub && {
 }
 
 w fkar && {
-	[ -f "$H/log/log-$today" -o "$TERM" = linux ] || {
+	[[ -z "$FK_INIT" && (-f "$H/log/log-$today" || "$TERM" = linux) ]] || {
+		echo "I'm ForkKILLET"
 		touch "$H/log/log-$today"
-		proxy
-		# fcitx -r > /dev/null 2> /dev/null &
+		# konsole --noclose --nofork --workdir "$HOME/src/nodejs/WillBot/src" -e "node index.js -i" &; disown
+		FK_INIT=
 	}
 }
 

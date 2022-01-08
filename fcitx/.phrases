@@ -1,15 +1,25 @@
 # For fcitx and fcitx-sogou-pinyin, by ForkKILLET
-# [ Latex ]
 
-latex				LaTeX
-exists				∃
-forall				∀
-land				∧
-lor					∨
-neg					¬
-rightarrow			→
-leftarrow			←
-uparrow				↑
-downarrow			↓
-leftrightarrow		↔
+# [ more LaTeX ]
+\true				⊤
+\false				⊥
+\and				∧
+\or					∨
+\neg				¬
+
+\->					→
+\imp				→			
+\<-					←
+\oif				←
+\<->				↔
+\iff				↔
+
+# [ sepcial ]
+
+chapter				§
+check				√
+
+# [ 梗 ]
+umtpivofws			You may try printing intermediate value or fixing with solutions
+umtpivofws			你可以试试输出中间变量或者参考题解改改
 

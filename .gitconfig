@@ -5,37 +5,40 @@
 	helper = store
 [core]
 	editor = env vim
+	pager = delta
 	commentChar = "#"
 [init]
 	defaultBranch = main
 [pull]
 	rebase = false
 [http]
-	proxy = socks5://127.0.0.1:1630
+	# proxy = socks5://127.0.0.1:1630
 [alias]
-	m	= !vim ~/.gitconfig						# Map
+	m	= !vim ~/.gitconfig						# Manage
+	ma	= !vim ./.github/workflows/*			# Manage Action
 	l	= log --graph --all						# Log
-	la	= log -1 HEAD							# Log LAst
+	la	= log -1 HEAD							# Log lAst
 	lo	= log --graph --all --oneline			# Log Oneline
 	lr	= reflog								# RefLog
 	s	= status								# Status
 	d	= diff									# Different
 	dc	= diff --cached							# Different Cached
+	da	= diff --cached HEAD~					# Different lAst
 	a	= add									# Add
 	aa	= add .									# Add All
 	ac	= !git aa && git c						# Add all and Commit
-	rc	= rm --cached							# Remove Cached
+	rmc	= rm --cached							# Remove Cached
 	c	= commit								# Commit
 	ca	= commit --amend						# Commit Amend
 	aca	= !git aa && git ca						# Add all and Commit Amend
 	co	= checkout								# CheckOut
 	b	= branch								# Branch
 	bs	= switch								# Branch Switch
-	dl	= clone	https://github.com/				# DownLoad
 	p	= push									# Push
+	rem	= remote								# REMote
 	ig	= !vim ./.gitignore && git a .gitignore	# IGnore
-	r	= rebase								# Rebase
 	bk	= reset --hard							# BacK
+	r	= rebase								# Rebase
 	ri	= rebase -i								# Rebase Interactive
 	rc	= rebase --continue						# Rebase Continue
 	ra	= rebase --abort						# Remove Abort
@@ -50,4 +53,11 @@
 		fi;\
 		echo \"$c_\" > ~/.gitconfig;\
 	"
-
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true
+[merge]
+	conflictstyle = diff3
+[diff]
+    colorMoved = default
