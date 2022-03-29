@@ -9,8 +9,6 @@ case "$HOME" in
 		export WHERE="fkar"	;;
 	/var/root)
 		export WHERE="fkub"	;;
-	/home/forkkillet)
-		export WHERE="msml"	;;
 	/home|/data/data/com.termux/files/home)
 		export WHERE="xxtx"	;;
 	/c/_|/c/Users/lenovo)
@@ -39,11 +37,6 @@ w fkhw &&	export HOME="/c/home"
 
 w fkub &&	export RUIN="/Volumes/FORKUB/Backups.backupdb/MacBook Pro/Latest/"
 
-			export MASNN="forkkillet@0.masnn.ml"
-			export MHOME="$MASNN:/home/forkkillet"
-
-			export BHJGIT="git@194.56.226.21"
-			
 w fkub &&	export JAVA_HOME="$H/app/Java/Contents/Home"
 w fkar &&	export JAVA_HOME="/usr/lib/jvm/java-16-openjdk"
    
@@ -80,7 +73,8 @@ w fkar &&	export XBQG_DATA="$H/.config/xbqg"
 
 w xxtx &&	export MOLI_DATA="$H/res/www/0"
 
-w fkub &&	export MANPATH="$H/share/man"
+w fkar ||
+w fkub &&	export MANPATH="/usr/share/man"
 
 w fkar &&	export BROWSER_DEV="firefox"
 w fkar &&	export EDITOR="vim"
@@ -102,9 +96,9 @@ w fkar &&	export EDITOR="vim"
 # :::: ZSH
 
 export ZSH="$HOME/.oh-my-zsh"
-
-ZSH_THEME="robbyrussell"
-plugins=(copypath thefuck yarn fancy-ctrl-z gh)
+setopt AUTO_CD
+ZSH_DISABLE_COMPFIX=true
+plugins=(copypath thefuck yarn fancy-ctrl-z gh fzf)
 
 [ -z "$NO_OMZ" ] && source $ZSH/oh-my-zsh.sh
 
@@ -119,15 +113,10 @@ PS1_SWITCH () {
 	PS1="$(eval echo -e \$PS1_${1:-$PS1_STYLE}) "
 }
 
-w fkar &&	autoload -U colors && colors &&
-			export PS1_LONG="%{$fg[green]%}%~ %{$fg_bold[magenta]%}Ψ%{$reset_color%}"	&& export PS1_SHORT="%{$fg_bold[magenta]%}Ψ%{$reset_color%}" &&
-			export RPS1="%{$fg_bold[red]%}%?%{$reset_color%}"
-w fkub &&	export PS1_LONG="\033[1;34m\u\033[0;32m\w\033[1;35mΨ\[\033[0m"				&& export PS1_SHORT="\033[1;35mΨ\033[0m"
-w msml &&	export PS1_LONG="\033[1;34m\u\033[0;32m\w\033[1;35mM\[\033[0m"				&& export PS1_SHORT="\033[1;35mM\033[0m"
-w x1le &&	export PS1_LONG="\033[32m\w\033[36m\`__git_ps1\` \033[1;35mL\033[0m"		&& export PS1_SHORT="\033[1;35mL\033[0m"
-w xxtx &&	export PS1_LONG="\033[32m\w\033[1;35mX\[\033[0m"							&& export PS1_SHORT="\033[1;35mX\033[0m"
-w fkhw &&	export PS1_LONG="\033[32m\w\033[36m\`__git_ps1\` \033[1;35mΨ\033[0m"		&& export PS1_SHORT="\033[1;35mΨ\033[0m"
-			PS1_SWITCH LONG
+autoload -U colors && colors
+export PS1_LONG="%F{167}[%D{%H:%M:%S}] %F{46}%~ %F{214}$WHERE %F{99}Ψ%f "
+export PS1_SHORT="%F{214}$WHERE %F{99}Ψ%f "
+export PS1="$PS1_LONG"
 
 w fkar ||
 w fkub &&	export HISTFILE="$H/log/log-hist"
@@ -135,12 +124,6 @@ w xxtx &&	export HISTFILE="$H/.bash_history"
 			export HISTFILESIZE=1000000
 			export HISTSIZE=1000000
 			export SAVEHIST=$HISTSIZE
-
-# :::: ZSH
-
-w fkar && {
-	setopt AUTO_CD
-}
 
 # :::: fcitx
 
@@ -322,6 +305,7 @@ cds () {
 		hwn)	d=IceLava/Top/HardWayNazo				;	p=1631						;;
 		jc)		d=IceLava/Top/JCer						;;
 		som)	d=IceLava/Top/SudoerOfMyself			;	p=1637/docs					;;
+		some)	d=IceLava/Top/SudoerOfMyself/src/ext0	;;
 
 		k)		d=kotlin								;;
 
@@ -358,9 +342,7 @@ cds () {
 			local url="http://localhost:$p"
 			echo "$url"
             case "$server" in
-				1)	http-server -p ${p%%/*} &
-				;;
-				2)	nohup http-server -p ${p%%/*} &
+				1)	http-server --cors -p ${p%%/*} &
 				;;
 			esac
 			echo "Opening <$url> with $BROWSER_DEV"
@@ -403,11 +385,12 @@ csf () {
 	done
 }
 
-w fkub || alias l="ls -A --color"
-w msml && export LS_COLORS="di=4:fi=1:ln=35;4:or=35;5:mi=35;2:ex=36:*.msg=35"
-w fkar && export LS_COLORS="$LS_COLORS:*.idea=35"
+w fkar && {
+	alias l="lsd"
+	alias ll="lsd -lh"
+}
 
-w fkub || w x1le || w msml &&
+w fkub || w x1le &&
 tree () {
 	find "${1:-.}" -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'
 }
@@ -423,7 +406,6 @@ w fkub && {
 
 w xxtx ||
 w fkhw ||
-w msml ||
 w fkar && alias c=clear
 
 w fkar && {
@@ -520,9 +502,15 @@ log () {
 		;;
 		*)
 			local cmd=vim
+			local back
 			if [[ "$1" = -c || "$1" = --cat ]]; then
 				shift
 				cmd=cat
+			fi
+			if [[ "$1" = -T|| "$1" = --typora ]]; then
+				shift
+				cmd=typora
+				back="&"
 			fi
 			if [[ "$1" = -s || "$1" = --sudo ]]; then
 				shift
@@ -534,13 +522,13 @@ log () {
 				name="$(cdate $1)"
 			fi
 			
-			zsh -c "$cmd $H/log/log-$name"
+			zsh -c "$cmd $H/log/log-$name $back"
 		;;
 	esac
 }
 
 fk () {
-	w fkar || w x1le || w xxtx && local f="$H/.zshrc" || local f="$H/.bashrc"
+	local f="$H/.zshrc"
 	case "$1" in
 		s)	. $f						;;
 		v)	v $f						;;
@@ -569,7 +557,6 @@ alias g="git"
 
 # :::: rust
 
-alias C=cargo
 w fkar && . "$H/.cargo/env"
 
 # :::: vim
@@ -580,7 +567,6 @@ vnd () { v "$1"; noded "$1"; }
 vni () { v "$1"; nodei "$1"; }
 vr () { v "$1"; "$@"; }
 vs () { v "$1"; . "$1"; }
-vC () { v "$1"; C "$1"; }
 ve () { v "$VIMRC"; }
 vm () {
 	[ -f main.js ] && v main.js
@@ -602,120 +588,60 @@ w xxtx && vh () { v "$1"; htm "$1"; }
 # :: DESKTOP
 
 w fkub && {
+	safari () {
+		case "$1" in 
+			-h | -home)
+				defaults write com.apple.Safari HomePage "$2"
+			;;
+			*)
+				"$H/app/Safari/Contents/MacOS/Safari" > /dev/null 2> /dev/null &
+				disown "%$(jobs | grep Contents/MacOS/Safari | grep -o -E '\[[0-9]+\]' | grep -o -E '[0-9]+')"
+			;;
+		esac
+	}
 
-safari () {
-	case "$1" in 
-		-h | -home)
-			defaults write com.apple.Safari HomePage "$2"
-		;;
-		*)
-			"$H/app/Safari/Contents/MacOS/Safari" > /dev/null 2> /dev/null &
-			disown "%$(jobs | grep Contents/MacOS/Safari | grep -o -E '\[[0-9]+\]' | grep -o -E '[0-9]+')"
-		;;
-	esac
-}
-
-nw () {
-	echo "$@" > "$H/.new_terminal_rc"
-	"/System/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal"\
-	> /dev/null 2> /dev/null &
-	disown "%$(jobs | grep Contents/MacOS/Terminal | grep -o -E '\[[0-9]+\]' | grep -o -E '[0-9]+')"
-}
-
+	nw () {
+		echo "$@" > "$H/.new_terminal_rc"
+		"/System/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal"\
+		> /dev/null 2> /dev/null &
+		disown "%$(jobs | grep Contents/MacOS/Terminal | grep -o -E '\[[0-9]+\]' | grep -o -E '[0-9]+')"
+	}
 }
 
 w xxtx && {
+	img () {
+		termux-open "$1" --content-type=image/${1:-jpeg}
+	}
+	url () {
+		local u="$1"
+		termux-open-url "$u"
+	}
 
-img () {
-	termux-open "$1" --content-type=image/${1:-jpeg}
-}
-url () {
-	local u="$1"
-	termux-open-url "$u"
-}
+	htm () {
+		termux-open "$1" --content-type=text/html
+	}
 
-htm () {
-	termux-open "$1" --content-type=text/html
-}
-
-share () {
-	termux-open "$1" --send
-}
-
+	share () {
+		termux-open "$1" --send
+	}
 }
 
 w fkar && {
-
-idea () {
-	nohup idea.sh &
-	disown
+	alias o="xdg-open"
 }
 
-webstorm () {
-	nohup webstorm.sh &
-	disown
-}
+## :::: Minecraft
 
-url () {
-	google-chrome-unstable $@
-}
+w fkar && {
+	alias hmcl="echo Don\\'t play Minecraft!"
+	unalias hmcl
 
-discord () {
-	/usr/bin/discord --proxy-server=socks5://127.0.0.1:1630 > /dev/null 2> /dev/null &
-	disown "%$(jobs | grep /usr/bin/discord | grep -o -E '\[[0-9]+\]' | grep -o -E '[0-9]+')"
-}
-
-QQ () {
-	/usr/bin/electron-qq > /dev/null 2> /dev/null &
-	disown "%$(jobs | grep /usr/bin/electron-qq | grep -o -E '\[[0-9]+\]' | grep -o -E '[0-9]+')"
-}
-
-alias o="xdg-open"
-
-alias hmcl="echo Don\\'t play Minecraft!"
-unalias hmcl
-
-export MINECRAFT="$H/.config/hmcl/.minecraft"
-export MINECRAFT_ASSETS="$MINECRAFT/versions/1.16.5/1.16.5.jar.unzip/assets/minecraft"
-export MINECRAFT_RES_CELESTE="$MINECRAFT/resourcepacks/Celeste"
-
-willbot () {
-	cds wb
-	node src -is
-}
-
+	export MINECRAFT="$H/.config/hmcl/.minecraft"
+	export MINECRAFT_ASSETS="$MINECRAFT/versions/1.16.5/1.16.5.jar.unzip/assets/minecraft"
+	export MINECRAFT_RES_CELESTE="$MINECRAFT/resourcepacks/Celeste"
 }
 
 ## :: SERVER
-
-## :::: masnn
-
-alias M="ssh $MASNN"
-
-w msml && mm () {
-	if [ -z "$1" ]; then
-		cat "$H/msg"
-	else
-		case "$1" in
-			-d)
-				echo "-----===$2===-----" >> "$H/msg"
-			;;
-			-c)
-				read -p "(ye5/n0) " opt
-				case "$opt" in
-					ye5)	echo > "$H/msg"					;;
-					n0)		echo "OK, calm down."			;;
-					*)		echo "I can't understand you."	;;
-				esac
-			;;
-			-v)
-				v "$H/msg"
-			;;
-			*)
-				echo "$1" >> "$H/msg"
-		esac
-	fi
-}
 
 # :: INIT
 
@@ -737,16 +663,15 @@ w fkub && {
 	}
 }
 
-w fkar && {
-	[[ -z "$FK_INIT" && (-f "$H/log/log-$today" || "$TERM" = linux) ]] || {
-		echo "I'm ForkKILLET"
-		touch "$H/log/log-$today"
-		# konsole --noclose --nofork --workdir "$HOME/src/nodejs/WillBot/src" -e "node index.js -i" &; disown
-		FK_INIT=
-	}
-}
-
 w msml && {
 	echo -e "\033[1;35m今天也是美好的一天呢～赞美 masnn （）\033[0m"
 }
 
+w fkar && {
+	[[ -z "$FK_INIT" && (-f "$H/log/log-$today" || "$TERM" = linux) ]] || {
+		echo "I'm ForkKILLET"
+		touch "$H/log/log-$today"
+		log -T olclass # Online class
+		FK_INIT=
+	}
+}
