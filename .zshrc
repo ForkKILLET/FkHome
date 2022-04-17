@@ -45,7 +45,7 @@ w fkub &&	export KOTLIN_HOME="$H/app/kotlinc"
 w fkub &&	export GRADLE_HOME="$H/app/gradle"
 w fkub &&	export GRADLE_USER_HOME="$H/.gradle"
 
-w fkar &&	export CARGO_HOME="$H/.cargo/bin"
+w fkar &&	export CARGO_HOME="$H/.cargo"
    
 w fkub &&	export RVM_HOME="$H/src/rvm"
    
@@ -56,9 +56,9 @@ w fkhw &&	export NODE_PATH="$H/app/nodejs"
 
 w x1le ||
 w fkub &&	export VIM="$H/app/vim"
-w xxtx &&	export VIMRUNTIME="$H/../usr/share/vim/vim82"
-			export VIMFILES="$H/.vim"
+w fkar &&	export VIMFILES="$H/.vim" &&
 			export VIMRC="$VIMFILES/vimrc"
+w xxtx &&	export VIMRUNTIME="$H/../usr/share/vim/vim82"
 
 			export GITHUB="https://github.com"
 w fkub &&	export GIT_BIN="$H/libexec/git-core"
@@ -89,7 +89,7 @@ w fkar &&	export EDITOR="vim"
 	PATH_ORI="$PATH"
 }
 [ "$FK_PATH" = "RESET" ] && {
-	export PATH="$PATH_ORI:$H/bin:$NODE_PATH:$RVM_HOME:$JAVA_HOME/bin:$KOTLIN_HOME/bin:$GRADLE_HOME:$GIT_BIN:$H/app/7-Zip:/$IDEA_HOME:$CARGO_HOME"
+	export PATH="$PATH_ORI:$H/bin:$NODE_PATH:$RVM_HOME:$JAVA_HOME/bin:$KOTLIN_HOME/bin:$GRADLE_HOME:$GIT_BIN:$H/app/7-Zip:/$IDEA_HOME:$CARGO_HOME/bin"
 	FK_PATH=UPDATED
 }
 
@@ -98,11 +98,11 @@ w fkar &&	export EDITOR="vim"
 export ZSH="$HOME/.oh-my-zsh"
 setopt AUTO_CD
 ZSH_DISABLE_COMPFIX=true
-plugins=(copypath thefuck yarn fancy-ctrl-z gh fzf)
-
+plugins=(copypath thefuck yarn fancy-ctrl-z gh fzf ripgrep fnm)
 [ -z "$NO_OMZ" ] && source $ZSH/oh-my-zsh.sh
 
-eval $(thefuck --alias)
+eval "$(thefuck --alias)"
+eval "$(fnm env --use-on-cd)"
 
 # :::: PS1
 
@@ -245,6 +245,7 @@ SAVEHIST            = $SAVEHIST
 # :: FILE
 
 cdd () { cd "$H/_"; } # cd dash, cdda sh! 
+cddv () { cd "$H/_/FkVim"; }
 cdb () { cd "$H/bin/$1"; }
 cddl () {
 	w fkar && cd "$H/Downloads"
@@ -271,7 +272,7 @@ cds () {
 		ml)		d=moli									;;
 
 		n)		d=nodejs								;;
-		wb)		d=nodejs/WillBot						;;
+		wb)		d=nodejs/WillBot								;;
 		nx)		d=nodejs/xbqg							;;
 		tdb)	d=nodejs/TerminalDashboard				;;
 		nu)		d=nodejs/fkutil							;;
@@ -304,8 +305,10 @@ cds () {
 		tped)	d=IceLava/Top/TrolleyProblemEmulator	;	p=1636/docs/debug?debug=1	;;
 		hwn)	d=IceLava/Top/HardWayNazo				;	p=1631						;;
 		jc)		d=IceLava/Top/JCer						;;
+		
 		som)	d=IceLava/Top/SudoerOfMyself			;	p=1637/docs					;;
-		some)	d=IceLava/Top/SudoerOfMyself/src/ext0	;;
+		some)	d=IceLava/Top/SudoerOfMyself/src/ext0_file_system	;;
+		somos)	d=IceLava/Top/SudoerOfMyself/SOMOS		;;
 
 		k)		d=kotlin								;;
 
@@ -319,6 +322,8 @@ cds () {
 		rp)		d=rust/pow-logic						;;
 
 		pi)		d=piterator								;;
+		ps)		d=piterator/pisearch					;;
+		pob)	d=piterator/oierspace-cli-bag			;;
 
 		soap)	d=py/StackOverflowAnalyseProgram		;;
 
@@ -333,6 +338,7 @@ cds () {
 		tt)		d=typescript/test						;;
 
 		p)		d=prolog								;;
+		hs)		d=haskell								;;
 		# ::::	SRC END
 		*)		d="$1"									;;
 	esac
@@ -342,11 +348,9 @@ cds () {
 			local url="http://localhost:$p"
 			echo "$url"
             case "$server" in
-				1)	http-server --cors -p ${p%%/*} &
+				1) http-server --cors -p ${p%%/*} -o ${p##*/} &
 				;;
 			esac
-			echo "Opening <$url> with $BROWSER_DEV"
-            $BROWSER_DEV "$url"
         }
 	}
 }
@@ -360,29 +364,10 @@ mcd () {
 
 alias rm='rm -i'
 rmswp () {
-	rm -f ${1:-.}/.*.sw{o,p}
+	rm -f ${1:-.}/.*.swp
 }
 rmd () {
 	mv "$1" "$H/rbin/$2"
-}
-
-lsp () {
-	case "$(pwd)" in
-		"$H/dl")
-			local res=$(ls)
-			res=${res//.wait/ \[\\033\[36mwait\\033\[0m]}
-			res=${res//.process/ \[\\033\[35mprocess\\033\[0m]}
-			res=${res//.fail/ \[\\033\[31mfail\\033\[0m]}
-			res=${res//.succeed/ \[\\033\[32msucceed\\033\[0m]}
-			echo -e "$res"
-		;;
-	esac
-}
-
-csf () {
-	for i in $(ls *.$1); do
-		mv $i "${i%%.*}.$2"
-	done
 }
 
 w fkar && {
@@ -487,34 +472,36 @@ log () {
 		;;
 		-r | --remove)
 			shift
-			yn "Remove <log-$1> ?" && {
-				mkdir -p "$H/rbin/+log"
-				rmd "$H/log/log-$1" "+log"
-				echo "You can find it at <~/rbin/+log>."
-			}
-		;;
-		-rf | --remove-forever)
-			shift
-			yn50 "Remove <log-$1> forever?" && {
-				rm -f "$H/log/log-$1"
-				echo "You can never find it."
-			}
+			if [[ "$1" = -f || "$1" = --force ]]; then
+				shift
+				yn50 "Remove <$1> forever?" && {
+					rm -f "$H/log/$1"
+					echo "You can never find it."
+				}
+			else
+				yn "Remove <$1> ?" && {
+					mkdir -p "$H/rbin/+log"
+					rmd "$H/log/$1" "+log"
+					echo "You can find it at <~/rbin/+log>."
+				}
+			fi
 		;;
 		*)
+			local sudo
+			if [[ "$1" = -s || "$1" = --sudo ]]; then
+				shift
+				sudo="sudo -E "
+			fi
+
 			local cmd=vim
 			local back
 			if [[ "$1" = -c || "$1" = --cat ]]; then
 				shift
 				cmd=cat
-			fi
-			if [[ "$1" = -T|| "$1" = --typora ]]; then
+			elif [[ "$1" = -T || "$1" = --typora ]]; then
 				shift
 				cmd=typora
-				back="&"
-			fi
-			if [[ "$1" = -s || "$1" = --sudo ]]; then
-				shift
-				cmd="sudo -E $cmd"
+				back=" &"
 			fi
 
 			local name="$1"
@@ -522,8 +509,36 @@ log () {
 				name="$(cdate $1)"
 			fi
 			
-			zsh -c "$cmd $H/log/log-$name $back"
+			zsh -c "$sudo$cmd \"$H/log/$name\"$back"
 		;;
+	esac
+}
+
+compdef __comp_log log
+__comp_log () {
+	local __comp_file="*:files:_path_files -W $H/log"
+	case "$state" in
+		TRAVERSE) _arguments \
+				{-r,--reverse}"[traverse in reverse order]::->END"
+			;;
+		REMOVE) _arguments \
+				{-f,--force}"[remove a log]" \
+				"$__comp_file"
+			;;
+		SUDO) _arguments \
+				{-c,--cat}"[cat a log]:files:_path_files -W $H/log" \
+				{-T,--typora}"[open a log with Typora]:files:_path_files -W $H/log" \
+				"$__comp_file"
+			;;
+		"")	_arguments \
+				{-l,--list}"[list logs]::->END" \
+				{-r,--remove}"[move a log to ~/rbin/+log]:option:->REMOVE" \
+				{-t,--traverse}"[traverse all logs]:option:->TRAVERSE" \
+				{-c,--cat}"[cat a log]:files:_path_files -W $H/log" \
+				{-T,--typora}"[open a log with Typora]:files:_path_files -W $H/log" \
+				{-s,--sudo}"[run with sudo]:mode:->SUDO" \
+				"$__comp_file"
+			;;
 	esac
 }
 
@@ -538,14 +553,6 @@ fk () {
 		i)	FK_INIT=INIT; fk s			;;
 		
 		*)	w fkub || w fkar && echo "$WHERE: at home" || "$WHERE: not at home"
-	esac
-}
-
-hi () {
-	case "$1" in
-		c)	cat $HISTFILE	;;
-		v)	v $HISTFILE		;;
-		*)	history "$@"	;;
 	esac
 }
 
@@ -567,7 +574,7 @@ vnd () { v "$1"; noded "$1"; }
 vni () { v "$1"; nodei "$1"; }
 vr () { v "$1"; "$@"; }
 vs () { v "$1"; . "$1"; }
-ve () { v "$VIMRC"; }
+ve () { v "$H/.vim/vimrc"; }
 vm () {
 	[ -f main.js ] && v main.js
 	[ -f src/main.js ] && v src/main.js
@@ -671,7 +678,7 @@ w fkar && {
 	[[ -z "$FK_INIT" && (-f "$H/log/log-$today" || "$TERM" = linux) ]] || {
 		echo "I'm ForkKILLET"
 		touch "$H/log/log-$today"
-		log -T olclass # Online class
+		log -T log-olclass # Online class
 		FK_INIT=
 	}
 }
