@@ -89,7 +89,7 @@ w fkar &&	export EDITOR="vim"
 	PATH_ORI="$PATH"
 }
 [ "$FK_PATH" = "RESET" ] && {
-	export PATH="$PATH_ORI:$H/bin:$NODE_PATH:$RVM_HOME:$JAVA_HOME/bin:$KOTLIN_HOME/bin:$GRADLE_HOME:$GIT_BIN:$H/app/7-Zip:/$IDEA_HOME:$CARGO_HOME/bin"
+	export PATH="$PATH_ORI:$H/bin:$H/local/.bin:$NODE_PATH:$RVM_HOME:$JAVA_HOME/bin:$KOTLIN_HOME/bin:$GRADLE_HOME:$GIT_BIN:$H/app/7-Zip:/$IDEA_HOME:$CARGO_HOME/bin"
 	FK_PATH=UPDATED
 }
 
@@ -97,12 +97,14 @@ w fkar &&	export EDITOR="vim"
 
 export ZSH="$HOME/.oh-my-zsh"
 setopt AUTO_CD
+# setopt VI
 ZSH_DISABLE_COMPFIX=true
-plugins=(copypath thefuck yarn fancy-ctrl-z gh fzf ripgrep fnm)
+plugins=(copypath thefuck yarn fancy-ctrl-z gh fzf ripgrep fnm pip)
 [ -z "$NO_OMZ" ] && source $ZSH/oh-my-zsh.sh
 
 eval "$(thefuck --alias)"
 eval "$(fnm env --use-on-cd)"
+eval "$(opam env)"
 
 # :::: PS1
 
@@ -252,6 +254,8 @@ cddl () {
 	w fkub && cd "$H/dl"
 	w fkub && lsp
 }
+w fkub && cdruin () { cd "$RUIN"; PS1_SWITCH SHORT; }
+
 cds () {
 	[ "$1" = -m ] && {
 		shift; local make=1
@@ -332,13 +336,14 @@ cds () {
 		us)		d=userscript/SFAR						;;
 		ue)		d=userscript/extend-luogu				;;
 		ues)	d=userscript/exlg-setting-new			;	p=1634						;;
-		ut)		d=userscript/TM-dat						;	p=1633/test.html			;; 
+		ut)		d=userscript/TM-dat						;	p=1633/test.html			;;
+		up)		d=userscript/pkhh						;;
 
 		t)		d=typescript							;;
 		tt)		d=typescript/test						;;
 
 		p)		d=prolog								;;
-		hs)		d=haskell								;;
+		hl)		d=haskell/learn							;;
 		# ::::	SRC END
 		*)		d="$1"									;;
 	esac
@@ -354,7 +359,11 @@ cds () {
         }
 	}
 }
-w fkub && cdruin () { cd "$RUIN"; PS1_SWITCH SHORT; }
+compdef __comp_cds cds
+__comp_cds () {
+	local sources=($(which cds | rg --color=never --pcre2 '(?<=\()[^*]+(?=\) d=)' -o))
+	_values $sources
+}
 
 alias md="mkdir"
 mcd () {
@@ -506,14 +515,13 @@ log () {
 
 			local name="$1"
 			if [[ $1 =~ ^[+-][0-9]+$ || -z "$1" ]]; then
-				name="$(cdate $1)"
+				name="log-$(cdate $1)"
 			fi
 			
 			zsh -c "$sudo$cmd \"$H/log/$name\"$back"
 		;;
 	esac
 }
-
 compdef __comp_log log
 __comp_log () {
 	local __comp_file="*:files:_path_files -W $H/log"
@@ -584,7 +592,7 @@ vm () {
 vpl () { v "$H/.plrc" }
 
 host-ban () {
-	echo "0.0.0.0\t\t\t\t$1" | sudo tee -a /etc/hosts
+	sudo sed -i "1\\0.0.0.0 $1" "$H/log/log-hosts"
 }
 host-unban () {
 	echo "No way."
@@ -646,6 +654,12 @@ w fkar && {
 	export MINECRAFT="$H/.config/hmcl/.minecraft"
 	export MINECRAFT_ASSETS="$MINECRAFT/versions/1.16.5/1.16.5.jar.unzip/assets/minecraft"
 	export MINECRAFT_RES_CELESTE="$MINECRAFT/resourcepacks/Celeste"
+}
+
+## :::: Celeste
+
+w fkar && {
+	export CELESTE="$H/.local/share/Steam/steamapps/common/Celeste"
 }
 
 ## :: SERVER
