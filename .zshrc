@@ -15,6 +15,8 @@ case "$HOME" in
 		export WHERE="x1le"	;;
 	/c/home|/c/Users/ForkKILLET)
 		export WHERE="fkhw" ;;
+	/home/forkkillet)
+		export WHERE="fkhk"	;;
 	*)
 		echo "Unknown device @ $HOME."
 		return 1
@@ -103,8 +105,8 @@ plugins=(copypath thefuck yarn fancy-ctrl-z gh fzf ripgrep fnm pip)
 [ -z "$NO_OMZ" ] && source $ZSH/oh-my-zsh.sh
 
 eval "$(thefuck --alias)"
-eval "$(fnm env --use-on-cd)"
-eval "$(opam env)"
+w fkar && eval "$(fnm env --use-on-cd)"
+w fkar && eval "$(opam env)"
 
 # :::: PS1
 
