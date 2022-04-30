@@ -19,11 +19,14 @@ E "# Constructing dirctories."
 mkdir -p ~/{src,bin,rbin,res}
 
 E "# Linking dotfiles."
-for f in .zshrc .bashrc .gitconfig; do
+for f in .zshrc .gitconfig; do
 	rm -f ~/\$f
 	ln -s ~/_/\$f ~/\$f
 	E "    * \$f"
 done
+
+E "# Sourcing .zshrc"
+source ~/_/.zshrc
 
 E "# Linking Fcitx dotfiles?"
 $QB
@@ -37,10 +40,12 @@ $QB
 	
 $QE
 
+E "# Initializing submodules."
+git submodule update --init --recursive
+cd ~/_
+
 E "# Calling Vim?"
 $QB
-	cd ~/_
-	git submodule update
 	zsh ./FkVim/gohome.sh 1
 $QE
 
