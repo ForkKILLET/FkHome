@@ -40,7 +40,7 @@ w fkhw &&	export HOME="/c/home"
 w fkub &&	export RUIN="/Volumes/FORKUB/Backups.backupdb/MacBook Pro/Latest/"
 
 w fkub &&	export JAVA_HOME="$H/app/Java/Contents/Home"
-w fkar &&	export JAVA_HOME="/usr/lib/jvm/java-16-openjdk"
+w fkar &&	export JAVA_HOME="/usr/lib/jvm/java-8-openjdk"
    
 w fkub &&	export KOTLIN_HOME="$H/app/kotlinc"
    
@@ -75,7 +75,6 @@ w fkar &&	export XBQG_DATA="$H/.config/xbqg"
 
 w xxtx &&	export MOLI_DATA="$H/res/www/0"
 
-w fkar ||
 w fkub &&	export MANPATH="/usr/share/man"
 
 w fkar &&	export BROWSER_DEV="firefox"
@@ -105,7 +104,7 @@ plugins=(copypath thefuck yarn fancy-ctrl-z gh fzf ripgrep fnm pip)
 [ -z "$NO_OMZ" ] && source $ZSH/oh-my-zsh.sh
 
 eval "$(thefuck --alias)"
-w fkar && eval "$(fnm env --use-on-cd)"
+w fkar && eval "$(fnm env)"
 w fkar && eval "$(opam env)"
 
 # :::: PS1
@@ -278,7 +277,8 @@ cds () {
 		ml)		d=moli									;;
 
 		n)		d=nodejs								;;
-		wb)		d=nodejs/WillBot								;;
+		wb)		d=nodejs/Willbot						;;
+		wbb)	d=nodejs/Willbot/beta					;;
 		nx)		d=nodejs/xbqg							;;
 		tdb)	d=nodejs/TerminalDashboard				;;
 		nu)		d=nodejs/fkutil							;;
@@ -291,6 +291,7 @@ cds () {
 		hb)		d=nodejs/Hydro/HydroBot					;;
 		hu)		d=nodejs/Hydro/ui-default				;;
 		hh)		d=nodejs/Hydro/Hydro					;;
+		hm)		d=nodejs/Hydro/mongo.js					;;
 
 		nc)		d=nodejs/nodecpp						;;
 		np)		d=nodejs/pow-logic						;;

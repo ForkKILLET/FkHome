@@ -12,7 +12,7 @@
 [pull]
 	rebase = false
 [http]
-	# proxy = socks5://127.0.0.1:1630
+	sslverify = false
 [alias]
 	m	= !vim ~/.gitconfig						# Manage
 	ma	= !vim ./.github/workflows/*			# Manage Action
