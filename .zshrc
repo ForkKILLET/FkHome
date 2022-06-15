@@ -385,6 +385,7 @@ rmd () {
 	mv "$1" "$H/rbin/$2"
 }
 
+w fkhk ||
 w fkar && {
 	alias l="lsd"
 	alias ll="lsd -lh"
