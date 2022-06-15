@@ -47,6 +47,7 @@ w fkub &&	export KOTLIN_HOME="$H/app/kotlinc"
 w fkub &&	export GRADLE_HOME="$H/app/gradle"
 w fkub &&	export GRADLE_USER_HOME="$H/.gradle"
 
+w fkhk ||
 w fkar &&	export CARGO_HOME="$H/.cargo"
    
 w fkub &&	export RVM_HOME="$H/src/rvm"
@@ -58,6 +59,7 @@ w fkhw &&	export NODE_PATH="$H/app/nodejs"
 
 w x1le ||
 w fkub &&	export VIM="$H/app/vim"
+w fkhk ||
 w fkar &&	export VIMFILES="$H/.vim" &&
 			export VIMRC="$VIMFILES/vimrc"
 w xxtx &&	export VIMRUNTIME="$H/../usr/share/vim/vim82"
@@ -104,6 +106,7 @@ plugins=(copypath thefuck yarn fancy-ctrl-z gh fzf ripgrep fnm pip)
 [ -z "$NO_OMZ" ] && source $ZSH/oh-my-zsh.sh
 
 eval "$(thefuck --alias)"
+w fkhk ||
 w fkar && eval "$(fnm env)"
 w fkar && eval "$(opam env)"
 
@@ -403,6 +406,7 @@ w fkub && {
 
 w xxtx ||
 w fkhw ||
+w fkhk ||
 w fkar && alias c=clear
 
 w fkar && {
