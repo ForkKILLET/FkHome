@@ -1,4 +1,4 @@
-QB='E -n "(y/n) "; read -k1 Q; if [[ $Q =~ [Yy] ]]; then E;'
+QB='E -n "\033[34m(y/n) \033[0m"; read -k1 Q; if [[ $Q =~ [Yy] ]]; then E;'
 QE='else E "\n^"; fi'
 
 zsh << SHELL
@@ -15,7 +15,9 @@ EE() {
 
 cd ~/_
 
-[[ -n "$GHPROXY" ]] && EE "# Using ghproxy.com"
+EE "# Checking CLI config."
+
+[[ -n "$GHPROXY" ]] && E "    * Using <ghproxy.com>."
 
 EE "# Constructing dirctories."
 mkdir -p ~/{src,bin,res}
@@ -28,24 +30,17 @@ for f in .zshrc .gitconfig; do
 done
 
 EE "# Sourcing .zshrc"
-source ~/_/.zshrc
+source .zshrc
 
-EE "# Linking Fcitx dotfiles?"
+EE "# Linking fcitx5 files?"
 $QB
-	E "    * .phrases"
-	rm -f ~/.config/fcitx/data/QuickPhrase.mb
-	ln -s ~/_/fcitx/.phrases ~/.config/fcitx/data/QuickPhrase.mb
-
-	E "    * .config"
-	rm -f ~/.config/fcitx/config
-	ln -s ~/_/fcitx/.config ~/.config/fcitx/config
-	
+	E "    * config"
+	rm -f ~/.config/fcitx5/config
+	ln -s ~/_/fcitx5/.config ~/.config/fcitx5/config
 $QE
 
 EE "# Initializing submodules."
 git submodule update --init --recursive
-
-cd ~/_
 
 EE "# Calling Vim?"
 $QB

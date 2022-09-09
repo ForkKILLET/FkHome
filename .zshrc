@@ -46,7 +46,7 @@ has-cmd () {
 # :::: PATH
 
 [[ -z "$FK_PATH" ]] && {
-	FK_PATH="RESET"
+	FK_PATH=RESET
 	PATH_ORI="$PATH"
 }
 [[ "$FK_PATH" = RESET ]] && {
@@ -128,7 +128,7 @@ yn50 () {
 
 # :: CHECK
 
-c_256 () { 
+c-256 () { 
 	for whatg in 38 48; do
 		for color in {0..255}; do
 			printf "\e[${whatg};5;%sm  %3s	\e[0m" $color $color;
@@ -137,7 +137,7 @@ c_256 () {
 	done
 }
 
-c_csi () { 
+c-csi () { 
 	div
 	echo "Foreground:"
 	echo -n "| "
@@ -165,7 +165,7 @@ c_csi () {
 	div
 }
 
-c_env () 
+c-env () 
 { 
 	div -s
 	echo "
@@ -469,8 +469,6 @@ fk () {
 	esac
 }
 
-@ xxtx && . "$H/src/moli/moli.sh"
-
 # :::: git
 
 alias g="git"
@@ -518,7 +516,7 @@ alias o="xdg-open"
 @ fkar && {
 	local today=$(date +%Y%m%d)
 	[[ -z "$FK_INIT" && (-f "$H/log/log-$today" || "$TERM" = linux) ]] || {
-		echo "I'm ForkKILLET"
+		echo "I'm fk??"
 		touch "$H/log/log-$today"
 		log -T log-olclass # Online class
 		FK_INIT=
