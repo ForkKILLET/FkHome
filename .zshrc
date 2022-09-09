@@ -4,6 +4,7 @@
 
 # :: WHERE
 
+# TODO better way to check
 case "$HOME" in
 	/home)
 		export WHERE="fkar"	;;
@@ -22,8 +23,13 @@ case "$HOME" in
 		return 1
 esac
 
-w () {
+@ () {
 	[ "$WHERE" = "$1" ] && return 0
+	return 1
+}
+
+has-cmd () {
+	which "$1" 2>&1 > /dev/null && return 0
 	return 1
 }
 
@@ -31,56 +37,56 @@ alias gohome="zsh $H/_/gohome.sh"
 
 # :::: PLACES
 
-w fkub &&	export HOME="/Volumes/FORKUB/Safety"
-w x1le &&	export HOME="/c/_"
-w fkhw &&	export HOME="/c/home"
+@ fkub &&	export HOME="/Volumes/FORKUB/Safety"
+@ x1le &&	export HOME="/c/_"
+@ fkhw &&	export HOME="/c/home"
 			export H="$HOME"
 			export FK="$HOME"
 
-w fkub &&	export RUIN="/Volumes/FORKUB/Backups.backupdb/MacBook Pro/Latest/"
+@ fkub &&	export RUIN="/Volumes/FORKUB/Backups.backupdb/MacBook Pro/Latest/"
 
-w fkub &&	export JAVA_HOME="$H/app/Java/Contents/Home"
-w fkar &&	export JAVA_HOME="/usr/lib/jvm/java-8-openjdk"
+@ fkub &&	export JAVA_HOME="$H/app/Java/Contents/Home"
+@ fkar &&	export JAVA_HOME="/usr/lib/jvm/java-8-openjdk"
    
-w fkub &&	export KOTLIN_HOME="$H/app/kotlinc"
+@ fkub &&	export KOTLIN_HOME="$H/app/kotlinc"
    
-w fkub &&	export GRADLE_HOME="$H/app/gradle"
-w fkub &&	export GRADLE_USER_HOME="$H/.gradle"
+@ fkub &&	export GRADLE_HOME="$H/app/gradle"
+@ fkub &&	export GRADLE_USER_HOME="$H/.gradle"
 
-w fkhk ||
-w fkar &&	export CARGO_HOME="$H/.cargo"
+@ fkhk ||
+@ fkar &&	export CARGO_HOME="$H/.cargo"
    
-w fkub &&	export RVM_HOME="$H/src/rvm"
+@ fkub &&	export RVM_HOME="$H/src/rvm"
    
-w fkub &&	export NPM_G="$H/lib/node_modules"
-w fkub &&	export NODE_PATH="$NPM_G"
-w x1le ||
-w fkhw &&	export NODE_PATH="$H/app/nodejs"
+@ fkub &&	export NPM_G="$H/lib/node_modules"
+@ fkub &&	export NODE_PATH="$NPM_G"
+@ x1le ||
+@ fkhw &&	export NODE_PATH="$H/app/nodejs"
 
-w x1le ||
-w fkub &&	export VIM="$H/app/vim"
-w fkhk ||
-w fkar &&	export VIMFILES="$H/.vim" &&
+@ x1le ||
+@ fkub &&	export VIM="$H/app/vim"
+@ fkhk ||
+@ fkar &&	export VIMFILES="$H/.vim" &&
 			export VIMRC="$VIMFILES/vimrc"
-w xxtx &&	export VIMRUNTIME="$H/../usr/share/vim/vim82"
+@ xxtx &&	export VIMRUNTIME="$H/../usr/share/vim/vim82"
 
 			export GITHUB="https://github.com"
-w fkub &&	export GIT_BIN="$H/libexec/git-core"
-w fkub &&	export GIT_RES="$H/share/git-core"
+@ fkub &&	export GIT_BIN="$H/libexec/git-core"
+@ fkub &&	export GIT_RES="$H/share/git-core"
 			export GITRC="$H/.gitconfig"
-w fkub &&	export GIT_SSL_NO_VERIFY=1
+@ fkub &&	export GIT_SSL_NO_VERIFY=1
 			export GIT_EDITOR="vim"
    
-w fkub ||
-w xxtx &&	export XBQG_DATA="$H/res/xbqg"
-w fkar &&	export XBQG_DATA="$H/.config/xbqg"
+@ fkub ||
+@ xxtx &&	export XBQG_DATA="$H/res/xbqg"
+@ fkar &&	export XBQG_DATA="$H/.config/xbqg"
 
-w xxtx &&	export MOLI_DATA="$H/res/www/0"
+@ xxtx &&	export MOLI_DATA="$H/res/www/0"
 
-w fkub &&	export MANPATH="/usr/share/man"
+@ fkub &&	export MANPATH="/usr/share/man"
 
-w fkar &&	export BROWSER_DEV="firefox"
-w fkar &&	export EDITOR="vim"
+@ fkar &&	export BROWSER_DEV="firefox"
+@ fkar &&	export EDITOR="vim"
 
 			export BAIDU_FANYI_APPID=20200920000569502
 			export BAIDU_FANYI_SECRET=59ejpZc1QWPoaVrssd5c
@@ -98,17 +104,19 @@ w fkar &&	export EDITOR="vim"
 
 # :::: ZSH
 
-export ZSH="$HOME/.oh-my-zsh"
 setopt AUTO_CD
-# setopt VI
+setopt EMACS
+
+ZSH="$HOME/.oh-my-zsh"
 ZSH_DISABLE_COMPFIX=true
 plugins=(copypath thefuck yarn fancy-ctrl-z gh fzf ripgrep fnm pip)
-[ -z "$NO_OMZ" ] && source $ZSH/oh-my-zsh.sh
+[[ -z "$NO_OMZ" && -f $ZSH ]] && source $ZSH/oh-my-zsh.sh
 
-eval "$(thefuck --alias)"
-w fkhk ||
-w fkar && eval "$(fnm env)"
-w fkar && eval "$(opam env)"
+# :::: CLI TOOLS SETUP
+
+has-cmd thefuck && eval "$(thefuck --alias)"
+has-cmd fnm && eval "$(fnm env)"
+has-cmd opam && eval "$(opam env)"
 
 # :::: PS1
 
@@ -124,16 +132,16 @@ export PS1_LONG="%F{167}[%D{%H:%M:%S}] %F{46}%~ %F{214}$WHERE %F{99}Ψ%f "
 export PS1_SHORT="%F{214}$WHERE %F{99}Ψ%f "
 export PS1="$PS1_LONG"
 
-w fkar ||
-w fkub &&	export HISTFILE="$H/log/log-hist"
-w xxtx &&	export HISTFILE="$H/.bash_history"
+@ fkar ||
+@ fkub &&	export HISTFILE="$H/log/log-hist"
+@ xxtx &&	export HISTFILE="$H/.bash_history"
 			export HISTFILESIZE=1000000
 			export HISTSIZE=1000000
 			export SAVEHIST=$HISTSIZE
 
 # :::: fcitx
 
-w fkar && {
+@ fkar && {
 	export GTK_IM_MODULE=fcitx
 	export QT_IM_MODULE=fcitx
 	export XMODIFIERS=@im=fcitx
@@ -254,11 +262,11 @@ cdd () { cd "$H/_"; } # cd dash, cdda sh!
 cddv () { cd "$H/_/FkVim"; }
 cdb () { cd "$H/bin/$1"; }
 cddl () {
-	w fkar && cd "$H/Downloads"
-	w fkub && cd "$H/dl"
-	w fkub && lsp
+	@ fkar && cd "$H/Downloads"
+	@ fkub && cd "$H/dl"
+	@ fkub && lsp
 }
-w fkub && cdruin () { cd "$RUIN"; PS1_SWITCH SHORT; }
+@ fkub && cdruin () { cd "$RUIN"; PS1_SWITCH SHORT; }
 
 cds () {
 	[ "$1" = -m ] && {
@@ -365,7 +373,7 @@ cds () {
         }
 	}
 }
-compdef __comp_cds cds
+has-cmd compdef && compdef __comp_cds cds
 __comp_cds () {
 	local sources=($(which cds | rg --color=never --pcre2 '(?<=\()[^*]+(?=\) d=)' -o))
 	_values $sources
@@ -385,13 +393,13 @@ rmd () {
 	mv "$1" "$H/rbin/$2"
 }
 
-w fkhk ||
-w fkar && {
+@ fkhk ||
+@ fkar && {
 	alias l="lsd"
 	alias ll="lsd -lh"
 }
 
-w fkub || w x1le &&
+@ fkub || @ x1le &&
 tree () {
 	find "${1:-.}" -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'
 }
@@ -400,17 +408,17 @@ export LESS="-Xr"
 
 # :::: ELSE
 
-w fkub && {
+@ fkub && {
 	zip() { tar -Zcvf }
 	unzip() { tar -Zxvf }
 }
 
-w xxtx ||
-w fkhw ||
-w fkhk ||
-w fkar && alias c=clear
+@ xxtx ||
+@ fkhw ||
+@ fkhk ||
+@ fkar && alias c=clear
 
-w fkar && {
+@ fkar && {
 	xcopy() {
 		xclip -selection c "$1"
 	}
@@ -425,7 +433,7 @@ psp () {
 
 # :: APP
 
-w fkar && {
+@ fkar && {
 	pacman-re-S () {
 		pacman -Qs "$1"	\
 		| grep local	\
@@ -445,7 +453,7 @@ w fkar && {
 
 # :::: kotlin
 
-w fkar || w xxtx && {
+@ fkar || @ xxtx && {
 	alias xbqg-go="c && xbqg ]"
 	alias xbqg-go-less="c && xbqg -n ] | less"
 }
@@ -530,7 +538,7 @@ log () {
 		;;
 	esac
 }
-compdef __comp_log log
+has-cmd compdef && compdef __comp_log log
 __comp_log () {
 	local __comp_file="*:files:_path_files -W $H/log"
 	case "$state" in
@@ -563,16 +571,16 @@ fk () {
 	case "$1" in
 		s)	. $f						;;
 		v)	v $f						;;
-		vs) vs $f; w fkar && rehash		;;
+		vs) vs $f; @ fkar && rehash		;;
 		S)	FK_PATH=RESET; fk s			;;
 		vS) FK_PATH=RESET; fk vs		;;
 		i)	FK_INIT=INIT; fk s			;;
 		
-		*)	w fkub || w fkar && echo "$WHERE: at home" || "$WHERE: not at home"
+		*)	@ fkub || @ fkar && echo "$WHERE: at home" || "$WHERE: not at home"
 	esac
 }
 
-w xxtx && . "$H/src/moli/moli.sh"
+@ xxtx && . "$H/src/moli/moli.sh"
 
 # :::: git
 
@@ -580,7 +588,7 @@ alias g="git"
 
 # :::: rust
 
-w fkar && . "$H/.cargo/env"
+@ fkar && . "$H/.cargo/env"
 
 # :::: vim
 
@@ -606,11 +614,11 @@ host-unban () {
 	echo "No way."
 }
 
-w xxtx && vh () { v "$1"; htm "$1"; }
+@ xxtx && vh () { v "$1"; htm "$1"; }
 
 # :: DESKTOP
 
-w fkub && {
+@ fkub && {
 	safari () {
 		case "$1" in 
 			-h | -home)
@@ -631,7 +639,7 @@ w fkub && {
 	}
 }
 
-w xxtx && {
+@ xxtx && {
 	img () {
 		termux-open "$1" --content-type=image/${1:-jpeg}
 	}
@@ -649,13 +657,13 @@ w xxtx && {
 	}
 }
 
-w fkar && {
+@ fkar && {
 	alias o="xdg-open"
 }
 
 ## :::: Minecraft
 
-w fkar && {
+@ fkar && {
 	alias hmcl="echo Don\\'t play Minecraft!"
 	unalias hmcl
 
@@ -666,7 +674,7 @@ w fkar && {
 
 ## :::: Celeste
 
-w fkar && {
+@ fkar && {
 	export CELESTE="$H/.local/share/Steam/steamapps/common/Celeste"
 }
 
@@ -674,9 +682,9 @@ w fkar && {
 
 # :: INIT
 
-w fkub && today=$(cdate) || today=$(date +%Y%m%d)
+@ fkub && today=$(cdate) || today=$(date +%Y%m%d)
 
-w fkub && {
+@ fkub && {
 	[ -f "$H/log/log-$today" ] || {
 		touch "$H/log/log-$today"
 
@@ -692,11 +700,11 @@ w fkub && {
 	}
 }
 
-w msml && {
+@ msml && {
 	echo -e "\033[1;35m今天也是美好的一天呢～赞美 masnn （）\033[0m"
 }
 
-w fkar && {
+@ fkar && {
 	[[ -z "$FK_INIT" && (-f "$H/log/log-$today" || "$TERM" = linux) ]] || {
 		echo "I'm ForkKILLET"
 		touch "$H/log/log-$today"

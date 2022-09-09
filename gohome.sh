@@ -1,34 +1,36 @@
-QB='read -k1 "Q?(y/n) "; if [[ $Q =~ [Yy] ]]; then E;'
+QB='E -n "(y/n) "; read -k1 Q; if [[ $Q =~ [Yy] ]]; then E;'
 QE='else E "\n^"; fi'
 
 zsh << SHELL
 
 E() {
-	echo "\$1"
+	echo \$*
 }
 
-E "# Using Windows symlink?"
-$QB
-	ln() {
-		[ \$1 = -s ] && shift
-		cmd "/C mklink '\$2' '\$1'\r\n"
-	}
-$QE
+EE() {
+	echo -n "\033[32m"
+	E \$*
+    echo -n "\033[0m"
+}
 
-E "# Constructing dirctories."
-mkdir -p ~/{src,bin,rbin,res}
+cd ~/_
 
-E "# Linking dotfiles."
+[[ -n "$GHPROXY" ]] && EE "# Using ghproxy.com"
+
+EE "# Constructing dirctories."
+mkdir -p ~/{src,bin,res}
+
+EE "# Linking dotfiles."
 for f in .zshrc .gitconfig; do
 	rm -f ~/\$f
 	ln -s ~/_/\$f ~/\$f
 	E "    * \$f"
 done
 
-E "# Sourcing .zshrc"
+EE "# Sourcing .zshrc"
 source ~/_/.zshrc
 
-E "# Linking Fcitx dotfiles?"
+EE "# Linking Fcitx dotfiles?"
 $QB
 	E "    * .phrases"
 	rm -f ~/.config/fcitx/data/QuickPhrase.mb
@@ -40,16 +42,17 @@ $QB
 	
 $QE
 
-E "# Initializing submodules."
+EE "# Initializing submodules."
 git submodule update --init --recursive
+
 cd ~/_
 
-E "# Calling Vim?"
+EE "# Calling Vim?"
 $QB
 	zsh ./FkVim/gohome.sh 1
 $QE
 
-E "# Welcoming Main."
+EE "# Welcoming Main."
 
 SHELL
 
