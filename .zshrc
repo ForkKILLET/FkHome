@@ -2,21 +2,12 @@
 
 # :: ENV
 
-# :: WHERE
+# :::: WHERE
 
-# TODO better way to check
-case "$HOME" in
-	/home)
+case "$HOST" in
+	fkar)
 		export WHERE="fkar"	;;
-	/var/root)
-		export WHERE="fkub"	;;
-	/home|/data/data/com.termux/files/home)
-		export WHERE="xxtx"	;;
-	/c/_|/c/Users/lenovo)
-		export WHERE="x1le"	;;
-	/c/home|/c/Users/ForkKILLET)
-		export WHERE="fkhw" ;;
-	/home/forkkillet)
+	ecs-j3uOh)
 		export WHERE="fkhk"	;;
 	*)
 		echo "Unknown device @ $HOME."
@@ -33,72 +24,33 @@ has-cmd () {
 	return 1
 }
 
-alias gohome="zsh $H/_/gohome.sh"
-
 # :::: PLACES
-
-@ fkub &&	export HOME="/Volumes/FORKUB/Safety"
-@ x1le &&	export HOME="/c/_"
-@ fkhw &&	export HOME="/c/home"
 			export H="$HOME"
-			export FK="$HOME"
 
-@ fkub &&	export RUIN="/Volumes/FORKUB/Backups.backupdb/MacBook Pro/Latest/"
-
-@ fkub &&	export JAVA_HOME="$H/app/Java/Contents/Home"
 @ fkar &&	export JAVA_HOME="/usr/lib/jvm/java-8-openjdk"
    
-@ fkub &&	export KOTLIN_HOME="$H/app/kotlinc"
+			export CARGO_HOME="$H/.cargo"
    
-@ fkub &&	export GRADLE_HOME="$H/app/gradle"
-@ fkub &&	export GRADLE_USER_HOME="$H/.gradle"
-
-@ fkhk ||
-@ fkar &&	export CARGO_HOME="$H/.cargo"
-   
-@ fkub &&	export RVM_HOME="$H/src/rvm"
-   
-@ fkub &&	export NPM_G="$H/lib/node_modules"
-@ fkub &&	export NODE_PATH="$NPM_G"
-@ x1le ||
-@ fkhw &&	export NODE_PATH="$H/app/nodejs"
-
-@ x1le ||
-@ fkub &&	export VIM="$H/app/vim"
-@ fkhk ||
-@ fkar &&	export VIMFILES="$H/.vim" &&
+			export VIMFILES="$H/.vim"
 			export VIMRC="$VIMFILES/vimrc"
-@ xxtx &&	export VIMRUNTIME="$H/../usr/share/vim/vim82"
 
 			export GITHUB="https://github.com"
-@ fkub &&	export GIT_BIN="$H/libexec/git-core"
-@ fkub &&	export GIT_RES="$H/share/git-core"
 			export GITRC="$H/.gitconfig"
-@ fkub &&	export GIT_SSL_NO_VERIFY=1
 			export GIT_EDITOR="vim"
    
-@ fkub ||
-@ xxtx &&	export XBQG_DATA="$H/res/xbqg"
 @ fkar &&	export XBQG_DATA="$H/.config/xbqg"
-
-@ xxtx &&	export MOLI_DATA="$H/res/www/0"
-
-@ fkub &&	export MANPATH="/usr/share/man"
 
 @ fkar &&	export BROWSER_DEV="firefox"
 @ fkar &&	export EDITOR="vim"
 
-			export BAIDU_FANYI_APPID=20200920000569502
-			export BAIDU_FANYI_SECRET=59ejpZc1QWPoaVrssd5c
-
 # :::: PATH
 
-[ -z "$FK_PATH" ] && {
+[[ -z "$FK_PATH" ]] && {
 	FK_PATH="RESET"
 	PATH_ORI="$PATH"
 }
-[ "$FK_PATH" = "RESET" ] && {
-	export PATH="$PATH_ORI:$H/bin:$H/local/.bin:$NODE_PATH:$RVM_HOME:$JAVA_HOME/bin:$KOTLIN_HOME/bin:$GRADLE_HOME:$GIT_BIN:$H/app/7-Zip:/$IDEA_HOME:$CARGO_HOME/bin"
+[[ "$FK_PATH" = RESET ]] && {
+	export PATH="$PATH_ORI:$H/bin:$H/local/.bin:$NODE_PATH:$JAVA_HOME/bin:$CARGO_HOME/bin"
 	FK_PATH=UPDATED
 }
 
@@ -107,10 +59,10 @@ alias gohome="zsh $H/_/gohome.sh"
 setopt AUTO_CD
 setopt EMACS
 
-ZSH="$HOME/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 ZSH_DISABLE_COMPFIX=true
 plugins=(copypath thefuck yarn fancy-ctrl-z gh fzf ripgrep fnm pip)
-[[ -z "$NO_OMZ" && -f $ZSH ]] && source $ZSH/oh-my-zsh.sh
+[[ -z "$NO_OMZ" && -d $ZSH ]] && source $ZSH/oh-my-zsh.sh
 
 # :::: CLI TOOLS SETUP
 
@@ -132,9 +84,7 @@ export PS1_LONG="%F{167}[%D{%H:%M:%S}] %F{46}%~ %F{214}$WHERE %F{99}Ψ%f "
 export PS1_SHORT="%F{214}$WHERE %F{99}Ψ%f "
 export PS1="$PS1_LONG"
 
-@ fkar ||
-@ fkub &&	export HISTFILE="$H/log/log-hist"
-@ xxtx &&	export HISTFILE="$H/.bash_history"
+@ fkar &&	export HISTFILE="$H/log/log-hist"
 			export HISTFILESIZE=1000000
 			export HISTSIZE=1000000
 			export SAVEHIST=$HISTSIZE
@@ -217,42 +167,28 @@ c_csi () {
 
 c_env () 
 { 
-	div -s;
+	div -s
 	echo "
 WHERE               = $WHERE
 PATH                = \`
 $PATH
-'
+\`
 
 HOME                = $HOME
 
 VIM                 = $VIM
 VIMRC               = $VIMRC
-VIM_VUDDLE          = $VIM_VUDDLE
-
-MASNN               = $MASNN
-MHOME               = $MHOME
-
-RVM_HOME            = $RVM_HOME
-
-NPM_G               = $NPM_G
-NODE_PATH           = $NODE_PATH
 
 CARGO_HOME          = $CARGO_HOME
 
 XBQG_DATA           = $XBQG_DATA
-
-JAVA_HOME           = $JAVA_HOME
-KOTLIN_HOME         = $KOTLIN_HOME
-GRADLE_HOME         = $GRADLE_HOME
-GRADLE_USER_HOME    = $GRADLE_USER_HOME
 
 PS1                 = $PS1
 
 HISTFILE            = $HISTFILE
 HISTFILESIZE        = $HISTFILESIZE
 SAVEHIST            = $SAVEHIST
-";
+"
 	div -s
 }
 
@@ -263,10 +199,7 @@ cddv () { cd "$H/_/FkVim"; }
 cdb () { cd "$H/bin/$1"; }
 cddl () {
 	@ fkar && cd "$H/Downloads"
-	@ fkub && cd "$H/dl"
-	@ fkub && lsp
 }
-@ fkub && cdruin () { cd "$RUIN"; PS1_SWITCH SHORT; }
 
 cds () {
 	[ "$1" = -m ] && {
@@ -373,6 +306,7 @@ cds () {
         }
 	}
 }
+
 has-cmd compdef && compdef __comp_cds cds
 __comp_cds () {
 	local sources=($(which cds | rg --color=never --pcre2 '(?<=\()[^*]+(?=\) d=)' -o))
@@ -399,24 +333,9 @@ rmd () {
 	alias ll="lsd -lh"
 }
 
-@ fkub || @ x1le &&
-tree () {
-	find "${1:-.}" -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'
-}
-
 export LESS="-Xr"
 
 # :::: ELSE
-
-@ fkub && {
-	zip() { tar -Zcvf }
-	unzip() { tar -Zxvf }
-}
-
-@ xxtx ||
-@ fkhw ||
-@ fkhk ||
-@ fkar && alias c=clear
 
 @ fkar && {
 	xcopy() {
@@ -432,37 +351,6 @@ psp () {
 }
 
 # :: APP
-
-@ fkar && {
-	pacman-re-S () {
-		pacman -Qs "$1"	\
-		| grep local	\
-		| xargs node -e \
-		'
-		console.log(process
-			.argv
-			.slice(1)
-			.filter((_, k) => k % 2 === 0)
-			.map(s => s.split("/")[1])
-			.join("\n")
-		)
-		' \
-		| xargs sudo pacman -S --noconfirm
-	}
-}
-
-# :::: kotlin
-
-@ fkar || @ xxtx && {
-	alias xbqg-go="c && xbqg ]"
-	alias xbqg-go-less="c && xbqg -n ] | less"
-}
-
-ktc () {
-	kotlinc z"$1.kt" -d "$1.jar"
-	local classname="$(echo "${1:0:1}" | tr '[a-z]' '[A-Z]')${1:1}Kt"
-	kotlin -classpath "$1.jar" "$classname"
-}
 
 # :::: nodejs
 
@@ -531,7 +419,7 @@ log () {
 
 			local name="$1"
 			if [[ $1 =~ ^[+-][0-9]+$ || -z "$1" ]]; then
-				name="log-$(cdate $1)"
+				name="log-$(date +%Y%m%d)" # TODO fix cdate
 			fi
 			
 			zsh -c "$sudo$cmd \"$H/log/$name\"$back"
@@ -540,28 +428,29 @@ log () {
 }
 has-cmd compdef && compdef __comp_log log
 __comp_log () {
-	local __comp_file="*:files:_path_files -W $H/log"
+	local files="files:_path_files -W $H/log -g 'log-*'"
+	local dft_files="*:$files"
 	case "$state" in
 		TRAVERSE) _arguments \
 				{-r,--reverse}"[traverse in reverse order]::->END"
 			;;
 		REMOVE) _arguments \
 				{-f,--force}"[remove a log]" \
-				"$__comp_file"
+				"$dft_files"
 			;;
 		SUDO) _arguments \
-				{-c,--cat}"[cat a log]:files:_path_files -W $H/log" \
-				{-T,--typora}"[open a log with Typora]:files:_path_files -W $H/log" \
-				"$__comp_file"
+				{-c,--cat}"[cat a log]:$files" \
+				{-T,--typora}"[open a log with Typora]:$files" \
+				"$dft_files"
 			;;
 		"")	_arguments \
 				{-l,--list}"[list logs]::->END" \
 				{-r,--remove}"[move a log to ~/rbin/+log]:option:->REMOVE" \
 				{-t,--traverse}"[traverse all logs]:option:->TRAVERSE" \
-				{-c,--cat}"[cat a log]:files:_path_files -W $H/log" \
-				{-T,--typora}"[open a log with Typora]:files:_path_files -W $H/log" \
+				{-c,--cat}"[cat a log]:$files" \
+				{-T,--typora}"[open a log with Typora]:$files" \
 				{-s,--sudo}"[run with sudo]:mode:->SUDO" \
-				"$__comp_file"
+				"$dft_files"
 			;;
 	esac
 }
@@ -576,7 +465,7 @@ fk () {
 		vS) FK_PATH=RESET; fk vs		;;
 		i)	FK_INIT=INIT; fk s			;;
 		
-		*)	@ fkub || @ fkar && echo "$WHERE: at home" || "$WHERE: not at home"
+		*)	echo "@ $WHERE"
 	esac
 }
 
@@ -614,65 +503,9 @@ host-unban () {
 	echo "No way."
 }
 
-@ xxtx && vh () { v "$1"; htm "$1"; }
-
 # :: DESKTOP
 
-@ fkub && {
-	safari () {
-		case "$1" in 
-			-h | -home)
-				defaults write com.apple.Safari HomePage "$2"
-			;;
-			*)
-				"$H/app/Safari/Contents/MacOS/Safari" > /dev/null 2> /dev/null &
-				disown "%$(jobs | grep Contents/MacOS/Safari | grep -o -E '\[[0-9]+\]' | grep -o -E '[0-9]+')"
-			;;
-		esac
-	}
-
-	nw () {
-		echo "$@" > "$H/.new_terminal_rc"
-		"/System/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal"\
-		> /dev/null 2> /dev/null &
-		disown "%$(jobs | grep Contents/MacOS/Terminal | grep -o -E '\[[0-9]+\]' | grep -o -E '[0-9]+')"
-	}
-}
-
-@ xxtx && {
-	img () {
-		termux-open "$1" --content-type=image/${1:-jpeg}
-	}
-	url () {
-		local u="$1"
-		termux-open-url "$u"
-	}
-
-	htm () {
-		termux-open "$1" --content-type=text/html
-	}
-
-	share () {
-		termux-open "$1" --send
-	}
-}
-
-@ fkar && {
-	alias o="xdg-open"
-}
-
-## :::: Minecraft
-
-@ fkar && {
-	alias hmcl="echo Don\\'t play Minecraft!"
-	unalias hmcl
-
-	export MINECRAFT="$H/.config/hmcl/.minecraft"
-	export MINECRAFT_ASSETS="$MINECRAFT/versions/1.16.5/1.16.5.jar.unzip/assets/minecraft"
-	export MINECRAFT_RES_CELESTE="$MINECRAFT/resourcepacks/Celeste"
-}
-
-## :::: Celeste
+alias o="xdg-open"
 
 @ fkar && {
 	export CELESTE="$H/.local/share/Steam/steamapps/common/Celeste"
@@ -682,29 +515,8 @@ host-unban () {
 
 # :: INIT
 
-@ fkub && today=$(cdate) || today=$(date +%Y%m%d)
-
-@ fkub && {
-	[ -f "$H/log/log-$today" ] || {
-		touch "$H/log/log-$today"
-
-		safari -h "http://localhost:1627"
-		safari
- 
-		c_env
-		echo -e "\033[1;35m今天也是美好的一天呢～不要颓废哦\033[0m"
-		cd "$H"
-	}
-	[ "$(psp node\ /Volumes/FORKUB/Safety/src/nodejs/Localhost/server.js)" ] || {
-		node "$H/src/nodejs/Localhost/server.js" >> "$H/log/log-l627" 2>> "$H/log/log-l627" &
-	}
-}
-
-@ msml && {
-	echo -e "\033[1;35m今天也是美好的一天呢～赞美 masnn （）\033[0m"
-}
-
 @ fkar && {
+	local today=$(date +%Y%m%d)
 	[[ -z "$FK_INIT" && (-f "$H/log/log-$today" || "$TERM" = linux) ]] || {
 		echo "I'm ForkKILLET"
 		touch "$H/log/log-$today"
