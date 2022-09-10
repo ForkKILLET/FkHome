@@ -1,103 +1,12 @@
 #!/bin/zsh
+# vim: set fdm=marker :
 
-# :: ENV
-
-# :::: WHERE
-
-case "$HOST" in
-	fkar)
-		export WHERE="fkar"	;;
-	ecs-j3uOh)
-		export WHERE="fkhk"	;;
-	*)
-		echo "Unknown device @ $HOME."
-		return 1
-esac
-
-@ () {
-	[ "$WHERE" = "$1" ] && return 0
-	return 1
-}
+# UTILS {{{
 
 has-cmd () {
 	which "$1" 2>&1 > /dev/null && return 0
 	return 1
 }
-
-# :::: PLACES
-			export H="$HOME"
-
-@ fkar &&	export JAVA_HOME="/usr/lib/jvm/java-8-openjdk"
-   
-			export CARGO_HOME="$H/.cargo"
-   
-			export VIMFILES="$H/.vim"
-			export VIMRC="$VIMFILES/vimrc"
-
-			export GITHUB="https://github.com"
-			export GITRC="$H/.gitconfig"
-			export GIT_EDITOR="vim"
-   
-@ fkar &&	export XBQG_DATA="$H/.config/xbqg"
-
-@ fkar &&	export BROWSER_DEV="firefox"
-@ fkar &&	export EDITOR="vim"
-
-# :::: PATH
-
-[[ -z "$FK_PATH" ]] && {
-	FK_PATH=RESET
-	PATH_ORI="$PATH"
-}
-[[ "$FK_PATH" = RESET ]] && {
-	export PATH="$PATH_ORI:$H/bin:$H/local/.bin:$NODE_PATH:$JAVA_HOME/bin:$CARGO_HOME/bin"
-	FK_PATH=UPDATED
-}
-
-# :::: ZSH
-
-setopt AUTO_CD
-setopt EMACS
-
-export ZSH="$HOME/.oh-my-zsh"
-ZSH_DISABLE_COMPFIX=true
-plugins=(copypath thefuck yarn fancy-ctrl-z gh fzf ripgrep fnm pip)
-[[ -z "$NO_OMZ" && -d $ZSH ]] && source $ZSH/oh-my-zsh.sh
-
-# :::: CLI TOOLS SETUP
-
-has-cmd thefuck && eval "$(thefuck --alias)"
-has-cmd fnm && eval "$(fnm env)"
-has-cmd opam && eval "$(opam env)"
-
-# :::: PS1
-
-PS1_SWITCH () {
-	[ -n "$1" ] && PS1_STYLE=$1 || {
-		[ "$PS1_STYLE" = LONG ] && PS1_STYLE=SHORT || PS1_STYLE=LONG
-	}
-	PS1="$(eval echo -e \$PS1_${1:-$PS1_STYLE}) "
-}
-
-autoload -U colors && colors
-export PS1_LONG="%F{167}[%D{%H:%M:%S}] %F{46}%~ %F{214}$WHERE %F{99}Ψ%f "
-export PS1_SHORT="%F{214}$WHERE %F{99}Ψ%f "
-export PS1="$PS1_LONG"
-
-@ fkar &&	export HISTFILE="$H/log/log-hist"
-			export HISTFILESIZE=1000000
-			export HISTSIZE=1000000
-			export SAVEHIST=$HISTSIZE
-
-# :::: fcitx
-
-@ fkar && {
-	export GTK_IM_MODULE=fcitx
-	export QT_IM_MODULE=fcitx
-	export XMODIFIERS=@im=fcitx
-}
-
-# :: UTIL
 
 div () {
 	echo "========================="
@@ -126,7 +35,138 @@ yn50 () {
 	esac
 }
 
-# :: CHECK
+# UTILS }}}
+
+# WHERE {{{
+
+case "$HOST" in
+	fkar)
+		export WHERE="fkar"	;;
+	ecs-j3uOh)
+		export WHERE="fkhk"	;;
+	*)
+		echo "Unknown device @ $HOME."
+		return 1
+esac
+
+@ () {
+	[ "$WHERE" = "$1" ] && return 0
+	return 1
+}
+
+# WHERE }}}
+
+# PLACE {{{
+
+## ENV {{{
+
+			export H="$HOME"
+
+@ fkar &&	export JAVA_HOME="/usr/lib/jvm/java-8-openjdk"
+   
+			export CARGO_HOME="$H/.cargo"
+   
+			export VIMFILES="$H/.vim"
+			export VIMRC="$VIMFILES/vimrc"
+
+			export GITHUB="https://github.com"
+			export GITRC="$H/.gitconfig"
+   
+@ fkar &&	export XBQG_DATA="$H/.config/xbqg"
+
+
+@ fkar &&	[[ -f "$CARGO_HOME/env" ]] && source "$CARGO_HOME/env"
+
+## ENV }}}
+
+## PATH {{{
+
+[[ -z "$FK_PATH" ]] && {
+	FK_PATH=RESET
+	PATH_ORI="$PATH"
+}
+[[ "$FK_PATH" = RESET ]] && {
+	export PATH="$PATH_ORI:$H/bin:$H/local/.bin:$NODE_PATH:$JAVA_HOME/bin:$CARGO_HOME/bin"
+	FK_PATH=UPDATED
+}
+
+## PATH }}}
+
+# PLACE }}}
+
+# ZSH {{{
+
+setopt AUTO_CD
+setopt EMACS
+
+## OH-MY-ZSH {{{
+
+export ZSH="$HOME/.oh-my-zsh"
+ZSH_DISABLE_COMPFIX=true
+plugins=(copypath thefuck yarn fancy-ctrl-z gh fzf ripgrep fnm pip)
+[[ -z "$NO_OMZ" && -d $ZSH ]] && source $ZSH/oh-my-zsh.sh
+
+## OH-MY-ZSH }}}
+
+## PROMPT {{{
+
+autoload -U colors && colors
+export PS1="%F{167}[%D{%H:%M:%S}] %F{46}%~ %F{214}$WHERE %F{99}Ψ%f "
+
+## PROMPT }}}
+
+# ZSH }}}
+
+# CLI CONFIG {{{
+
+## HISTORY {{{
+
+@ fkar &&	export HISTFILE="$H/log/log-hist"
+			export HISTFILESIZE=1000000
+			export HISTSIZE=1000000
+			export SAVEHIST=$HISTSIZE
+
+## HISTORY }}}
+
+## EDTIOR {{{
+
+export EDITOR="vim"
+export GIT_EDITOR="vim"
+export LESS="-Xr"
+
+## EDTIOR }}}
+
+# CLI CONFIG }}}
+
+# CLI TOOLS SETUP {{{
+
+has-cmd thefuck && eval "$(thefuck --alias)"
+has-cmd fnm && eval "$(fnm env)"
+has-cmd opam && eval "$(opam env)"
+
+# CLI TOOLS SETUP }}}
+
+# CUSTOM COMMAND {{{
+
+## FORKKILLET {{{
+
+fk () {
+	local f="$H/.zshrc"
+	case "$1" in
+		s)	. $f						;;
+		v)	v $f						;;
+		vs) vs $f; @ fkar && rehash		;;
+		S)	FK_PATH=RESET; fk s			;;
+		vS) FK_PATH=RESET; fk vs		;;
+		i)	FK_INIT=INIT; fk s			;;
+		
+		*)	echo "@ $WHERE"
+	esac
+}
+
+## FORKKILLET }}}
+
+## CHECK {{{
 
 c-256 () { 
 	for whatg in 38 48; do
@@ -192,7 +232,9 @@ SAVEHIST            = $SAVEHIST
 	div -s
 }
 
-# :: FILE
+## CHECK }}}
+
+## FILE OPS {{{
 
 cdd () { cd "$H/_"; } # cd dash, cdda sh! 
 cddv () { cd "$H/_/FkVim"; }
@@ -200,6 +242,8 @@ cdb () { cd "$H/bin/$1"; }
 cddl () {
 	@ fkar && cd "$H/Downloads"
 }
+
+### CDS {{{
 
 cds () {
 	[ "$1" = -m ] && {
@@ -214,7 +258,6 @@ cds () {
 	local d
 	local p
 	case "$1" in
-		# ::::	SRC BEGIN
 		v)		d=vim									;;
 
 		x)		d=xbqg									;;
@@ -291,7 +334,6 @@ cds () {
 
 		p)		d=prolog								;;
 		hl)		d=haskell/learn							;;
-		# ::::	SRC END
 		*)		d="$1"									;;
 	esac
 	[ $make ] && mcd "$H/src/$d" || cd "$H/src/$d"
@@ -313,6 +355,8 @@ __comp_cds () {
 	_values $sources
 }
 
+### CDS }}}
+
 alias md="mkdir"
 mcd () {
 	mkdir -p "$1"
@@ -324,7 +368,7 @@ rmswp () {
 	rm -f ${1:-.}/.*.swp
 }
 rmd () {
-	mv "$1" "$H/rbin/$2"
+	mv "$1" "$H/.trash/$2"
 }
 
 @ fkhk ||
@@ -333,38 +377,9 @@ rmd () {
 	alias ll="lsd -lh"
 }
 
-export LESS="-Xr"
+## FILE OPS }}}
 
-# :::: ELSE
-
-@ fkar && {
-	xcopy() {
-		xclip -selection c "$1"
-	}
-	xcwd () {
-		pwd | xcopy
-	}
-}
-
-psp () {
-	ps aux | grep "$1" | grep -v "grep $1"
-}
-
-# :: APP
-
-# :::: nodejs
-
-noded() {
-	node --unhandled-rejections=strict --trace-warnings "$1"
-}
-nodei() {
-	node --inspect-brk=1629 "$1"
-}
-
-npm-taobao() { npm set registry https://registry.npm.taobao.org/ }
-npm-origin() { npm set registry https://registry.npmjs.org/ }
-
-# :::: shell
+## LOG {{{
 
 log () {
 	case "$1" in
@@ -455,31 +470,17 @@ __comp_log () {
 	esac
 }
 
-fk () {
-	local f="$H/.zshrc"
-	case "$1" in
-		s)	. $f						;;
-		v)	v $f						;;
-		vs) vs $f; @ fkar && rehash		;;
-		S)	FK_PATH=RESET; fk s			;;
-		vS) FK_PATH=RESET; fk vs		;;
-		i)	FK_INIT=INIT; fk s			;;
-		
-		*)	echo "@ $WHERE"
-	esac
-}
+## LOG }}}
 
-# :::: git
+## GIT {{{
 
 alias g="git"
 
-# :::: rust
+## GIT }}}
 
-@ fkar && . "$H/.cargo/env"
+## VIM {{{
 
-# :::: vim
-
-alias v="/usr/bin/vim"
+alias v="vim"
 vn () { v "$1"; node "$1"; }
 vnd () { v "$1"; noded "$1"; }
 vni () { v "$1"; nodei "$1"; }
@@ -494,31 +495,51 @@ vm () {
 }
 vpl () { v "$H/.plrc" }
 
+## VIM }}}
+
+## HOST {{{
+
 host-ban () {
 	sudo sed -i "1\\0.0.0.0 $1" "$H/log/log-hosts"
 }
 host-unban () {
-	echo "No way."
+	return 1
 }
 
-# :: DESKTOP
+## HOST }}}
 
-alias o="xdg-open"
+# CUSTOM COMMAND }}}
 
-@ fkar && {
-	export CELESTE="$H/.local/share/Steam/steamapps/common/Celeste"
+# DESKTOP {{{
+
+## X11 CUSTOM COMMAND {{{
+
+@ fkar && alias o="xdg-open"
+
+has-cmd xclip && {
+	xcopy () {
+		xclip -selection c "$1"
+	}
+
+	xcwd () {
+		pwd | xcopy
+	}
 }
 
-## :: SERVER
+## X11 CUSTOM COMMAND }}}
 
-# :: INIT
+# DESKTOP }}}
+
+# INIT {{{
 
 @ fkar && {
 	local today=$(date +%Y%m%d)
 	[[ -z "$FK_INIT" && (-f "$H/log/log-$today" || "$TERM" = linux) ]] || {
-		echo "I'm fk??"
-		touch "$H/log/log-$today"
-		log -T log-olclass # Online class
 		FK_INIT=
+
+		touch "$H/log/log-$today"
+		echo "I'm fk??"
 	}
 }
+
+# INIT }}}

@@ -36,7 +36,7 @@ EE "# Linking fcitx5 files?"
 $QB
 	E "    * config"
 	rm -f ~/.config/fcitx5/config
-	ln -s ~/_/fcitx5/.config ~/.config/fcitx5/config
+	ln -s ~/_/fcitx5/config ~/.config/fcitx5/config
 $QE
 
 EE "# Initializing submodules."
