@@ -87,7 +87,7 @@ esac
 	PATH_ORI="$PATH"
 }
 [[ "$FK_PATH" = RESET ]] && {
-	export PATH="$PATH_ORI:$H/bin:$H/local/.bin:$NODE_PATH:$JAVA_HOME/bin:$CARGO_HOME/bin"
+	export PATH="$PATH_ORI:$H/bin:$H/.local/bin:$JAVA_HOME/bin:$CARGO_HOME/bin"
 	FK_PATH=UPDATED
 }
 
