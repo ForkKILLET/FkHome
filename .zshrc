@@ -74,6 +74,7 @@ esac
    
 @ fkar &&	export XBQG_DATA="$H/.config/xbqg"
 
+@ fkar &&	export CELESTE="$H/.local/share/Steam/steamapps/common/Celeste"
 
 @ fkar &&	[[ -f "$CARGO_HOME/env" ]] && source "$CARGO_HOME/env"
 
@@ -107,6 +108,12 @@ plugins=(copypath thefuck yarn fancy-ctrl-z gh fzf ripgrep fnm pip)
 [[ -z "$NO_OMZ" && -d $ZSH ]] && source $ZSH/oh-my-zsh.sh
 
 ## OH-MY-ZSH }}}
+
+## REHASH ON SIGUSR1 {{{
+
+TRAPUSR1() { rehash }
+
+## REHASH ON SIGUSR1 }}}
 
 ## PROMPT {{{
 
@@ -511,6 +518,14 @@ host-unban () {
 # CUSTOM COMMAND }}}
 
 # DESKTOP {{{
+
+## IME CONFIG {{{
+
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS=@im=fcitx
+
+## IME CONFIG }}}
 
 ## X11 CUSTOM COMMAND {{{
 
