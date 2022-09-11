@@ -1,12 +1,10 @@
 QB='E -n "\033[34m(y/n) \033[0m"; read -k1 Q; if [[ $Q =~ [Yy] ]]; then E;'
 QE='else E "\n\033[34m^\033[0m"; fi'
 
-indent=$1
-
 zsh << SHELL
 
 E() {
-	[[ -n "$indent" ]] && for i in {1..$indent}; do echo -n "    "; done
+	[[ -n "$_GOHOME_INDENT" ]] && for i in {1..$_GOHOME_INDENT}; do echo -n "    "; done
 	echo \$*
 }
 

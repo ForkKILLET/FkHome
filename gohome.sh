@@ -17,7 +17,10 @@ cd ~/_
 
 EE "# Checking CLI config"
 
-[[ -n "$GHPROXY" ]] && E "    * Using <ghproxy.com>."
+[[ -n "$GHPROXY" ]] && {
+	E "    * Using <ghproxy.com>."
+	export _GOHOME_GITHUB_PREFIX="https://ghproxy.com/"
+}
 
 EE "# Constructing dirctories"
 mkdir -p ~/{src,bin,res}
@@ -32,9 +35,22 @@ done
 EE "# Sourcing .zshrc"
 source .zshrc
 
+EE "# Installing oh-my-zsh?"
+$QB
+	E "    * omz"
+	git clone "${_GOHOME_GITHUB_PREFIX}https://github.com/robbyrussell/oh-my-zsh.git" $ZSH
+
+	cd $ZSH/custom/plugins
+
+	E "    * plugin: zsh-syntax-highlighting"
+	git clone "${_GOHOME_GITHUB_PREFIX}https://github.com/zsh-users/zsh-syntax-highlighting.git"
+
+	cd ~/_
+$QE
+
 EE "# Calling fcitx5?"
 $QB
-	zsh ./fcitx5/gohome.sh 1
+	_GOHOME_INDENT=1 zsh ./fcitx5/gohome.sh 1
 	cd ~/_
 $QE
 
@@ -43,7 +59,7 @@ git submodule update --init --recursive
 
 EE "# Calling Vim?"
 $QB
-	zsh ./FkVim/gohome.sh 1
+	_GOHOME_INDENT=1 zsh ./FkVim/gohome.sh 1
 	cd ~/_
 $QE
 

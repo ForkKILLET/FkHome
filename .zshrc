@@ -104,7 +104,7 @@ setopt EMACS
 
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_DISABLE_COMPFIX=true
-plugins=(copypath thefuck yarn fancy-ctrl-z gh fzf ripgrep fnm pip)
+plugins=(copypath thefuck yarn fancy-ctrl-z gh fzf ripgrep fnm pip zsh-syntax-highlighting)
 [[ -z "$NO_OMZ" && -d $ZSH ]] && source $ZSH/oh-my-zsh.sh
 
 ## OH-MY-ZSH }}}
@@ -154,6 +154,8 @@ has-cmd opam && eval "$(opam env)"
 # CLI TOOLS SETUP }}}
 
 # CUSTOM COMMAND {{{
+
+alias c="clear"
 
 ## FORKKILLET {{{
 
