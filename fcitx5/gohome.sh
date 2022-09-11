@@ -17,8 +17,14 @@ EE() {
 cd ~/_/fcitx5
 
 EE "# Linking config"
+
+E "    * config"
 rm -f ~/.config/fcitx5/config
 ln -s ~/_/fcitx5/config ~/.config/fcitx5/config
+
+E "    * conf/"
+rm -rf ~/.config/fcitx5/conf
+ln -s ~/_/fcitx5/conf ~/.config/fcitx5/conf
 
 EE "# Writing to pam_environment"
 

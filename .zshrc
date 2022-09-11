@@ -93,6 +93,12 @@ esac
 
 ## PATH }}}
 
+## SERVER {{{
+
+export	S_HK=112.213.124.196
+
+## SERVER }}}
+
 # PLACE }}}
 
 # ZSH {{{
