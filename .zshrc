@@ -96,6 +96,7 @@ esac
 ## SERVER {{{
 
 export	S_HK=112.213.124.196
+export	S_GHP=https://ghproxy.com/
 
 ## SERVER }}}
 
@@ -110,7 +111,7 @@ setopt EMACS
 
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_DISABLE_COMPFIX=true
-plugins=(copypath thefuck yarn fancy-ctrl-z gh fzf ripgrep fnm pip zsh-syntax-highlighting)
+plugins=(copypath yarn fancy-ctrl-z gh fzf ripgrep fnm pip zsh-syntax-highlighting sudo)
 [[ -z "$NO_OMZ" && -d $ZSH ]] && source $ZSH/oh-my-zsh.sh
 
 ## OH-MY-ZSH }}}
