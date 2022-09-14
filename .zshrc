@@ -44,8 +44,10 @@ case "$HOST" in
 		export WHERE="fkar"	;;
 	ecs-j3uOh)
 		export WHERE="fkhk"	;;
+	DESKTOP-LHTMB71)
+		export WHERE="fk10"	;;
 	*)
-		echo "Unknown device @ $HOME."
+		echo "Unknown device @ $HOST."
 		return 1
 esac
 
