@@ -65,7 +65,7 @@ esac
 			export H="$HOME"
 
 @ fkar &&	export JAVA_HOME="/usr/lib/jvm/java-8-openjdk"
-   
+			export PNPM_HOME="$H/.local/share/pnpm"
 			export CARGO_HOME="$H/.cargo"
    
 			export VIMFILES="$H/.vim"
@@ -89,7 +89,7 @@ esac
 	PATH_ORI="$PATH"
 }
 [[ "$FK_PATH" = RESET ]] && {
-	export PATH="$PATH_ORI:$H/bin:$H/.local/bin:$JAVA_HOME/bin:$CARGO_HOME/bin"
+	export PATH="$PATH_ORI:$H/bin:$H/.local/bin:$JAVA_HOME/bin:$CARGO_HOME/bin:$PNPM_HOME"
 	FK_PATH=UPDATED
 }
 
@@ -159,6 +159,8 @@ export LESS="-Xr"
 has-cmd thefuck && eval "$(thefuck --alias)"
 has-cmd fnm && eval "$(fnm env)"
 has-cmd opam && eval "$(opam env)"
+
+[[ -f ~/.config/tabtab/zsh/__tabtab.zsh ]] && . ~/.config/tabtab/zsh/__tabtab.zsh || true
 
 # CLI TOOLS SETUP }}}
 
@@ -282,6 +284,9 @@ cds () {
 		ml)		d=moli									;;
 
 		n)		d=nodejs								;;
+		
+		sc)		d=nodejs/SwitchyConfig					;;
+		nl)		d=nodejs/learn							;;
 		wb)		d=nodejs/Willbot						;;
 		wbb)	d=nodejs/Willbot/beta					;;
 		nx)		d=nodejs/xbqg							;;
@@ -391,8 +396,8 @@ rmd () {
 
 @ fkhk ||
 @ fkar && {
-	alias l="lsd"
-	alias ll="lsd -lh"
+	alias l="lsd -a"
+	alias ll="lsd -alh"
 }
 
 ## FILE OPS }}}
