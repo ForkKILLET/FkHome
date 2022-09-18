@@ -113,7 +113,7 @@ setopt EMACS
 
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_DISABLE_COMPFIX=true
-plugins=(copypath yarn fancy-ctrl-z gh fzf ripgrep fnm pip zsh-syntax-highlighting sudo)
+plugins=(copypath yarn fancy-ctrl-z gh fzf ripgrep fnm pip zsh-syntax-highlighting sudo pm2 rust)
 [[ -z "$NO_OMZ" && -d $ZSH ]] && source $ZSH/oh-my-zsh.sh
 
 ## OH-MY-ZSH }}}
