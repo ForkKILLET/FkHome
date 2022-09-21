@@ -48,9 +48,15 @@ $QB
 	cd ~/_
 $QE
 
-EE "# Calling fcitx5?"
+EE "# Calling Fcitx5?"
 $QB
 	_GOHOME_INDENT=1 zsh ./fcitx5/gohome.sh 1
+	cd ~/_
+$QE
+
+EE "# Calling Rust?"
+$QB
+	_GOHOME_INDENT=1 zsh ./rust/gohome.sh 1
 	cd ~/_
 $QE
 
@@ -64,6 +70,8 @@ $QB
 $QE
 
 EE "# Welcoming Main"
+
+rehash
 
 SHELL
 
