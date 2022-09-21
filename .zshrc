@@ -173,6 +173,7 @@ alias c="clear"
 fk () {
 	local f="$H/.zshrc"
 	case "$1" in
+		u)	cd $H/_; git pull			;;
 		s)	. $f						;;
 		v)	v $f						;;
 		vs) vs $f; @ fkar && rehash		;;
