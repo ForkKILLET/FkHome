@@ -46,6 +46,8 @@ case "$HOST" in
 		export WHERE="fkhk"	;;
 	DESKTOP-LHTMB71)
 		export WHERE="fk10"	;;
+	localhost)
+		export WHERE="x1tx"	;;
 	*)
 		echo "Unknown device @ $HOST."
 		return 1
@@ -395,6 +397,7 @@ rmd () {
 	mv "$1" "$H/.trash/$2"
 }
 
+@ x1tx ||
 @ fkhk ||
 @ fkar && {
 	alias l="lsd -a"
