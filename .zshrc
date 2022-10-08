@@ -169,6 +169,7 @@ export LESS="-Xr"
 has-cmd thefuck && eval "$(thefuck --alias)"
 has-cmd fnm && eval "$(fnm env)"
 has-cmd opam && eval "$(opam env)"
+has-cmd adbunch && eval "$(adbunch gencomp)"
 
 [[ -f ~/.config/tabtab/zsh/__tabtab.zsh ]] && . ~/.config/tabtab/zsh/__tabtab.zsh || true
 
@@ -387,7 +388,7 @@ cds () {
 
 has-cmd compdef && compdef __comp_cds cds
 __comp_cds () {
-	local sources=($(which cds | rg --color=never --pcre2 '(?<=\()[^*]+(?=\) d=)' -o))
+	local sources=($(which cds | grep -o '([^*]*)' | tr -d '()'))
 	_values $sources
 }
 
