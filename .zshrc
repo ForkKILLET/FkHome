@@ -129,7 +129,15 @@ TRAPUSR1() { rehash }
 ## PROMPT {{{
 
 autoload -U colors && colors
-export PS1="%F{167}[%D{%H:%M:%S}] %F{46}%~ %F{214}$WHERE %F{99}Ψ%f "
+export PS1_NORMAL="%F{167}[%D{%H:%M:%S}] %F{46}%~ %F{214}$WHERE %F{99}Ψ%f "
+export PS1_SHORT="%F{167}[%D{%H:%M:%S}] %F{214}$WHERE %F{99}Ψ%f "
+prompt () {
+	case $1 in
+		n|normal)	export PS1="$PS1_NORMAL"	;;
+		s|short)	export PS1="$PS1_SHORT"		;;
+	esac
+}
+prompt normal
 
 ## PROMPT }}}
 
@@ -282,6 +290,8 @@ cds () {
 	local p
 	case "$1" in
 		v)		d=vim									;;
+
+		adb)	d=adbunch								;;
 
 		x)		d=xbqg									;;
 		ml)		d=moli									;;
