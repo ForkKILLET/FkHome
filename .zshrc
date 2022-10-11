@@ -169,11 +169,17 @@ export LESS="-Xr"
 has-cmd thefuck && eval "$(thefuck --alias)"
 has-cmd fnm && eval "$(fnm env)"
 has-cmd opam && eval "$(opam env)"
-has-cmd adbunch && eval "$(adbunch gencomp)"
+has-cmd adbunch && eval "$(QU=1 adbunch gencomp)"
 
 [[ -f ~/.config/tabtab/zsh/__tabtab.zsh ]] && . ~/.config/tabtab/zsh/__tabtab.zsh || true
 
 # CLI TOOLS SETUP }}}
+
+# CLI UNIFIED NAME {{
+
+@ fk10 && alias bat=batcat
+
+# CLI UNIFIED NAME }}
 
 # CUSTOM COMMAND {{{
 
@@ -186,7 +192,7 @@ fk () {
 	case "$1" in
 		u)	cd $H/_; git pull; fk s		;;
 		s)	. $f						;;
-		v)	v $f						;;
+		v)	vim $f						;;
 		vs) vs $f; @ fkar && rehash		;;
 		S)	FK_PATH=RESET; fk s			;;
 		vS) FK_PATH=RESET; fk vs		;;
