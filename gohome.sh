@@ -60,6 +60,13 @@ $QB
 	cd ~/_
 $QE
 
+EE "# Calling V2Ray?"
+$QB
+	_GOHOME_INDENT=1 zsh ./v2ray/gohome.sh 1
+	cd ~/_
+$QE
+
+
 EE "# Initializing submodules"
 git submodule update --init --recursive
 

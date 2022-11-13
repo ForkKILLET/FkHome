@@ -115,7 +115,7 @@ setopt EMACS
 
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_DISABLE_COMPFIX=true
-plugins=(copypath yarn fancy-ctrl-z gh fzf ripgrep fnm pip zsh-syntax-highlighting sudo pm2 rust)
+plugins=(copypath fancy-ctrl-z gh fzf ripgrep fnm pip zsh-syntax-highlighting sudo pm2 rust)
 [[ -z "$NO_OMZ" && -d $ZSH ]] && source $ZSH/oh-my-zsh.sh
 
 ## OH-MY-ZSH }}}
@@ -184,6 +184,7 @@ has-cmd adbunch && eval "$(QU=1 adbunch gencomp)"
 # CUSTOM COMMAND {{{
 
 alias c="clear"
+alias gohome="$H/_/gohome.sh"
 
 ## FORKKILLET {{{
 
