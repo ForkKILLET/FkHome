@@ -314,6 +314,7 @@ cds () {
 		tdb)	d=nodejs/TerminalDashboard				;;
 		nu)		d=nodejs/fkutil							;;
 		lh)		d=nodejs/l627							;;
+		cp)		d=nodejs/cuiping						;;
 
 		gt)		d=FkGitTest								;;
 		gcms)	d=FkGitCommitMsgStd						;;
