@@ -100,6 +100,7 @@ esac
 ## SERVER {{{
 
 export	S_HK=112.213.124.196
+export	S_HK2=202.146.216.180
 export	S_GHP=https://ghproxy.com/
 
 ## SERVER }}}
@@ -418,6 +419,7 @@ rmd () {
 
 @ x1tx ||
 @ fkhk ||
+@ fk10 ||
 @ fkar && {
 	alias l="lsd -a"
 	alias ll="lsd -alh"
@@ -476,6 +478,9 @@ log () {
 				shift
 				cmd=typora
 				back=" &"
+			elif [[ "$1" = -w || "$1" = --wsl ]]; then
+				shift
+				cmd=wslview
 			fi
 
 			local name="$1"
@@ -483,7 +488,7 @@ log () {
 				name="log-$(date +%Y%m%d)" # TODO fix cdate
 			fi
 			
-			zsh -c "$sudo$cmd \"$H/log/$name\"$back"
+			eval "$sudo$cmd \"$H/log/$name\"$back"
 		;;
 	esac
 }
@@ -502,6 +507,7 @@ __comp_log () {
 		SUDO) _arguments \
 				{-c,--cat}"[cat a log]:$files" \
 				{-T,--typora}"[open a log with Typora]:$files" \
+				{-w,--wsl}"[open a log in WSL]:$files" \
 				"$dft_files"
 			;;
 		"")	_arguments \
@@ -510,6 +516,7 @@ __comp_log () {
 				{-t,--traverse}"[traverse all logs]:option:->TRAVERSE" \
 				{-c,--cat}"[cat a log]:$files" \
 				{-T,--typora}"[open a log with Typora]:$files" \
+				{-w,--wsl}"[open a log in WSL]:$files" \
 				{-s,--sudo}"[run with sudo]:mode:->SUDO" \
 				"$dft_files"
 			;;
@@ -558,6 +565,17 @@ host-unban () {
 
 # DESKTOP {{{
 
+## X11 IN WSL {{{
+
+@ fk10 &&	{
+	export DISPLAY=`grep -oP "(?<=nameserver ).+" /etc/resolv.conf`:0.0
+	startx () {
+		vcxsrv -ac -terminate -lesspointer -multiwindow -clipboard -wgl 2>&1 > /dev/null &
+	}
+}
+
+## X11 IN WSL }}}
+
 ## IME CONFIG {{{
 
 export GTK_IM_MODULE=fcitx
@@ -569,6 +587,7 @@ export XMODIFIERS=@im=fcitx
 ## X11 CUSTOM COMMAND {{{
 
 @ fkar && alias o="xdg-open"
+@ fk10 && alias o="wslview"
 
 has-cmd xclip && {
 	xcopy () {
@@ -591,8 +610,29 @@ has-cmd xclip && {
 	[[ -z "$FK_INIT" && (-f "$H/log/log-$today" || "$TERM" = linux) ]] || {
 		FK_INIT=
 
+		echo '[dash] Creating log'
 		touch "$H/log/log-$today"
-		echo "I'm fk??"
+	}
+}
+
+@ fk10 && {
+	if has-cmd vcxsrv && [[ "$(ps -C vcxsrv --no-header | wc -l)" = 0 ]]; then
+		# echo '[dash] Starting vcxsrv'
+	fi
+
+	function write_host () {
+		echo '[dash] Writing host'
+		sudo tee <<<"$S_HK2 v2.piterator.com" -a /etc/hosts > /dev/null
+	}
+
+	local today=$(date +%Y%m%d)
+	[[ -z "$FK_INIT" && (-f "$H/log/log-$today" || "$TERM" = linux) ]] || {
+		FK_INIT=
+
+		echo '[dash] Creating log'
+		touch "$H/log/log-$today"
+
+		write_host
 	}
 }
 
