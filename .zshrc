@@ -42,7 +42,7 @@ yn50 () {
 case "$HOST" in
 	fkar)
 		export WHERE="fkar"	;;
-	ecs-j3uOh)
+	be.icelava.top)
 		export WHERE="fkhk"	;;
 	DESKTOP-LHTMB71)
 		export WHERE="fk10"	;;
