@@ -172,7 +172,8 @@ has-cmd fnm && eval "$(fnm env)"
 has-cmd opam && eval "$(opam env)"
 has-cmd adbunch && eval "$(QU=1 adbunch gencomp)"
 
-[[ -f ~/.config/tabtab/zsh/__tabtab.zsh ]] && . ~/.config/tabtab/zsh/__tabtab.zsh || true
+[[ -f ~/.config/tabtab/zsh/__tabtab.zsh ]] && source ~/.config/tabtab/zsh/__tabtab.zsh || true
+[[ -f /usr/share/nvm/init-nvm.sh ]] && source /usr/share/nvm/init-nvm.sh
 
 # CLI TOOLS SETUP }}}
 
@@ -211,7 +212,7 @@ fk () {
 c-256 () { 
 	for whatg in 38 48; do
 		for color in {0..255}; do
-			printf "\e[${whatg};5;%sm  %3s	\e[0m" $color $color;
+			printf "\e[${whatg};5;%sm  %3s	\e[0m" $color $color
 			[ $((($color + 1) % 6)) = 4 ] && echo
 		done; echo
 	done
@@ -316,6 +317,9 @@ cds () {
 		nu)		d=nodejs/fkutil							;;
 		lh)		d=nodejs/l627							;;
 		cp)		d=nodejs/cuiping						;;
+
+		i2)		d=nodejs/Icalingua2						;;
+		i3)		d=nodejs/Icalingua3						;;
 
 		gt)		d=FkGitTest								;;
 		gcms)	d=FkGitCommitMsgStd						;;
