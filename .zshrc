@@ -69,13 +69,18 @@ esac
 @ fkar &&	export JAVA_HOME="/usr/lib/jvm/java-8-openjdk"
 			export PNPM_HOME="$H/.local/share/pnpm"
 			export CARGO_HOME="$H/.cargo"
-   
+
 			export VIMFILES="$H/.vim"
 			export VIMRC="$VIMFILES/vimrc"
+@ fkar &&	if [[ $(($(date +%H) < 15)) ]]; then
+				export VIMBG=light
+			else
+				export VIMBG=dark
+			fi
 
 			export GITHUB="https://github.com"
 			export GITRC="$H/.gitconfig"
-   
+
 @ fkar &&	export XBQG_DATA="$H/.config/xbqg"
 
 @ fkar &&	export CELESTE="$H/.local/share/Steam/steamapps/common/Celeste"
@@ -200,7 +205,7 @@ fk () {
 		S)	FK_PATH=RESET; fk s			;;
 		vS) FK_PATH=RESET; fk vs		;;
 		i)	FK_INIT=INIT; fk s			;;
-		
+
 		*)	echo "@ $WHERE"
 	esac
 }
@@ -209,7 +214,7 @@ fk () {
 
 ## CHECK {{{
 
-c-256 () { 
+c-256 () {
 	for whatg in 38 48; do
 		for color in {0..255}; do
 			printf "\e[${whatg};5;%sm  %3s	\e[0m" $color $color
@@ -218,7 +223,7 @@ c-256 () {
 	done
 }
 
-c-csi () { 
+c-csi () {
 	div
 	echo "Foreground:"
 	echo -n "| "
@@ -246,8 +251,8 @@ c-csi () {
 	div
 }
 
-c-env () 
-{ 
+c-env ()
+{
 	div -s
 	echo "
 WHERE               = $WHERE
@@ -277,7 +282,7 @@ SAVEHIST            = $SAVEHIST
 
 ## FILE OPS {{{
 
-cdd () { cd "$H/_"; } # cd dash, cdda sh! 
+cdd () { cd "$H/_"; } # cd dash, cdda sh!
 cddv () { cd "$H/_/FkVim"; }
 cdb () { cd "$H/bin/$1"; }
 cddl () {
@@ -307,7 +312,7 @@ cds () {
 		ml)		d=moli									;;
 
 		n)		d=nodejs								;;
-		
+
 		sc)		d=nodejs/SwitchyConfig					;;
 		nl)		d=nodejs/learn							;;
 		wb)		d=nodejs/Willbot						;;
@@ -349,7 +354,7 @@ cds () {
 		tped)	d=IceLava/Top/TrolleyProblemEmulator	;	p=1636/docs/debug?debug=1	;;
 		hwn)	d=IceLava/Top/HardWayNazo				;	p=1631						;;
 		jc)		d=IceLava/Top/JCer						;;
-		
+
 		som)	d=IceLava/Top/SudoerOfMyself			;	p=1637/docs					;;
 		some)	d=IceLava/Top/SudoerOfMyself/src/ext0_file_system	;;
 		somos)	d=IceLava/Top/SudoerOfMyself/SOMOS		;;
@@ -372,6 +377,7 @@ cds () {
 		soap)	d=py/StackOverflowAnalyseProgram		;;
 
 		u)		d=userscript							;;
+		ua)		d=userscript/all						;;
 		uw)		d=userscript/WhereIsMyForm				;;
 		us)		d=userscript/SFAR						;;
 		ue)		d=userscript/extend-luogu				;;
@@ -382,8 +388,11 @@ cds () {
 		t)		d=typescript							;;
 		tt)		d=typescript/test						;;
 
+		rel)	d=react/learn							;;
+
 		p)		d=prolog								;;
 		hl)		d=haskell/learn							;;
+
 		*)		d="$1"									;;
 	esac
 	[ $make ] && mcd "$H/src/$d" || cd "$H/src/$d"
@@ -491,7 +500,7 @@ log () {
 			if [[ $1 =~ ^[+-][0-9]+$ || -z "$1" ]]; then
 				name="log-$(date +%Y%m%d)" # TODO fix cdate
 			fi
-			
+
 			eval "$sudo$cmd \"$H/log/$name\"$back"
 		;;
 	esac
@@ -571,7 +580,7 @@ host-unban () {
 
 ## X11 IN WSL {{{
 
-@ fk10 &&	{
+@ fk10 && {
 	export DISPLAY=`grep -oP "(?<=nameserver ).+" /etc/resolv.conf`:0.0
 	startx () {
 		vcxsrv -ac -terminate -lesspointer -multiwindow -clipboard -wgl 2>&1 > /dev/null &
@@ -579,6 +588,23 @@ host-unban () {
 }
 
 ## X11 IN WSL }}}
+
+@ fkar && {
+	wemeet-restart-with-chat () {
+		if [ -d ~/res/app/chat.bak ]; then
+			sudo mv ~/res/app/chat.bak /opt/wemeet/bin/modules/chat
+		fi
+		killall /opt/wemeet/bin/wemeetapp
+		wemeet 2>&1 > /dev/null &
+	}
+	wemeet-restart-without-chat () {
+		if [ -d /opt/wemeet/bin/modules/chat ]; then
+			sudo mv /opt/wemeet/bin/modules/chat ~/res/app/chat.bak
+		fi
+		killall /opt/wemeet/bin/wemeetapp
+		wemeet 2>&1 > /dev/null &
+	}
+}
 
 ## IME CONFIG {{{
 
