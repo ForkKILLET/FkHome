@@ -121,7 +121,7 @@ setopt EMACS
 
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_DISABLE_COMPFIX=true
-plugins=(copypath fancy-ctrl-z gh fzf ripgrep fnm pip zsh-syntax-highlighting sudo pm2 rust)
+plugins=(copypath fancy-ctrl-z gh fzf ripgrep fnm pip zsh-syntax-highlighting sudo pm2 rust extract)
 [[ -z "$NO_OMZ" && -d $ZSH ]] && source $ZSH/oh-my-zsh.sh
 
 ## OH-MY-ZSH }}}
@@ -190,6 +190,7 @@ has-cmd adbunch && eval "$(QU=1 adbunch gencomp)"
 
 # CUSTOM COMMAND {{{
 
+alias plz="sudo"
 alias c="clear"
 alias gohome="$H/_/gohome.sh"
 
@@ -284,6 +285,7 @@ SAVEHIST            = $SAVEHIST
 
 cdd () { cd "$H/_"; } # cd dash, cdda sh!
 cddv () { cd "$H/_/FkVim"; }
+cdl () { cd "$H/log"; }
 cdb () { cd "$H/bin/$1"; }
 cddl () {
 	@ fkar && cd "$H/Downloads"
@@ -591,16 +593,20 @@ host-unban () {
 
 @ fkar && {
 	wemeet-restart-with-chat () {
-		if [ -d ~/res/app/chat.bak ]; then
-			sudo mv ~/res/app/chat.bak /opt/wemeet/bin/modules/chat
+		if [ -d ~/app/chat.bak ]; then
+			sudo mv ~/app/chat.bak /opt/wemeet/bin/modules/chat
 		fi
 		killall /opt/wemeet/bin/wemeetapp
 		wemeet 2>&1 > /dev/null &
 	}
 	wemeet-restart-without-chat () {
 		if [ -d /opt/wemeet/bin/modules/chat ]; then
-			sudo mv /opt/wemeet/bin/modules/chat ~/res/app/chat.bak
+			sudo mv /opt/wemeet/bin/modules/chat ~/app/chat.bak
 		fi
+		killall /opt/wemeet/bin/wemeetapp
+		wemeet 2>&1 > /dev/null &
+	}
+	wemeet-restart () {
 		killall /opt/wemeet/bin/wemeetapp
 		wemeet 2>&1 > /dev/null &
 	}
