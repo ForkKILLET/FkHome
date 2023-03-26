@@ -289,6 +289,7 @@ cdl () { cd "$H/log"; }
 cdb () { cd "$H/bin/$1"; }
 cddl () {
 	@ fkar && cd "$H/Downloads"
+	@ x1tx && cd "$H/downloads"
 }
 
 ### CDS {{{
@@ -622,6 +623,7 @@ export XMODIFIERS=@im=fcitx
 
 ## X11 CUSTOM COMMAND {{{
 
+@ x1tx && alias o="termux-open"
 @ fkar && alias o="xdg-open"
 @ fk10 && alias o="wslview"
 
