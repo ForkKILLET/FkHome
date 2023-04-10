@@ -60,8 +60,10 @@ $QB
 	cd ~/_
 $QE
 
-EE "# Initializing submodules"
-git submodule update --init --recursive
+EE "# Initializing submodules?"
+$QB
+	git submodule update --init --recursive
+$QE
 
 EE "# Calling Vim?"
 $QB

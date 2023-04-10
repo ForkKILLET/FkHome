@@ -1,3 +1,3 @@
 [submodule "FkVim"]
 	path = FkVim
-	url = https://github.com/ForkFG/FkVim
+	url = git@github.com:ForkKILLET/FkVim.git

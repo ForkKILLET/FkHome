@@ -46,6 +46,8 @@ case "$HOST" in
 		export WHERE="fkhk"	;;
 	DESKTOP-LHTMB71)
 		export WHERE="fk10"	;;
+	openstick-xj)
+		export WHERE="fkos-xj"	;;
 	*)
 		echo "Unknown device @ $HOST."
 		return 1
@@ -130,6 +132,9 @@ autoload -U colors && colors
 export PS1="%F{167}[%D{%H:%M:%S}] %F{46}%~ %F{214}$WHERE %F{99}Ψ%f "
 
 ## PROMPT }}}
+
+bindkey '\e[1;5C' forward-word        # ctrl right
+bindkey '\e[1;5D' backward-word       # ctrl left
 
 # ZSH }}}
 
