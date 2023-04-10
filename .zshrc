@@ -661,6 +661,7 @@ has-cmd xclip && {
 @ fk10 && {
 	if has-cmd vcxsrv && [[ "$(ps -C vcxsrv --no-header | wc -l)" = 0 ]]; then
 		# echo '[dash] Starting vcxsrv'
+		export DISPLAY=$(sudo cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
 	fi
 
 	function write_host () {
