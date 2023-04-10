@@ -26,10 +26,16 @@ E "    * conf/"
 rm -rf ~/.config/fcitx5/conf
 ln -s ~/_/fcitx5/conf ~/.config/fcitx5/conf
 
-EE "# Writing to pam_environment"
+EE "# Copying to .pam_environment"
 
 if [[ ! -f ~/.pam_environment ]]; then
-	cat ./.pam_environment > ~/.pam_environment
+	cp ./.pam_environment ~/.pam_environment
+fi
+
+EE "# Copying to .xprofile"
+
+if [[ ! -f ~/.xprofile ]]; then
+	cp ./.xprofile ~/.xprofile
 fi
 
 EE "# Welcoming Fcitx5"

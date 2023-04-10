@@ -28,10 +28,13 @@
 	a	= add									# Add
 	aa	= add .									# Add All
 	ac	= !git aa && git c						# Add all and Commit
+	ac0	= !HUSKY=0 git ac						# Add all and Commit with HUSKY=0
 	rmc	= rm --cached							# Remove Cached
 	c	= commit								# Commit
 	ca	= commit --amend						# Commit Amend
+	ca0	= !HUSKY=0 git commit --amend			# Commit Amend with HUKSY=0
 	aca	= !git aa && git ca						# Add all and Commit Amend
+	aca0= !HUSKY=0 git aca						# Add all and Commit Amend with HUSKY=0
 	co	= checkout								# CheckOut
 	b	= branch								# Branch
 	bs	= switch								# Branch Switch
