@@ -86,6 +86,7 @@ esac
 @ fkar &&	export XBQG_DATA="$H/.config/xbqg"
 
 @ fkar &&	export CELESTE="$H/.local/share/Steam/steamapps/common/Celeste"
+@ fkar &&	export CelestePrefix="$CELESTE"
 
 @ fkar &&	[[ -f "$CARGO_HOME/env" ]] && source "$CARGO_HOME/env"
 
@@ -297,6 +298,12 @@ cddl () {
 	@ x1tx && cd "$H/downloads"
 }
 
+rnnp () { # ReName: No Parens
+	local name="$(echo "$1" | sed -e 's/ *([0-9]*)//g')"
+	mv "$1" "$name"
+	echo "rnnp: $1 -> $name"
+}
+
 ### CDS {{{
 
 cds () {
@@ -318,6 +325,15 @@ cds () {
 
 		x)		d=xbqg									;;
 		ml)		d=moli									;;
+
+		ce)		d=celeste								;;
+		cef)	d=celeste/ForkKILLETHelper				;;
+
+		cs)		d=csharp								;;
+		csl)	d=csharp/learn							;;
+
+		ag)		d=agda									;;
+		agl)	d=agda/learn							;;
 
 		n)		d=nodejs								;;
 
@@ -574,7 +590,7 @@ vpl () { v "$H/.plrc" }
 ## HOST {{{
 
 host-ban () {
-	sudo sed -i "1\\0.0.0.0 $1" "$H/log/log-hosts"
+	sudo sed -i "1i\\0.0.0.0 $1" /etc/hosts
 }
 host-unban () {
 	return 1

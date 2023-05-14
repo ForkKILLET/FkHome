@@ -1,6 +1,7 @@
 [user]
-	email = fork_killet@qq.com
+	email = fork_killet@outlook.com
 	name = ForkΨKILLET
+	signingkey = B8A5832B072479D9
 [credential]
 	helper = store
 [core]
@@ -12,7 +13,7 @@
 [pull]
 	rebase = false
 [http]
-	# proxy = http://192.168.68.170:1641
+	proxy = http://127.0.0.1:1641
 	sslverify = false
 [alias]
 	m	= !vim ~/.gitconfig						# Manage
@@ -46,6 +47,9 @@
 	ri	= rebase -i								# Rebase Interactive
 	rc	= rebase --continue						# Rebase Continue
 	ra	= rebase --abort						# Remove Abort
+	cp	= cherry-pick							# Cherry Pick
+	cpa	= cherry-pick --abort					# Cherry Pick About
+	cpc	= cherry-pick --continue				# Cherry Pick Continue
 	pxy	= "!\
 		c=\"$(cat ~/.gitconfig)\";\
 		c_=\"${c/\tproxy =/\t# proxy =}\";\
@@ -65,3 +69,5 @@
 	conflictstyle = diff3
 [diff]
     colorMoved = default
+[commit]
+	gpgsign = true
