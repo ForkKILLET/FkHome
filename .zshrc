@@ -309,6 +309,9 @@ cds () {
 	[ "$1" = -m ] && {
 		shift; local make=1
 	}
+	[ "$1" = -c ] && {
+		shift; local vscode=1
+	}
 	[ "$1" = -s ] && {
 		shift; local server=1
 	}
@@ -419,6 +422,7 @@ cds () {
 		*)		d="$1"									;;
 	esac
 	[ $make ] && mcd "$H/src/$d" || cd "$H/src/$d"
+	[ $vscode ] && code -r .
 	[ $server ] && {
 		[ -z $p ] && echo "Server not defined." || {
 			local url="http://localhost:$p"
@@ -604,7 +608,9 @@ host-unban () {
 ## X11 IN WSL {{{
 
 @ fk10 && {
-	export DISPLAY=`grep -oP "(?<=nameserver ).+" /etc/resolv.conf`:0.0
+	displayx () {
+		export DISPLAY=`sudo grep -oP "(?<=nameserver ).+" /etc/resolv.conf`:0.0
+	}
 	startx () {
 		vcxsrv -ac -terminate -lesspointer -multiwindow -clipboard -wgl 2>&1 > /dev/null &
 	}
@@ -679,7 +685,7 @@ has-cmd xclip && {
 		export DISPLAY=$(sudo cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
 	fi
 
-	function write_host () {
+	write_host () {
 		echo '[dash] Writing host'
 		sudo tee <<<"$S_HK2 v2.piterator.com" -a /etc/hosts > /dev/null
 	}
@@ -691,7 +697,7 @@ has-cmd xclip && {
 		echo '[dash] Creating log'
 		touch "$H/log/log-$today"
 
-		write_host
+		# write_host
 	}
 }
 
