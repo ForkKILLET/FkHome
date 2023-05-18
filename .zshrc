@@ -50,6 +50,8 @@ case "$HOST" in
 		export WHERE="fkos-xj"	;;
 	localhost)
 		export WHERE="x1tx"	;;
+	s13037)
+		export WHERE="v.ps"	;;
 	*)
 		echo "Unknown device @ $HOST."
 		return 1
