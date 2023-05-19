@@ -76,11 +76,8 @@ esac
 
 			export VIMFILES="$H/.vim"
 			export VIMRC="$VIMFILES/vimrc"
-@ fkar &&	if [[ $(($(date +%H) < 15)) ]]; then
-				export VIMBG=light
-			else
-				export VIMBG=dark
-			fi
+
+			export GPG_TTY=$(tty)
 
 			export GITHUB="https://github.com"
 			export GITRC="$H/.gitconfig"
