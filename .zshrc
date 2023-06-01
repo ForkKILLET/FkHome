@@ -37,38 +37,35 @@ yn50 () {
 
 # UTILS }}}
 
-# WHERE {{{
+# ID {{{
 
-case "$HOST" in
-	fkar)
-		export WHERE="fkar"	;;
-	be.icelava.top)
-		export WHERE="fkhk"	;;
-	DESKTOP-LHTMB71)
-		export WHERE="fk10"	;;
-	openstick-xj)
-		export WHERE="fkos-xj"	;;
-	localhost)
-		export WHERE="x1tx"	;;
-	s13037)
-		export WHERE="v.ps"	;;
+ID=$(cat ~/_/identity)
+ID=${ID:-temp}
+case $ID in
+	fkar|fkhk|fk10|fkos-xj|x1tx|xxer)
+		;;
+	temp)
+		echo "[dash] Temporary identity"
+		;;
 	*)
-		echo "Unknown device @ $HOST."
+		echo "[dash] Unknown identity @ $ID"
 		return 1
 esac
 
 @ () {
-	[ "$WHERE" = "$1" ] && return 0
+	[ "$ID" = "$1" ] && return 0
 	return 1
 }
 
-# WHERE }}}
+# ID }}}
 
 # PLACE {{{
 
 ## ENV {{{
 
 			export H="$HOME"
+
+@ xxer &&	export LD_LIBRARY_PATH=/data/data/com.termux/files/usr/lib/openssl-1.1
 
 @ fkar &&	export JAVA_HOME="/usr/lib/jvm/java-8-openjdk"
 			export PNPM_HOME="$H/.local/share/pnpm"
@@ -137,8 +134,8 @@ TRAPUSR1() { rehash }
 ## PROMPT {{{
 
 autoload -U colors && colors
-export PS1_NORMAL="%F{167}[%D{%H:%M:%S}] %F{46}%~ %F{214}$WHERE %F{99}Ψ%f "
-export PS1_SHORT="%F{167}[%D{%H:%M:%S}] %F{214}$WHERE %F{99}Ψ%f "
+export PS1_NORMAL="%F{167}[%D{%H:%M:%S}] %F{46}%~ %F{214}$ID %F{99}Ψ%f "
+export PS1_SHORT="%F{167}[%D{%H:%M:%S}] %F{214}$ID %F{99}Ψ%f "
 prompt () {
 	case $1 in
 		n|normal)	export PS1="$PS1_NORMAL"	;;
@@ -195,9 +192,12 @@ has-cmd adbunch && eval "$(QU=1 adbunch gencomp)"
 
 # CUSTOM COMMAND {{{
 
-alias plz="sudo"
-alias c="clear"
-alias gohome="$H/_/gohome.sh"
+alias plz=sudo
+alias c=clear
+
+gohome () {
+	~/_/gohome.sh
+}
 
 ## FORKKILLET {{{
 
@@ -212,7 +212,7 @@ fk () {
 		vS) FK_PATH=RESET; fk vs		;;
 		i)	FK_INIT=INIT; fk s			;;
 
-		*)	echo "@ $WHERE"
+		*)	echo "@ $ID"
 	esac
 }
 
@@ -261,7 +261,7 @@ c-env ()
 {
 	div -s
 	echo "
-WHERE               = $WHERE
+ID                  = $ID
 PATH                = \`
 $PATH
 \`
@@ -457,10 +457,7 @@ rmd () {
 	mv "$1" "$H/.trash/$2"
 }
 
-@ x1tx ||
-@ fkhk ||
-@ fk10 ||
-@ fkar && {
+has-cmd lsd && {
 	alias l="lsd -a"
 	alias ll="lsd -alh"
 }
