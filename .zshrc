@@ -385,6 +385,8 @@ cds () {
 		some)	d=IceLava/Top/SudoerOfMyself/src/ext0_file_system	;;
 		somos)	d=IceLava/Top/SudoerOfMyself/SOMOS		;;
 
+		nd)		d=nyadict								;;
+
 		k)		d=kotlin								;;
 
 		m)		d=mirai									;;
