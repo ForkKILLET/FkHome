@@ -10,6 +10,7 @@ has-cmd () {
 
 div () {
 	echo "========================="
+	return 0
 }
 
 yn () {
@@ -39,6 +40,7 @@ yn50 () {
 
 # ID {{{
 
+touch ~/_/identity
 ID=$(cat ~/_/identity)
 ID=${ID:-temp}
 case $ID in
@@ -140,7 +142,9 @@ prompt () {
 	case $1 in
 		n|normal)	export PS1="$PS1_NORMAL"	;;
 		s|short)	export PS1="$PS1_SHORT"		;;
+		*)			return 1					;;
 	esac
+	return 0
 }
 prompt normal
 
@@ -197,6 +201,7 @@ alias c=clear
 
 gohome () {
 	~/_/gohome.sh
+	return 0
 }
 
 ## FORKKILLET {{{
@@ -214,6 +219,7 @@ fk () {
 
 		*)	echo "@ $ID"
 	esac
+	return 0
 }
 
 ## FORKKILLET }}}
@@ -227,6 +233,7 @@ c-256 () {
 			[ $((($color + 1) % 6)) = 4 ] && echo
 		done; echo
 	done
+	return 0
 }
 
 c-csi () {
@@ -255,6 +262,7 @@ c-csi () {
 	echo -n "| "
 	echo -e "\033["{0..9}"mText\033[0m  |"
 	div
+	return 0
 }
 
 c-env ()
@@ -288,19 +296,33 @@ SAVEHIST            = $SAVEHIST
 
 ## FILE OPS {{{
 
-cdd () { cd "$H/_"; } # cd dash, cdda sh!
-cddv () { cd "$H/_/FkVim"; }
-cdl () { cd "$H/log"; }
-cdb () { cd "$H/bin/$1"; }
+cdd () {
+	cd "$H/_";
+	return 0
+}
+cddv () {
+	cd "$H/_/FkVim"
+	return 0
+}
+cdl () {
+	cd "$H/log"
+	return 0
+}
+cdb () {
+	cd "$H/bin/$1"
+	return 0
+}
 cddl () {
 	@ fkar && cd "$H/Downloads"
 	@ x1tx && cd "$H/downloads"
+	return 0
 }
 
 rnnp () { # ReName: No Parens
 	local name="$(echo "$1" | sed -e 's/ *([0-9]*)//g')"
 	mv "$1" "$name"
 	echo "rnnp: $1 -> $name"
+	return 0
 }
 
 ### CDS {{{
@@ -333,9 +355,6 @@ cds () {
 
 		cs)		d=csharp								;;
 		csl)	d=csharp/learn							;;
-
-		ag)		d=agda									;;
-		agl)	d=agda/learn							;;
 
 		n)		d=nodejs								;;
 
@@ -380,6 +399,8 @@ cds () {
 		tped)	d=IceLava/Top/TrolleyProblemEmulator	;	p=1636/docs/debug?debug=1	;;
 		hwn)	d=IceLava/Top/HardWayNazo				;	p=1631						;;
 		jc)		d=IceLava/Top/JCer						;;
+
+		nd)		d=NyaDict								;;
 
 		som)	d=IceLava/Top/SudoerOfMyself			;	p=1637/docs					;;
 		some)	d=IceLava/Top/SudoerOfMyself/src/ext0_file_system	;;
@@ -435,6 +456,7 @@ cds () {
 			esac
         }
 	}
+	return 0
 }
 
 has-cmd compdef && compdef __comp_cds cds
@@ -449,14 +471,17 @@ alias md="mkdir"
 mcd () {
 	mkdir -p "$1"
 	cd "$1"
+	return 0
 }
 
 alias rm='rm -i'
 rmswp () {
 	rm -f ${1:-.}/.*.swp
+	return 0
 }
 rmd () {
 	mv "$1" "$H/.trash/$2"
+	return 0
 }
 
 has-cmd lsd && {
@@ -530,6 +555,7 @@ log () {
 			eval "$sudo$cmd \"$H/log/$name\"$back"
 		;;
 	esac
+	return 0
 }
 has-cmd compdef && compdef __comp_log log
 __comp_log () {
@@ -573,19 +599,25 @@ alias g="git"
 ## VIM {{{
 
 alias v="vim"
-vn () { v "$1"; node "$1"; }
-vnd () { v "$1"; noded "$1"; }
-vni () { v "$1"; nodei "$1"; }
-vr () { v "$1"; "$@"; }
-vs () { v "$1"; . "$1"; }
-ve () { v "$H/.vim/vimrc"; }
-vm () {
-	[ -f main.js ] && v main.js
-	[ -f src/main.js ] && v src/main.js
-	[ -f src/main.ts ] && v src/main.ts
-	[ -f src/main.rs ] && v src/main.rs
+vn () {
+	v "$1"
+	node "$1"
+	return 0
 }
-vpl () { v "$H/.plrc" }
+vr () {
+	v "$1"
+	"$@"
+	return 0
+}
+vs () {
+	v "$1"
+	source "$1"
+	return 0
+}
+ve () {
+	v "$H/.vim/vimrc"
+	return 0
+}
 
 ## VIM }}}
 
@@ -593,6 +625,7 @@ vpl () { v "$H/.plrc" }
 
 host-ban () {
 	sudo sed -i "1i\\0.0.0.0 $1" /etc/hosts
+	return 0
 }
 host-unban () {
 	return 1
@@ -609,34 +642,15 @@ host-unban () {
 @ fk10 && {
 	displayx () {
 		export DISPLAY=`sudo grep -oP "(?<=nameserver ).+" /etc/resolv.conf`:0.0
+		return 0
 	}
 	startx () {
 		vcxsrv -ac -terminate -lesspointer -multiwindow -clipboard -wgl 2>&1 > /dev/null &
+		return 0
 	}
 }
 
 ## X11 IN WSL }}}
-
-@ fkar && {
-	wemeet-restart-with-chat () {
-		if [ -d ~/app/chat.bak ]; then
-			sudo mv ~/app/chat.bak /opt/wemeet/bin/modules/chat
-		fi
-		killall /opt/wemeet/bin/wemeetapp
-		wemeet 2>&1 > /dev/null &
-	}
-	wemeet-restart-without-chat () {
-		if [ -d /opt/wemeet/bin/modules/chat ]; then
-			sudo mv /opt/wemeet/bin/modules/chat ~/app/chat.bak
-		fi
-		killall /opt/wemeet/bin/wemeetapp
-		wemeet 2>&1 > /dev/null &
-	}
-	wemeet-restart () {
-		killall /opt/wemeet/bin/wemeetapp
-		wemeet 2>&1 > /dev/null &
-	}
-}
 
 ## IME CONFIG {{{
 
@@ -655,10 +669,12 @@ export XMODIFIERS=@im=fcitx
 has-cmd xclip && {
 	xcopy () {
 		xclip -selection c "$1"
+		return 0
 	}
 
 	xcwd () {
 		pwd | xcopy
+		return 0
 	}
 }
 
@@ -682,11 +698,7 @@ has-cmd xclip && {
 	has-cmd vcxsrv && setup_vcxsrv () {
 		echo '[dash] Starting vcxsrv'
 		export DISPLAY=$(sudo cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
-	}
-
-	write_host () {
-		echo '[dash] Writing host'
-		sudo tee <<<"$S_HK2 v2.piterator.com" -a /etc/hosts > /dev/null
+		return 0
 	}
 
 	local today=$(date +%Y%m%d)
