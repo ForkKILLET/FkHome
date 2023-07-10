@@ -44,7 +44,7 @@ touch ~/_/identity
 ID=$(cat ~/_/identity)
 ID=${ID:-temp}
 case $ID in
-	fkar|fkhk|fk10|fkos-xj|x1tx|xxer)
+	fkar|v.ps|fk10|fkos-xj|x1tx|xxer)
 		;;
 	temp)
 		echo "[dash] Temporary identity"
