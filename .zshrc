@@ -150,8 +150,8 @@ prompt normal
 
 ## PROMPT }}}
 
-bindkey '\e[1;5C' forward-word        # ctrl right
-bindkey '\e[1;5D' backward-word       # ctrl left
+bindkey '\e[1;5C' forward-word		# ctrl right
+bindkey '\e[1;5D' backward-word		# ctrl left
 
 # ZSH }}}
 
@@ -184,7 +184,6 @@ has-cmd opam && eval "$(opam env)"
 has-cmd adbunch && eval "$(QU=1 adbunch gencomp)"
 
 [[ -f ~/.config/tabtab/zsh/__tabtab.zsh ]] && source ~/.config/tabtab/zsh/__tabtab.zsh || true
-[[ -f /usr/share/nvm/init-nvm.sh ]] && source /usr/share/nvm/init-nvm.sh
 
 # CLI TOOLS SETUP }}}
 
@@ -450,11 +449,11 @@ cds () {
 		[ -z $p ] && echo "Server not defined." || {
 			local url="http://localhost:$p"
 			echo "$url"
-            case "$server" in
+			case "$server" in
 				1) http-server --cors -p ${p%%/*} -o ${p##*/} &
 				;;
 			esac
-        }
+		}
 	}
 	return 0
 }
@@ -650,6 +649,28 @@ host-unban () {
 	}
 }
 
+@ fkar && {
+	wemeet-restart-with-chat () {
+		if [ -d ~/app/chat.bak ]; then
+			sudo mv ~/app/chat.bak /opt/wemeet/bin/modules/chat
+		fi
+		killall /opt/wemeet/bin/wemeetapp
+		wemeet 2>&1 > /dev/null &
+	}
+	wemeet-restart-without-chat () {
+		if [ -d /opt/wemeet/bin/modules/chat ]; then
+			sudo mv /opt/wemeet/bin/modules/chat ~/app/chat.bak
+		fi
+		killall /opt/wemeet/bin/wemeetapp
+		wemeet 2>&1 > /dev/null &
+	}
+	wemeet-restart () {
+		killall /opt/wemeet/bin/wemeetapp
+		wemeet 2>&1 > /dev/null &
+	}
+}
+
+
 ## X11 IN WSL }}}
 
 ## IME CONFIG {{{
@@ -691,6 +712,9 @@ has-cmd xclip && {
 
 		echo '[dash] Creating log'
 		touch "$H/log/log-$today"
+
+		echo '[dash] Updating dash'
+		fk u
 	}
 }
 
