@@ -72,6 +72,7 @@ esac
 @ fkar &&	export JAVA_HOME="/usr/lib/jvm/java-8-openjdk"
 			export PNPM_HOME="$H/.local/share/pnpm"
 			export CARGO_HOME="$H/.cargo"
+@ fkar &&	export AYA_PREFIX="/opt/aya"
 
 			export VIMFILES="$H/.vim"
 			export VIMRC="$VIMFILES/vimrc"
@@ -97,7 +98,7 @@ esac
 	PATH_ORI="$PATH"
 }
 [[ "$FK_PATH" = RESET ]] && {
-	export PATH="$PATH_ORI:$H/bin:$H/.local/bin:$JAVA_HOME/bin:$CARGO_HOME/bin:$PNPM_HOME"
+	export PATH="$PATH_ORI:$H/bin:$H/.local/bin:$JAVA_HOME/bin:$CARGO_HOME/bin:$PNPM_HOME:$AYA_PREFIX/bin"
 	FK_PATH=UPDATED
 }
 
@@ -117,12 +118,13 @@ export	S_GHP=https://ghproxy.com/
 
 setopt AUTO_CD
 setopt EMACS
+setopt EXTENDED_GLOB
 
 ## OH-MY-ZSH {{{
 
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_DISABLE_COMPFIX=true
-plugins=(copypath fancy-ctrl-z gh fzf ripgrep fnm pip zsh-syntax-highlighting sudo pm2 rust extract)
+plugins=(copypath fancy-ctrl-z gh fzf ripgrep pip zsh-syntax-highlighting sudo pm2 rust extract)
 [[ -z "$NO_OMZ" && -d $ZSH ]] && source $ZSH/oh-my-zsh.sh
 
 ## OH-MY-ZSH }}}
@@ -159,7 +161,8 @@ bindkey '\e[1;5D' backward-word		# ctrl left
 
 ## HISTORY {{{
 
-@ fkar &&	export HISTFILE="$H/log/log-hist"
+@ fkar &&	[[ $SHELL = /bin/zsh ]] && export HISTFILE="$H/log/log-hist"
+			[[ $SHELL = /bin/bash ]] && export HISTFILE="$H/log/log-hist-bash"
 			export HISTFILESIZE=1000000
 			export HISTSIZE=1000000
 			export SAVEHIST=$HISTSIZE
@@ -182,6 +185,11 @@ has-cmd thefuck && eval "$(thefuck --alias)"
 has-cmd fnm && eval "$(fnm env)"
 has-cmd opam && eval "$(opam env)"
 has-cmd adbunch && eval "$(QU=1 adbunch gencomp)"
+
+has-cmd rustc && has-cmd compdef && compdef __comp_cargo cargo
+__comp_cargo() {
+	source "$(rustc --print sysroot)"/share/zsh/site-functions/_cargo
+}
 
 [[ -f ~/.config/tabtab/zsh/__tabtab.zsh ]] && source ~/.config/tabtab/zsh/__tabtab.zsh || true
 
@@ -635,6 +643,13 @@ host-unban () {
 # CUSTOM COMMAND }}}
 
 # DESKTOP {{{
+
+## WINE {{{
+
+alias wine32="WINEPREFIX=~/.wine32 WINEARCH=win32 wine"
+alias winetricks32="WINEPREFIX=~/.wine32 WINEARCH=win32 winetricks"
+
+## WINE }}}
 
 ## X11 IN WSL {{{
 
