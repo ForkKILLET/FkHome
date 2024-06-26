@@ -13,7 +13,6 @@
 [pull]
 	rebase = false
 [http]
-	proxy = http://127.0.0.1:1643
 	sslverify = false
 [alias]
 	m	= !vim ~/.gitconfig								# Manage
