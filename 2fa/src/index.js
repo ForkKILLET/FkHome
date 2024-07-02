@@ -1,18 +1,19 @@
 import fs from 'node:fs/promises'
 import twoFactor from 'node-2fa'
 
-const getSecretFromFile = async () => {
+const getSecret = async () => {
+	const env = process.env['SECRET_2FA']
+	if (env) return env
+
     try {
-        const buf = await fs.readFile('./2fa.txt')
-        return buf.toString()
+        return await fs.readFile('./2fa.txt', 'utf-8')
     }
     catch {
         return
     }
 }
 
-const secret = process.env['SECRET_2FA']
-    || await getSecretFromFile()
+const secret = await getSecret()
 
 if (! secret) {
     console.error('Error: $SECRET_2FA not found')

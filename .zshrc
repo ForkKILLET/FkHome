@@ -198,6 +198,7 @@ __comp_cargo() {
 # CLI UNIFIED NAME {{
 
 @ fk10 && alias bat=batcat
+@ fkar && alias px=proxychains -q
 
 # CLI UNIFIED NAME }}
 
@@ -664,28 +665,6 @@ alias winetricks32="WINEPREFIX=~/.wine32 WINEARCH=win32 winetricks"
 	}
 }
 
-@ fkar && {
-	wemeet-restart-with-chat () {
-		if [ -d ~/app/chat.bak ]; then
-			sudo mv ~/app/chat.bak /opt/wemeet/bin/modules/chat
-		fi
-		killall /opt/wemeet/bin/wemeetapp
-		wemeet 2>&1 > /dev/null &
-	}
-	wemeet-restart-without-chat () {
-		if [ -d /opt/wemeet/bin/modules/chat ]; then
-			sudo mv /opt/wemeet/bin/modules/chat ~/app/chat.bak
-		fi
-		killall /opt/wemeet/bin/wemeetapp
-		wemeet 2>&1 > /dev/null &
-	}
-	wemeet-restart () {
-		killall /opt/wemeet/bin/wemeetapp
-		wemeet 2>&1 > /dev/null &
-	}
-}
-
-
 ## X11 IN WSL }}}
 
 ## IME CONFIG {{{
@@ -696,7 +675,7 @@ export XMODIFIERS=@im=fcitx
 
 ## IME CONFIG }}}
 
-## X11 CUSTOM COMMAND {{{
+## CUSTOM COMMAND {{{
 
 @ x1tx && alias o="termux-open"
 @ fkar && alias o="xdg-open"
@@ -714,7 +693,21 @@ has-cmd xclip && {
 	}
 }
 
-## X11 CUSTOM COMMAND }}}
+has-cmd xdg-icon-resource && has-cmd icotool && has-cmd awk && xicoinstall () {
+	local file=${1:t:r}
+	local name=${2:-${file}}
+	echo "- icon name \"${name}\""
+	echo "> icotool -l \"$1\""
+	icotool -l "$1"
+	md -p /tmp/xicoinstall
+	echo "> icotool -x \"$1\" -o /tmp/xicoinstall"
+	icotool -x "$1" -o /tmp/xicoinstall
+	local installsh="$(icotool -l "$1" | awk -F '[ =]' "{print \"xdg-icon-resource install --size \" \$5 \" /tmp/xicoinstall/${file}_\" \$3 \"_\" \$5 \"x\" \$7 \"x\" \$9 \".png ${name}\"}")"
+	echo "$installsh" | xargs -L1 echo '>'
+	echo "$installsh" | bash
+}
+
+## CUSTOM COMMAND }}}
 
 # DESKTOP }}}
 

@@ -51,7 +51,6 @@
 	cp	= cherry-pick									# Cherry Pick
 	cpa	= cherry-pick --abort							# Cherry Pick About
 	cpc	= cherry-pick --continue						# Cherry Pick Continue
-	pxy	= 
 [interactive]
 	diffFilter = delta --color-only
 [delta]
