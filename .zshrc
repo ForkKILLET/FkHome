@@ -44,7 +44,7 @@ touch ~/_/identity
 ID=$(cat ~/_/identity)
 ID=${ID:-temp}
 case $ID in
-	fkar|v.ps|fk10|fkos-xj|x1tx|xxer|pihc)
+	fkar|v.ps|fk10|fkos-xj|x1tx|xxer|pihc|fkni)
 		;;
 	temp)
 		echo "[dash] Temporary identity"
@@ -199,8 +199,26 @@ __comp_cargo() {
 
 @ fk10 && alias bat=batcat
 @ fkar && alias px=proxychains -q
+@ fkni && alias px=proxychains4 -q
 
 # CLI UNIFIED NAME }}
+
+# NIX {{
+
+@ fkni && {
+	ne () {
+		sudo -E vim /etc/nixos/configuration.nix
+	}
+	neh () {
+		sudo -E vim /etc/nixos/hardware-configuration.nix
+	}
+	nb () {
+		sudo nixos-rebuild switch
+		rehash
+	}
+}
+
+# NIX }}
 
 # CUSTOM COMMAND {{{
 
@@ -607,11 +625,6 @@ alias g="git"
 ## VIM {{{
 
 alias v="vim"
-vn () {
-	v "$1"
-	node "$1"
-	return 0
-}
 vr () {
 	v "$1"
 	"$@"

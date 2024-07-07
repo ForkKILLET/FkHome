@@ -38,12 +38,12 @@ source .zshrc
 EE "# Installing oh-my-zsh?"
 $QB
 	E "    * omz"
-	git clone "${_GOHOME_GITHUB_PREFIX}https://github.com/robbyrussell/oh-my-zsh.git" $ZSH
+	git clone "${_GOHOME_GITHUB_PREFIX}https://github.undefined.moe/robbyrussell/oh-my-zsh.git" $ZSH
 
 	cd $ZSH/custom/plugins
 
 	E "    * plugin: zsh-syntax-highlighting"
-	git clone "${_GOHOME_GITHUB_PREFIX}https://github.com/zsh-users/zsh-syntax-highlighting.git"
+	git clone "${_GOHOME_GITHUB_PREFIX}https://github.undefined.moe/zsh-users/zsh-syntax-highlighting.git"
 
 	cd ~/_
 $QE
