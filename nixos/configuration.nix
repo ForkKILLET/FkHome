@@ -1,7 +1,3 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
 { config, pkgs, ... }:
 
 {
@@ -46,9 +42,6 @@
       fcitx5-configtool
     ];
   };
-
-  # For steam
-  hardware.graphics.enable32Bit = true;
 
   # Enable the X11 windowing system.
   # You can disable this if you're only using the Wayland session.
@@ -100,16 +93,24 @@
   };
   users.defaultUserShell = pkgs.zsh;
 
-  fonts.packages = with pkgs; [
-    noto-fonts
-    noto-fonts-cjk
-    noto-fonts-emoji
-    fira-code
-    fira-code-symbols
-  ];
-
-  # Install firefox.
-  programs.firefox.enable = true;
+  fonts = {
+    packages = with pkgs; [
+      noto-fonts
+      noto-fonts-cjk
+      noto-fonts-emoji
+      fira-code
+      fira-code-symbols
+    ];
+    fontDir.enable = true;
+    fontconfig.enable = true;
+    fontconfig.defaultFonts = {
+      emoji = [ "Noto Color Emoji" ];
+      monospace = [ "Source Han Mono" ];
+      sansSerif = [ "Noto Sans CJK SC" ];
+      serif = [ "Source Han Serif" ];
+    };
+    enableDefaultPackages = true;
+  };
 
   nix.optimise.automatic = true;
   nix.gc = {
@@ -145,8 +146,10 @@
     git
     gh
     vim
+    xclip
     wget
     nodejs
+    pnpm
     fzf
     delta
     tealdeer
@@ -155,16 +158,23 @@
     qq
     vscode
     proxychains
-    noto-fonts-cjk
-    steam
     ripgrep
   ];
   environment.shells = with pkgs; [ zsh ];
+
+  programs.firefox.enable = true;
+
+  programs.steam = {
+    enable = true;
+    fontPackages = with pkgs; [ noto-fonts-cjk ];
+  };
+  hardware.graphics.enable32Bit = true;
 
   services.v2raya.enable = true;
 
   programs.zsh.enable = true;
 
+  # Fix that rtw88 doesn't work after suspending.
   powerManagement.enable = true;
   powerManagement.resumeCommands = ''
     /run/current-system/sw/bin/modprobe rtw88_8822ce

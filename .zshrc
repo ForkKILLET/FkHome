@@ -195,13 +195,13 @@ __comp_cargo() {
 
 # CLI TOOLS SETUP }}}
 
-# CLI UNIFIED NAME {{
+# CLI UNIFIED NAME {{{
 
 @ fk10 && alias bat=batcat
 @ fkar && alias px=proxychains -q
 @ fkni && alias px=proxychains4 -q
 
-# CLI UNIFIED NAME }}
+# CLI UNIFIED NAME }}}
 
 # NIX {{
 
@@ -696,13 +696,18 @@ export XMODIFIERS=@im=fcitx
 
 has-cmd xclip && {
 	xcopy () {
-		xclip -selection c "$1"
+		echo $@ | xclip -selection c
 		return 0
 	}
+}
 
-	xcwd () {
-		pwd | xcopy
-		return 0
+2fa () {
+	local output="$(node ~/_/2fa)"
+	has-cmd xclip && {
+		echo "$output" | awk '{print $2}' | xclip -selection c
+		echo "$output", copied to clipboard.
+	} || {
+		echo "$output"
 	}
 }
 
