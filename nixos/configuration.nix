@@ -1,7 +1,6 @@
-{ config, pkgs, ... }:
-
-{
-  imports = [ # Include the results of the hardware scan.
+{ config, pkgs, ... }: with builtins; {
+  imports = [
+    # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
 
@@ -35,11 +34,11 @@
   i18n.inputMethod = {
     enabled = "fcitx5";
     fcitx5.addons = with pkgs; [
-      fcitx5-anthy
-      fcitx5-rime
       fcitx5-gtk
+      libsForQt5.fcitx5-qt
+      fcitx5-rime
+      fcitx5-anthy
       fcitx5-material-color
-      fcitx5-configtool
     ];
   };
 
@@ -66,23 +65,17 @@
   services.printing.enable = true;
 
   # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
 
     # use the example session manager (no others are packaged yet so this is enabled by default,
     # no need to redefine it in your config for now)
     #media-session.enable = true;
   };
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.forkkillet = {
@@ -98,8 +91,7 @@
       noto-fonts
       noto-fonts-cjk
       noto-fonts-emoji
-      fira-code
-      fira-code-symbols
+      (nerdfonts.override { fonts = [ "FiraCode" ]; })
     ];
     fontDir.enable = true;
     fontconfig.enable = true;
@@ -140,27 +132,76 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    git
-    gh
-    vim
-    xclip
-    wget
-    nodejs
-    pnpm
-    fzf
-    delta
-    tealdeer
-    bat
-    screenfetch
-    qq
-    vscode
-    proxychains
-    ripgrep
-  ];
+  # Packages
+  environment.systemPackages = with (with pkgs; {
+    cliTools = [
+      git
+      gh
+      vim
+      lsd
+      fzf
+      zip
+      unzip
+      delta
+      tealdeer
+      bat
+      wget
+      screenfetch
+      ripgrep
+      duf
+      dust
+      fd
+      bottom
+      httpie
+      dog
+      broot
+    ];
+
+    jsTools = [
+      nodejs
+      pnpm
+    ];
+
+    haskellTools = [
+      ghc
+    ];
+
+    desktopApps = [
+      xclip
+      vscode
+      qq
+      google-chrome
+      prismlauncher
+    ] ++ (with kdePackages; [
+      kolourpaint
+      partitionmanager
+    ]);
+  }); cliTools ++ jsTools ++ haskellTools ++ desktopApps;
+  
   environment.shells = with pkgs; [ zsh ];
+
+  programs.nix-ld = {
+    enable = true;
+    libraries = with pkgs; [];
+  };
+
+  programs.proxychains = {
+    enable = true;
+    package = pkgs.proxychains-ng;
+    quietMode = true;
+    proxies = {
+      v2raya = {
+        enable = true;
+        type = "http";
+        host = "127.0.0.1";
+        port = 1643;
+      };
+    };
+  };
+
+  virtualisation.docker.enable = true;
+  
+  programs.direnv.enable = true;
 
   programs.firefox.enable = true;
 
@@ -168,7 +209,13 @@
     enable = true;
     fontPackages = with pkgs; [ noto-fonts-cjk ];
   };
-  hardware.graphics.enable32Bit = true;
+
+  hardware.graphics.enable32Bit = true; # for steam
+
+  # Bluetooth
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+  services.blueman.enable = true;
 
   services.v2raya.enable = true;
 
@@ -195,7 +242,7 @@
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

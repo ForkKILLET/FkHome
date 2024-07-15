@@ -161,6 +161,7 @@ bindkey '\e[1;5D' backward-word		# ctrl left
 
 ## HISTORY {{{
 
+@ fkni ||
 @ fkar &&	[[ $SHELL = /bin/zsh ]] && export HISTFILE="$H/log/log-hist"
 			[[ $SHELL = /bin/bash ]] && export HISTFILE="$H/log/log-hist-bash"
 			export HISTFILESIZE=1000000
@@ -191,6 +192,8 @@ __comp_cargo() {
 	source "$(rustc --print sysroot)"/share/zsh/site-functions/_cargo
 }
 
+[[ -f ~/.config/broot/launcher/bash/br ]] && source ~/.config/broot/launcher/bash/br || true
+
 [[ -f ~/.config/tabtab/zsh/__tabtab.zsh ]] && source ~/.config/tabtab/zsh/__tabtab.zsh || true
 
 # CLI TOOLS SETUP }}}
@@ -198,8 +201,8 @@ __comp_cargo() {
 # CLI UNIFIED NAME {{{
 
 @ fk10 && alias bat=batcat
-@ fkar && alias px=proxychains -q
-@ fkni && alias px=proxychains4 -q
+@ fkar && alias px="proxychains5 -q"
+@ fkni && alias px="proxychains4 -q"
 
 # CLI UNIFIED NAME }}}
 
@@ -207,13 +210,19 @@ __comp_cargo() {
 
 @ fkni && {
 	ne () {
-		sudo -E vim /etc/nixos/configuration.nix
+		local editor="${1:-vim}"
+		$editor /etc/nixos/configuration.nix
 	}
 	neh () {
-		sudo -E vim /etc/nixos/hardware-configuration.nix
+		local editor="${1:-vim}"
+		$editor /etc/nixos/hardware-configuration.nix
 	}
 	nb () {
 		sudo nixos-rebuild switch
+		rehash
+	}
+	nbp () {
+		sudo proxychains4 -q nixos-rebuild switch
 		rehash
 	}
 }
@@ -323,11 +332,7 @@ SAVEHIST            = $SAVEHIST
 ## FILE OPS {{{
 
 cdd () {
-	cd "$H/_";
-	return 0
-}
-cddv () {
-	cd "$H/_/FkVim"
+	cd "$H/_/$1";
 	return 0
 }
 cdl () {
