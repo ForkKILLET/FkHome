@@ -138,8 +138,9 @@ TRAPUSR1() { rehash }
 ## PROMPT {{{
 
 autoload -U colors && colors
-export PS1_NORMAL="%F{167}[%D{%H:%M:%S}] %F{46}%~ %F{214}$ID %F{99}Ψ%f "
-export PS1_SHORT="%F{167}[%D{%H:%M:%S}] %F{214}$ID %F{99}Ψ%f "
+[[ $USER = root ]] && PS1_ROOT=' [root]'
+export PS1_NORMAL="%F{167}[%D{%H:%M:%S}] %F{46}%~ %F{214}$ID %F{99}Ψ$PS1_ROOT%f "
+export PS1_SHORT="%F{167}[%D{%H:%M:%S}] %F{214}$ID %F{99}Ψ$PS1_ROOT%f "
 prompt () {
 	case $1 in
 		n|normal)	export PS1="$PS1_NORMAL"	;;
@@ -664,6 +665,8 @@ host-unban () {
 # DESKTOP {{{
 
 ## WINE {{{
+
+export WINEDEBUG=-all
 
 alias wine32="WINEPREFIX=~/.wine32 WINEARCH=win32 wine"
 alias winetricks32="WINEPREFIX=~/.wine32 WINEARCH=win32 winetricks"

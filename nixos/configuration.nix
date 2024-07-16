@@ -134,7 +134,7 @@
 
   # Packages
   environment.systemPackages = with (with pkgs; {
-    cliTools = [
+    cliPkgs = [
       git
       gh
       vim
@@ -155,18 +155,19 @@
       httpie
       dog
       broot
+      wakatime-cli
     ];
 
-    jsTools = [
+    javascriptPkgs = [
       nodejs
       pnpm
     ];
 
-    haskellTools = [
+    haskellPkgs = [
       ghc
     ];
 
-    desktopApps = [
+    desktopPkgs = [
       xclip
       vscode
       qq
@@ -176,7 +177,12 @@
       kolourpaint
       partitionmanager
     ]);
-  }); cliTools ++ jsTools ++ haskellTools ++ desktopApps;
+
+    winePkgs = [
+      wineWowPackages.stable
+      wineWowPackages.waylandFull
+    ];
+  }); cliPkgs ++ javascriptPkgs ++ haskellPkgs ++ desktopPkgs ++ winePkgs;
   
   environment.shells = with pkgs; [ zsh ];
 
