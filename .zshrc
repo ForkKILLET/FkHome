@@ -84,7 +84,12 @@ esac
 
 @ fkar &&	export XBQG_DATA="$H/.config/xbqg"
 
+@ fkni &&	export PROXY_HTTP="http://127.0.0.1:1643"
+@ fkni &&	export PROXY_SOCKS5="socks5://127.0.0.1:1642"
+
+@ fkni ||
 @ fkar &&	export CELESTE="$H/.local/share/Steam/steamapps/common/Celeste"
+@ fkni ||
 @ fkar &&	export CelestePrefix="$CELESTE"
 
 @ fkar &&	[[ -f "$CARGO_HOME/env" ]] && source "$CARGO_HOME/env"
@@ -124,7 +129,7 @@ setopt EXTENDED_GLOB
 
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_DISABLE_COMPFIX=true
-plugins=(copypath fancy-ctrl-z gh fzf ripgrep pip zsh-syntax-highlighting sudo pm2 rust extract)
+plugins=(copypath fancy-ctrl-z gh fzf ripgrep pip zsh-syntax-highlighting sudo pm2 rust extract httpie)
 [[ -z "$NO_OMZ" && -d $ZSH ]] && source $ZSH/oh-my-zsh.sh
 
 ## OH-MY-ZSH }}}
@@ -212,18 +217,18 @@ __comp_cargo() {
 @ fkni && {
 	ne () {
 		local editor="${1:-vim}"
-		$editor /etc/nixos/configuration.nix
+		$editor ${@:2} /etc/nixos/configuration.nix
 	}
 	neh () {
 		local editor="${1:-vim}"
-		$editor /etc/nixos/hardware-configuration.nix
+		$editor ${@:2} /etc/nixos/hardware-configuration.nix
 	}
 	nb () {
 		sudo nixos-rebuild switch
 		rehash
 	}
 	nbp () {
-		sudo proxychains4 -q nixos-rebuild switch
+		sudo env ALL_PROXY=${PROXY_HTTP} HTTP_PROXY=${PROXY_HTTP} HTTPS_PROXY=${PROXY_HTTP} nixos-rebuild switch
 		rehash
 	}
 }
@@ -345,6 +350,7 @@ cdb () {
 	return 0
 }
 cddl () {
+	@ fkni ||
 	@ fkar && cd "$H/Downloads"
 	@ x1tx && cd "$H/downloads"
 	return 0
@@ -448,6 +454,7 @@ cds () {
 		c)		d=cpp									;;
 
 		r)		d=rust									;;
+		rs)		d=rust/switchy							;;
 		rl)		d=rust/learn							;;
 		rp)		d=rust/pow-logic						;;
 
@@ -668,6 +675,7 @@ host-unban () {
 
 export WINEDEBUG=-all
 
+export WINEPREFIX=~/.wine
 alias wine32="WINEPREFIX=~/.wine32 WINEARCH=win32 wine"
 alias winetricks32="WINEPREFIX=~/.wine32 WINEARCH=win32 winetricks"
 
@@ -699,6 +707,7 @@ export XMODIFIERS=@im=fcitx
 ## CUSTOM COMMAND {{{
 
 @ x1tx && alias o="termux-open"
+@ fkni ||
 @ fkar && alias o="xdg-open"
 @ fk10 && alias o="wslview"
 

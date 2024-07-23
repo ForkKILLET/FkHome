@@ -17,29 +17,32 @@
   time.timeZone = "Asia/Shanghai";
 
   # Select internationalisation properties.
-  i18n.defaultLocale = "zh_CN.UTF-8";
+  i18n = {
+    defaultLocale = "zh_CN.UTF-8";
 
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "zh_CN.UTF-8";
-    LC_IDENTIFICATION = "zh_CN.UTF-8";
-    LC_MEASUREMENT = "zh_CN.UTF-8";
-    LC_MONETARY = "zh_CN.UTF-8";
-    LC_NAME = "zh_CN.UTF-8";
-    LC_NUMERIC = "zh_CN.UTF-8";
-    LC_PAPER = "zh_CN.UTF-8";
-    LC_TELEPHONE = "zh_CN.UTF-8";
-    LC_TIME = "zh_CN.UTF-8";
-  };
+    extraLocaleSettings = {
+      LC_ADDRESS = "zh_CN.UTF-8";
+      LC_IDENTIFICATION = "zh_CN.UTF-8";
+      LC_MEASUREMENT = "zh_CN.UTF-8";
+      LC_MONETARY = "zh_CN.UTF-8";
+      LC_NAME = "zh_CN.UTF-8";
+      LC_NUMERIC = "zh_CN.UTF-8";
+      LC_PAPER = "zh_CN.UTF-8";
+      LC_TELEPHONE = "zh_CN.UTF-8";
+      LC_TIME = "zh_CN.UTF-8";
+    };
 
-  i18n.inputMethod = {
-    enabled = "fcitx5";
-    fcitx5.addons = with pkgs; [
-      fcitx5-gtk
-      libsForQt5.fcitx5-qt
-      fcitx5-rime
-      fcitx5-anthy
-      fcitx5-material-color
-    ];
+    inputMethod = {
+      enable = true;
+      type = "fcitx5";
+      fcitx5.addons = with pkgs; [
+        fcitx5-gtk
+        libsForQt5.fcitx5-qt
+        fcitx5-rime
+        fcitx5-anthy
+        fcitx5-material-color
+      ];
+    };
   };
 
   # Enable the X11 windowing system.
@@ -130,7 +133,16 @@
   };
 
   # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config = {
+    allowUnfree = true;
+    permittedInsecurePackages = [
+      "qtwebkit-5.212.0-alpha4"
+    ];
+
+    packageOverrides = with pkgs; pkgs: {
+      olympus = callPackage ./custom-packages/olympus/package.nix {};
+    };
+  };
 
   # Packages
   environment.systemPackages = with (with pkgs; {
@@ -152,10 +164,17 @@
       dust
       fd
       bottom
+      procs
       httpie
       dog
       broot
       wakatime-cli
+      tokei
+    ];
+
+    buildPkgs = [
+      gcc
+      cmake
     ];
 
     javascriptPkgs = [
@@ -167,12 +186,21 @@
       ghc
     ];
 
+    rustPkgs = [
+      rustup
+    ];
+
     desktopPkgs = [
       xclip
+      desktop-file-utils
       vscode
       qq
       google-chrome
       prismlauncher
+      telegram-desktop
+      zotero
+      olympus
+      discord-canary
     ] ++ (with kdePackages; [
       kolourpaint
       partitionmanager
@@ -181,8 +209,10 @@
     winePkgs = [
       wineWowPackages.stable
       wineWowPackages.waylandFull
+      winetricks
+      samba
     ];
-  }); cliPkgs ++ javascriptPkgs ++ haskellPkgs ++ desktopPkgs ++ winePkgs;
+  }); cliPkgs ++ buildPkgs ++ javascriptPkgs ++ haskellPkgs ++ rustPkgs ++  desktopPkgs ++ winePkgs;
   
   environment.shells = with pkgs; [ zsh ];
 
@@ -249,6 +279,14 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   networking.firewall.enable = false;
+
+  services.static-web-server = let
+    webRoot = ~/res/www;
+  in if pathExists webRoot then {
+    enable = true;
+    root = toString webRoot;
+  }
+  else null;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
