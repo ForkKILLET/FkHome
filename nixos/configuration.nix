@@ -1,4 +1,4 @@
-{ config, pkgs, ... }: with builtins; {
+{ pkgs, ... }: with builtins; {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix

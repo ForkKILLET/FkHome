@@ -27,6 +27,7 @@
       broot
       wakatime-cli
       tokei
+      nil
     ];
 
     buildPkgs = [
@@ -40,8 +41,9 @@
       yarn
     ];
 
-    haskellPkgs = [
+    haskellPkgs = with haskellPackages; [
       ghc
+      haskell-language-server
     ];
 
     rustPkgs = [
