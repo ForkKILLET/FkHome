@@ -219,6 +219,10 @@ __comp_cargo() {
 		local editor="${1:-vim}"
 		$editor ${@:2} /etc/nixos/configuration.nix
 	}
+	nep () {
+		local editor="${1:-vim}"
+		$editor ${@:2} /etc/nixos/packages.nix
+	}
 	neh () {
 		local editor="${1:-vim}"
 		$editor ${@:2} /etc/nixos/hardware-configuration.nix

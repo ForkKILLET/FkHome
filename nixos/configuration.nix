@@ -8,10 +8,12 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "nixos"; # Define your hostname.
-
-  # Enable networking
-  networking.networkmanager.enable = true;
+  # Networking.
+  networking = {
+    hostName = "nixos";
+    networkmanager.enable = true;
+    firewall.enable = false;
+  };
 
   # Set your time zone.
   time.timeZone = "Asia/Shanghai";
@@ -88,21 +90,26 @@
     packages = with pkgs; [];
   };
   users.defaultUserShell = pkgs.zsh;
+  security.sudo.wheelNeedsPassword = false;
 
+  # Fonts
   fonts = {
     packages = with pkgs; [
       noto-fonts
       noto-fonts-cjk
       noto-fonts-emoji
       (nerdfonts.override { fonts = [ "FiraCode" ]; })
+      ipafont # Japanese fonts
     ];
     fontDir.enable = true;
-    fontconfig.enable = true;
-    fontconfig.defaultFonts = {
-      emoji = [ "Noto Color Emoji" ];
-      monospace = [ "Source Han Mono" ];
-      sansSerif = [ "Noto Sans CJK SC" ];
-      serif = [ "Source Han Serif" ];
+    fontconfig = {
+      enable = true;
+      defaultFonts = {
+        emoji = [ "Noto Color Emoji" ];
+        monospace = [ "Source Han Mono" ];
+        sansSerif = [ "Noto Sans CJK SC" ];
+        serif = [ "Source Han Serif" ];
+      };
     };
     enableDefaultPackages = true;
   };
@@ -110,8 +117,8 @@
   nix.optimise.automatic = true;
   nix.gc = {
     automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 30d";
+    dates = "daily";
+    options = "--delete-older-than 7d";
   };
   nix.settings = {
     trusted-public-keys = [
@@ -127,7 +134,6 @@
       "https://mirrors.ustc.edu.cn/nix-channels/store"
       "https://nix-bin.hydro.ac"
     ];
-
     accept-flake-config = true;
     max-jobs = 2;
   };
@@ -145,76 +151,12 @@
   };
 
   # Packages
-  environment.systemPackages = with (with pkgs; {
-    cliPkgs = [
-      git
-      gh
-      vim
-      lsd
-      fzf
-      zip
-      unzip
-      delta
-      tealdeer
-      bat
-      wget
-      screenfetch
-      ripgrep
-      duf
-      dust
-      fd
-      bottom
-      procs
-      httpie
-      dog
-      broot
-      wakatime-cli
-      tokei
-    ];
-
-    buildPkgs = [
-      gcc
-      cmake
-    ];
-
-    javascriptPkgs = [
-      nodejs
-      pnpm
-    ];
-
-    haskellPkgs = [
-      ghc
-    ];
-
-    rustPkgs = [
-      rustup
-    ];
-
-    desktopPkgs = [
-      xclip
-      desktop-file-utils
-      vscode
-      qq
-      google-chrome
-      prismlauncher
-      telegram-desktop
-      zotero
-      olympus
-      discord-canary
-    ] ++ (with kdePackages; [
-      kolourpaint
-      partitionmanager
-    ]);
-
-    winePkgs = [
-      wineWowPackages.stable
-      wineWowPackages.waylandFull
-      winetricks
-      samba
-    ];
-  }); cliPkgs ++ buildPkgs ++ javascriptPkgs ++ haskellPkgs ++ rustPkgs ++  desktopPkgs ++ winePkgs;
+  environment.systemPackages = import ./packages.nix { inherit pkgs; };
   
   environment.shells = with pkgs; [ zsh ];
+
+  # Docker
+  virtualisation.docker.enable = true;
 
   programs.nix-ld = {
     enable = true;
@@ -234,8 +176,6 @@
       };
     };
   };
-
-  virtualisation.docker.enable = true;
   
   programs.direnv.enable = true;
 
@@ -246,7 +186,14 @@
     fontPackages = with pkgs; [ noto-fonts-cjk ];
   };
 
-  hardware.graphics.enable32Bit = true; # for steam
+  programs.zsh.enable = true;
+
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+  };
+
+  hardware.graphics.enable32Bit = true; # For steam
 
   # Bluetooth
   hardware.bluetooth.enable = true;
@@ -255,9 +202,15 @@
 
   services.v2raya.enable = true;
 
-  programs.zsh.enable = true;
+  services.static-web-server = {
+    enable = true;
+    root = "/var/www/forkkillet";
+    configuration = {
+      directory-listing = false;
+    };
+  };
 
-  # Fix that rtw88 doesn't work after suspending.
+  # Fix that rtw88 doesn't work after suspending
   powerManagement.enable = true;
   powerManagement.resumeCommands = ''
     /run/current-system/sw/bin/modprobe rtw88_8822ce
@@ -266,33 +219,5 @@
     /run/current-system/sw/bin/modprobe -r rtw88_8822ce
   '';
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-  };
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  networking.firewall.enable = false;
-
-  services.static-web-server = let
-    webRoot = ~/res/www;
-  in if pathExists webRoot then {
-    enable = true;
-    root = toString webRoot;
-  }
-  else null;
-
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.11"; # Did you read the comment?
+  system.stateVersion = "24.11";
 }
