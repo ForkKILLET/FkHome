@@ -62,11 +62,17 @@
       olympus
       discord-canary
       vlc
+      netease-cloud-music-gtk
+      libreoffice
+      lightspark
+      megasync
     ] ++ (with kdePackages; [
       kolourpaint
       partitionmanager
       filelight
     ]);
+
+    pythonPkgs = with python3Packages; [];
 
     winePkgs = [
       wineWowPackages.stable

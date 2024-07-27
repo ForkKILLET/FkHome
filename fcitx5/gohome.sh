@@ -26,17 +26,15 @@ E "    * conf/"
 rm -rf ~/.config/fcitx5/conf
 ln -s ~/_/fcitx5/conf ~/.config/fcitx5/conf
 
-EE "# Copying to .pam_environment"
+E "    * data/"
+rm -rf ~/.local/share/fcitx5/data
+ln -s ~/_/fcitx5/data ~/.local/share/fcitx5/data
 
-if [[ ! -f ~/.pam_environment ]]; then
-	cp ./.pam_environment ~/.pam_environment
-fi
-
-EE "# Copying to .xprofile"
-
-if [[ ! -f ~/.xprofile ]]; then
-	cp ./.xprofile ~/.xprofile
-fi
+E "    * rime/"
+for file in \$(ls ~/_/fcitx5/rime); do
+	rm -f ~/.local/share/fcitx5/rime/\$file
+	ln -s ~/_/fcitx5/rime/\$file ~/.local/share/fcitx5/rime/\$file
+done
 
 EE "# Welcoming Fcitx5"
 
