@@ -1,1 +1,16 @@
+# vim: ft=config
+# Logic
+
+\lceil		⌈
+\rceil		⌉
+\lfloor		⌊
+\rfloor		⌋
 \neg		¬
+\lor		∨
+\land		∧
+\iff		⇔
+\implies	⇒
+\<=>		⇔
+\=>			⇒
+\<=			⇐
+

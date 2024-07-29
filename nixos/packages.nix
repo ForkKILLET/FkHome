@@ -65,7 +65,6 @@
       netease-cloud-music-gtk
       libreoffice
       lightspark
-      megasync
     ] ++ (with kdePackages; [
       kolourpaint
       partitionmanager

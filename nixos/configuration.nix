@@ -160,7 +160,12 @@
 
   programs.nix-ld = {
     enable = true;
-    libraries = with pkgs; [];
+    package = pkgs.nix-ld-rs;
+    libraries = with pkgs; [
+      stdenv.cc.cc
+      libGL
+      libgcc
+    ];
   };
 
   programs.proxychains = {
@@ -176,7 +181,7 @@
       };
     };
   };
-  
+
   programs.direnv.enable = true;
 
   programs.firefox.enable = true;
@@ -203,7 +208,8 @@
   services.v2raya.enable = true;
 
   services.static-web-server = {
-    enable = true;
+    enable = false;
+    listen = "[::]:1627";
     root = "/var/www/forkkillet";
     configuration = {
       directory-listing = false;
