@@ -38,5 +38,22 @@
   # networking.interfaces.wlp1s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware = {
+    cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+    graphics.enable32Bit = true; # For steam
+
+    bluetooth = {
+      enable = true;
+      powerOnBoot = true;
+    };
+  };
+
+  # Fix that rtw88 doesn't work after suspending
+  powerManagement.enable = true;
+  powerManagement.resumeCommands = ''
+    /run/current-system/sw/bin/modprobe rtw88_8822ce
+  '';
+  powerManagement.powerDownCommands = ''
+    /run/current-system/sw/bin/modprobe -r rtw88_8822ce
+  '';
 }

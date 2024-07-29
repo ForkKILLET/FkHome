@@ -198,11 +198,7 @@
     enableSSHSupport = true;
   };
 
-  hardware.graphics.enable32Bit = true; # For steam
-
   # Bluetooth
-  hardware.bluetooth.enable = true;
-  hardware.bluetooth.powerOnBoot = true;
   services.blueman.enable = true;
 
   services.v2raya.enable = true;
@@ -215,15 +211,6 @@
       directory-listing = false;
     };
   };
-
-  # Fix that rtw88 doesn't work after suspending
-  powerManagement.enable = true;
-  powerManagement.resumeCommands = ''
-    /run/current-system/sw/bin/modprobe rtw88_8822ce
-  '';
-  powerManagement.powerDownCommands = ''
-    /run/current-system/sw/bin/modprobe -r rtw88_8822ce
-  '';
 
   system.stateVersion = "24.11";
 }
