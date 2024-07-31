@@ -222,11 +222,11 @@ __comp_cargo() {
 		code -n ~/_/nixos
 	}
 	nb () {
-		sudo nixos-rebuild switch
+		sudo nixos-rebuild switch $@
 		rehash
 	}
 	nbp () {
-		sudo env ALL_PROXY=${PROXY_HTTP} HTTP_PROXY=${PROXY_HTTP} HTTPS_PROXY=${PROXY_HTTP} nixos-rebuild switch
+		sudo env ALL_PROXY=${PROXY_HTTP} HTTP_PROXY=${PROXY_HTTP} HTTPS_PROXY=${PROXY_HTTP} nixos-rebuild switch $@
 		rehash
 	}
 }
