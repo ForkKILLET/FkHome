@@ -28,6 +28,8 @@ let packages = {
     wakatime-cli
     tokei
     nil
+    lsof
+    hexyl
   ];
 
   clangPkgs = [
@@ -68,13 +70,11 @@ let packages = {
     netease-cloud-music-gtk
     libreoffice
     lightspark
-  ];
-  
-  kdePkgs = with kdePackages; [
+  ] ++ (with kdePackages; [
     kolourpaint
     partitionmanager
     filelight
-  ];
+  ]);
 
   gamePkgs = [
     prismlauncher
@@ -82,7 +82,6 @@ let packages = {
   ];
 
   winePkgs = [
-    wineWowPackages.stable
     wineWowPackages.waylandFull
     winetricks
     samba

@@ -36,6 +36,11 @@ yn50 () {
 	esac
 }
 
+print-exec () {
+	echo \$ $@
+	$@
+}
+
 # UTILS }}}
 
 # ID {{{
@@ -73,6 +78,8 @@ esac
 			export PNPM_HOME="$H/.local/share/pnpm"
 			export CARGO_HOME="$H/.cargo"
 @ fkar &&	export AYA_PREFIX="/opt/aya"
+
+@ fkni &&	export ANDROID_HOME="$H/Android/Sdk"
 
 			export VIMFILES="$H/.vim"
 			export VIMRC="$VIMFILES/vimrc"
@@ -209,6 +216,7 @@ __comp_cargo() {
 @ fk10 && alias bat=batcat
 @ fkar && alias px="proxychains5 -q"
 @ fkni && alias px="proxychains4 -q"
+@ fkni && alias sudopx="sudo proxychains4 -q"
 
 # CLI UNIFIED NAME }}}
 
@@ -228,6 +236,11 @@ __comp_cargo() {
 	nbp () {
 		sudo env ALL_PROXY=${PROXY_HTTP} HTTP_PROXY=${PROXY_HTTP} HTTPS_PROXY=${PROXY_HTTP} nixos-rebuild switch $@
 		rehash
+	}
+	nbd () {
+		local line=$((${1:-1} + 1))
+		local id=$(echo /nix/var/nix/profiles/system-*-link | rg -o '\d+' | sort -nr | sed -n "${line}p")
+		print-exec nix store diff-closures /nix/var/nix/profiles/system-${id}-link /var/run/current-system
 	}
 }
 

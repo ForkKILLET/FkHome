@@ -11,7 +11,15 @@
   networking = {
     hostName = "nixos";
     networkmanager.enable = true;
-    firewall.enable = false;
+
+    firewall = {
+      enable = false;
+      allowedTCPPorts = [
+        80
+        443
+        8081 # Expo Go
+      ];
+    };
   };
 
   # Set your time zone.
