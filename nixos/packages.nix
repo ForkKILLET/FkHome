@@ -30,6 +30,7 @@ let packages = {
     nil
     lsof
     hexyl
+    wireguard-tools
   ];
 
   clangPkgs = [

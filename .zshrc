@@ -577,32 +577,23 @@ log () {
 			fi
 		;;
 		*)
-			local sudo
-			if [[ "$1" = -s || "$1" = --sudo ]]; then
-				shift
-				sudo="sudo -E "
-			fi
-
 			local cmd=vim
-			local back
-			if [[ "$1" = -c || "$1" = --cat ]]; then
+			if [[ $1 = -b || $1 = --bat ]]; then
 				shift
-				cmd=cat
-			elif [[ "$1" = -T || "$1" = --typora ]]; then
+				cmd=bat
+			elif [[ $1 = -c || $1 = --code  ]]; then
 				shift
-				cmd=typora
-				back=" &"
-			elif [[ "$1" = -w || "$1" = --wsl ]]; then
-				shift
-				cmd=wslview
+				cmd=code
 			fi
 
 			local name="$1"
-			if [[ $1 =~ ^[+-][0-9]+$ || -z "$1" ]]; then
-				name="log-$(date +%Y%m%d)" # TODO fix cdate
+			if [[ $1 =~ ^[0-9]+$ ]]; then
+				name="log-$(date -d "$1 day ago" +%Y%m%d)"
+			elif [[ -z "$1" ]]; then
+				name="log-$(date +%Y%m%d)"
 			fi
 
-			eval "$sudo$cmd \"$H/log/$name\"$back"
+			$cmd ~/log/$name
 		;;
 	esac
 	return 0
@@ -619,20 +610,12 @@ __comp_log () {
 				{-f,--force}"[remove a log]" \
 				"$dft_files"
 			;;
-		SUDO) _arguments \
-				{-c,--cat}"[cat a log]:$files" \
-				{-T,--typora}"[open a log with Typora]:$files" \
-				{-w,--wsl}"[open a log in WSL]:$files" \
-				"$dft_files"
-			;;
 		"")	_arguments \
 				{-l,--list}"[list logs]::->END" \
 				{-r,--remove}"[move a log to ~/rbin/+log]:option:->REMOVE" \
 				{-t,--traverse}"[traverse all logs]:option:->TRAVERSE" \
-				{-c,--cat}"[cat a log]:$files" \
-				{-T,--typora}"[open a log with Typora]:$files" \
-				{-w,--wsl}"[open a log in WSL]:$files" \
-				{-s,--sudo}"[run with sudo]:mode:->SUDO" \
+				{-b,--bat}"[bat a log]:$files" \
+				{-c,--code}"[open a log with Code]:$files" \
 				"$dft_files"
 			;;
 	esac

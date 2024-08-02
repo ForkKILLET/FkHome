@@ -11,20 +11,6 @@
     ];
   };
 
-  programs.proxychains = {
-    enable = true;
-    package = pkgs.proxychains-ng;
-    quietMode = true;
-    proxies = {
-      v2raya = {
-        enable = true;
-        type = "http";
-        host = "127.0.0.1";
-        port = 1643;
-      };
-    };
-  };
-
   programs.direnv.enable = true;
 
   programs.firefox.enable = true;
@@ -42,8 +28,6 @@
   };
 
   programs.adb.enable = true;
-
-  services.v2raya.enable = true;
 
   services.static-web-server = {
     enable = false;

@@ -1,26 +1,12 @@
 { pkgs, ... }: with builtins; {
   imports = [
     ./hardware-configuration.nix
+    ./networking.nix
     ./custom-packages/entry.nix
     ./packages.nix
     ./desktop.nix
     ./applications.nix
   ];
-
-  # Networking.
-  networking = {
-    hostName = "nixos";
-    networkmanager.enable = true;
-
-    firewall = {
-      enable = false;
-      allowedTCPPorts = [
-        80
-        443
-        8081 # Expo Go
-      ];
-    };
-  };
 
   # Set your time zone.
   time.timeZone = "Asia/Shanghai";
