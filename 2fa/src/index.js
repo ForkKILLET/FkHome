@@ -1,4 +1,6 @@
 import fs from 'node:fs/promises'
+import path from 'node:path'
+import url from 'node:url'
 import twoFactor from 'node-2fa'
 
 const getSecret = async () => {
@@ -6,13 +8,9 @@ const getSecret = async () => {
 	if (env) return env
 
 	try {
-        return await fs.readFile('./2fa/2fa.txt', 'utf-8')
+		const file = path.join(url.fileURLToPath(import.meta.url), '../../2fa.txt')
+        return await fs.readFile(file, 'utf-8')
 	}
-	catch {}
-
-    try {
-        return await fs.readFile('./2fa.txt', 'utf-8')
-    }
     catch {}
 }
 

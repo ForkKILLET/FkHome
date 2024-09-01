@@ -136,8 +136,9 @@ setopt EXTENDED_GLOB
 
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_DISABLE_COMPFIX=true
-plugins=(copypath fancy-ctrl-z gh fzf ripgrep pip zsh-syntax-highlighting sudo pm2 rust extract httpie)
+plugins=(copypath fancy-ctrl-z gh fzf pip zsh-syntax-highlighting sudo pm2 rust extract httpie yarn)
 [[ -z "$NO_OMZ" && -d $ZSH ]] && source $ZSH/oh-my-zsh.sh
+zstyle ':omz:plugins:yarn' berry yes
 
 ## OH-MY-ZSH }}}
 
@@ -214,6 +215,7 @@ __comp_cargo() {
 # CLI UNIFIED NAME {{{
 
 @ fk10 && alias bat=batcat
+has-cmd bat || alias bat=cat
 @ fkar && alias px="proxychains5 -q"
 @ fkni && alias px="proxychains4 -q"
 @ fkni && alias sudopx="sudo proxychains4 -q"
@@ -397,7 +399,6 @@ cds () {
 		adb)	d=adbunch								;;
 
 		x)		d=xbqg									;;
-		ml)		d=moli									;;
 
 		ce)		d=celeste								;;
 		cef)	d=celeste/ForkKILLETHelper				;;
@@ -409,35 +410,8 @@ cds () {
 
 		sc)		d=nodejs/SwitchyConfig					;;
 		nl)		d=nodejs/learn							;;
-		wb)		d=nodejs/Willbot						;;
-		wbb)	d=nodejs/Willbot/beta					;;
-		nx)		d=nodejs/xbqg							;;
-		tdb)	d=nodejs/TerminalDashboard				;;
-		nu)		d=nodejs/fkutil							;;
-		lh)		d=nodejs/l627							;;
-		cp)		d=nodejs/cuiping						;;
-
-		i2)		d=nodejs/Icalingua2						;;
-		i3)		d=nodejs/Icalingua3						;;
-
-		gt)		d=FkGitTest								;;
-		gcms)	d=FkGitCommitMsgStd						;;
-
-		h)		d=nodejs/Hydro							;;
-		hb)		d=nodejs/Hydro/HydroBot					;;
-		hu)		d=nodejs/Hydro/ui-default				;;
-		hh)		d=nodejs/Hydro/Hydro					;;
-		hm)		d=nodejs/Hydro/mongo.js					;;
-
-		nc)		d=nodejs/nodecpp						;;
-		np)		d=nodejs/pow-logic						;;
-
-		cg)		d=nodejs/golf							;;
-
-		rstt)	d=nodejs/rSTTranslator					;;
-
-		e)		d=electron								;;
-		eq)		d=electron/electron-qq					;;
+		wb)		d=willbot								;;
+		wbl)	d=willbot-legacy						;;
 
 		il)		d=IceLava								;;
 		it)		d=IceLava/Top							;	p=1628						;;
@@ -452,16 +426,8 @@ cds () {
 		nd)		d=NyaDict								;;
 
 		som)	d=IceLava/Top/SudoerOfMyself			;	p=1637/docs					;;
-		some)	d=IceLava/Top/SudoerOfMyself/src/ext0_file_system	;;
 		somos)	d=IceLava/Top/SudoerOfMyself/SOMOS		;;
 
-		nd)		d=nyadict								;;
-
-		k)		d=kotlin								;;
-
-		m)		d=mirai									;;
-
-		a)		d=artcmds								;;
 		c)		d=cpp									;;
 
 		r)		d=rust									;;
@@ -546,33 +512,33 @@ has-cmd lsd && {
 log () {
 	case "$1" in
 		-l | --list)
-			ls "$H/log"
+			ls ~/log
 		;;
 		-t | --traverse)
 			shift
 			local rev
-			[[ "$1" = -r || "$1" = --reversed ]] && rev="-r"
-			for file in $(ls $rev "$H/log"); do
+			[[ $1 = -r || $1 = --reversed ]] && rev=-r
+			for file in $(ls $rev ~/log | rg log-); do
 				div -s
-				yn "Cat <$file> ?" && {
+				yn "Bat <$file> ?" && {
 					div -s;
-					cat "$H/log/$file"
+					bat -l markdown ~/log/$file
 				}
 			done
 		;;
 		-r | --remove)
 			shift
-			if [[ "$1" = -f || "$1" = --force ]]; then
+			if [[ $1 = -f || $1 = --force ]]; then
 				shift
 				yn50 "Remove <$1> forever?" && {
-					rm -f "$H/log/$1"
-					echo "You can never find it."
+					rm -f ~/log/$1
+					echo "Removed <$1> permanently."
 				}
 			else
 				yn "Remove <$1> ?" && {
-					mkdir -p "$H/rbin/+log"
-					rmd "$H/log/$1" "+log"
-					echo "You can find it at <~/rbin/+log>."
+					mkdir -p ~/rbin/+log
+					rmd ~/log/$1 +log
+					echo "Moved <$1> to <~/rbin/+log>."
 				}
 			fi
 		;;
@@ -580,7 +546,7 @@ log () {
 			local cmd=vim
 			if [[ $1 = -b || $1 = --bat ]]; then
 				shift
-				cmd=bat
+				cmd="bat -l markdown"
 			elif [[ $1 = -c || $1 = --code  ]]; then
 				shift
 				cmd=code
@@ -593,7 +559,7 @@ log () {
 				name="log-$(date +%Y%m%d)"
 			fi
 
-			$cmd ~/log/$name
+			eval "$cmd $H/log/$name"
 		;;
 	esac
 	return 0
@@ -742,6 +708,7 @@ has-cmd xdg-icon-resource && has-cmd icotool && has-cmd awk && xicoinstall () {
 
 # INIT {{{
 
+@ fkni ||
 @ fkar && {
 	local today=$(date +%Y%m%d)
 	[[ -z "$FK_INIT" && (-f "$H/log/log-$today" || "$TERM" = linux) ]] || {

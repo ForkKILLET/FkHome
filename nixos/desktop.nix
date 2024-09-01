@@ -47,6 +47,7 @@
       noto-fonts
       noto-fonts-cjk
       noto-fonts-emoji
+      wqy_microhei
       (nerdfonts.override { fonts = [ "FiraCode" ]; })
       ipafont # Japanese fonts
     ];

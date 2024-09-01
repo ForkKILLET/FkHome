@@ -31,6 +31,10 @@ let packages = {
     lsof
     hexyl
     wireguard-tools
+    ffmpeg
+    tree
+    postgresql
+    jq
   ];
 
   clangPkgs = [
@@ -71,10 +75,13 @@ let packages = {
     netease-cloud-music-gtk
     libreoffice
     lightspark
+    obs-studio
+    nur.repos.linyinfeng.wemeet
   ] ++ (with kdePackages; [
     kolourpaint
     partitionmanager
     filelight
+    kdenlive
   ]);
 
   gamePkgs = [
