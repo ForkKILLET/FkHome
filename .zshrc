@@ -49,7 +49,7 @@ touch ~/_/identity
 ID=$(cat ~/_/identity)
 ID=${ID:-temp}
 case $ID in
-	fkar|v.ps|fk10|fkos-xj|x1tx|xxer|pihc|fkni)
+	fkar|v.ps|fk10|fkos-xj|fkte|xxer|pihc|fkni)
 		;;
 	temp)
 		echo "[dash] Temporary identity"
@@ -139,6 +139,9 @@ ZSH_DISABLE_COMPFIX=true
 plugins=(copypath fancy-ctrl-z gh fzf pip zsh-syntax-highlighting sudo pm2 rust extract httpie yarn)
 [[ -z "$NO_OMZ" && -d $ZSH ]] && source $ZSH/oh-my-zsh.sh
 zstyle ':omz:plugins:yarn' berry yes
+zstyle ':omz:plugins:yarn' aliases no
+zstyle ':omz:plugins:git' aliases no
+
 
 ## OH-MY-ZSH }}}
 
@@ -365,7 +368,7 @@ cdb () {
 cddl () {
 	@ fkni ||
 	@ fkar && cd "$H/Downloads"
-	@ x1tx && cd "$H/downloads"
+	@ fkte && cd "$H/downloads"
 	return 0
 }
 
@@ -666,7 +669,7 @@ export XMODIFIERS=@im=fcitx
 
 ## CUSTOM COMMAND {{{
 
-@ x1tx && alias o="termux-open"
+@ fkte && alias o="termux-open"
 @ fkni ||
 @ fkar && alias o="xdg-open"
 @ fk10 && alias o="wslview"

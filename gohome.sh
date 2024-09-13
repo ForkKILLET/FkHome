@@ -22,6 +22,11 @@ EE "# Checking CLI config"
 	export _GOHOME_GITHUB_PREFIX="https://ghproxy.com/"
 }
 
+[[ -n "$PROXYCMD" ]] && {
+	E "    * Using proxy command '$PROXYCMD'."
+	export _PROXY_PREFIX="$PROXYCMD "
+}
+
 EE "# Constructing dirctories"
 mkdir -p ~/{src,bin,res}
 
@@ -38,12 +43,16 @@ source .zshrc
 EE "# Installing oh-my-zsh?"
 $QB
 	E "    * omz"
-	git clone "${_GOHOME_GITHUB_PREFIX}https://github.undefined.moe/robbyrussell/oh-my-zsh.git" $ZSH
+	if [[ ! -d $ZSH ]]; then
+		${_PROXY_PREFIX}git clone "${_GOHOME_GITHUB_PREFIX}https://github.com/robbyrussell/oh-my-zsh.git" $ZSH
+	else
+		E "      (skipped)"
+	fi
 
 	cd $ZSH/custom/plugins
 
 	E "    * plugin: zsh-syntax-highlighting"
-	git clone "${_GOHOME_GITHUB_PREFIX}https://github.undefined.moe/zsh-users/zsh-syntax-highlighting.git"
+	${_PROXY_PREFIX}git clone "${_GOHOME_GITHUB_PREFIX}https://github.com/zsh-users/zsh-syntax-highlighting.git"
 
 	cd ~/_
 $QE
@@ -56,7 +65,7 @@ $QE
 
 EE "# Initializing submodules?"
 $QB
-	git submodule update --init --recursive
+	${_PROXY_PREFIX}git submodule update --init --recursive
 $QE
 
 EE "# Calling Vim?"
