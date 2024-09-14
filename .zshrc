@@ -49,7 +49,7 @@ touch ~/_/identity
 ID=$(cat ~/_/identity)
 ID=${ID:-temp}
 case $ID in
-	fkar|v.ps|fk10|fkos-xj|fkte|xxer|pihc|fkni)
+	fkar|v.ps|fk10|fkte|pihc|fkni)
 		;;
 	temp)
 		echo "[dash] Temporary identity"
@@ -71,6 +71,7 @@ esac
 ## ENV {{{
 
 			export H="$HOME"
+			export XDG_DATA_HOME="${XDG_DATA_HOME:-$H}"
 
 @ xxer &&	export LD_LIBRARY_PATH=/data/data/com.termux/files/usr/lib/openssl-1.1
 
@@ -219,9 +220,8 @@ __comp_cargo() {
 
 @ fk10 && alias bat=batcat
 has-cmd bat || alias bat=cat
-@ fkar && alias px="proxychains5 -q"
-@ fkni && alias px="proxychains4 -q"
-@ fkni && alias sudopx="sudo proxychains4 -q"
+has-cmd proxychains5 alias px="proxychains5 -q"
+has-cmd proxychains4 && alias px="proxychains4 -q"
 
 # CLI UNIFIED NAME }}}
 
