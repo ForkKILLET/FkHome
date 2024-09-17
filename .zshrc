@@ -239,7 +239,7 @@ has-cmd proxychains4 && alias px="proxychains4 -q"
 		rehash
 	}
 	nbp () {
-		sudo env ALL_PROXY=${PROXY_HTTP} HTTP_PROXY=${PROXY_HTTP} HTTPS_PROXY=${PROXY_HTTP} nixos-rebuild switch $@
+		sudo proxychains4 nixos-rebuild switch $@
 		rehash
 	}
 	nbd () {

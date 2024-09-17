@@ -35,6 +35,7 @@ let packages = {
     tree
     postgresql
     jq
+    unrar-wrapper
   ];
 
   clangPkgs = [
@@ -70,7 +71,7 @@ let packages = {
     google-chrome
     telegram-desktop
     zotero
-    discord-canary
+    # discord-canary
     vlc
     netease-cloud-music-gtk
     libreoffice

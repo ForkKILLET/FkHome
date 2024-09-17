@@ -29,6 +29,8 @@
 
   programs.adb.enable = true;
 
+  programs.kdeconnect.enable = true;
+
   services.static-web-server = {
     enable = false;
     listen = "[::]:1627";

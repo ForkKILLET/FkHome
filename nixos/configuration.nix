@@ -41,11 +41,11 @@
 
   # Generation GC
   nix.optimise.automatic = true;
-  nix.gc = {
-    automatic = true;
-    dates = "daily";
-    options = "--delete-older-than 7d";
-  };
+  # nix.gc = {
+  #   automatic = true;
+  #   dates = "daily";
+  #   options = "--delete-older-than 7d";
+  # };
 
   # Nix settings
   nix.settings = {

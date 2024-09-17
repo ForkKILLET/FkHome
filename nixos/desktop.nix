@@ -49,6 +49,7 @@
       noto-fonts-emoji
       wqy_microhei
       (nerdfonts.override { fonts = [ "FiraCode" ]; })
+      sarasa-gothic
       ipafont # Japanese fonts
     ];
     fontDir.enable = true;
