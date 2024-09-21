@@ -22,7 +22,7 @@ in {
       endpoint = "genshin.asm.ms:13231";
     in {
       wg0 = {
-        ips = [ "10.0.0.5/24" ];
+        ips = [ "10.0.6.0/8" ];
         listenPort = 51820;
         privateKeyFile = "${user.home}/log/log-wireguard-private";
         peers = [

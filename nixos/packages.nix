@@ -77,7 +77,7 @@ let packages = {
     libreoffice
     lightspark
     obs-studio
-    nur.repos.linyinfeng.wemeet
+    # nur.repos.linyinfeng.wemeet
   ] ++ (with kdePackages; [
     kolourpaint
     partitionmanager
