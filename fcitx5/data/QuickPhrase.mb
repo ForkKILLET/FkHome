@@ -1,19 +1,24 @@
 # vim: ft=config
-# Logic
+# Latex
 
-\lceil		⌈
-\rceil		⌉
-\lfloor		⌊
-\rfloor		⌋
-\neg		¬
-\lor		∨
-\land		∧
-\iff		⇔
-\implies	⇒
-\<=>		⇔
-\=>			⇒
-\<=			⇐
+\lceil					⌈
+\rceil					⌉
+\lfloor					⌊
+\rfloor					⌋
+\neg					¬
+\lor					∨
+\land					∧
+\iff					⇔
+\implies				⇒
+\<=>					⇔
+\=>						⇒
+\<=						⇐
 
 # Emoji
 
-:loudly_crying_face: 😭
+:loudly_crying_face:	😭
+:red_angry:				😡
+
+# Identity
+
+,sid					202400800269

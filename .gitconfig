@@ -44,6 +44,7 @@
 	rem	= remote										# REMote
 	ig	= !vim ./.gitignore && git a .gitignore			# IGnore
 	rh	= reset --hard									# Reset Hard
+	re	= reset --hard HEAD@{1}							# REdo
 	r	= rebase										# Rebase
 	ri	= rebase -i										# Rebase Interactive
 	rc	= rebase --continue								# Rebase Continue
@@ -60,4 +61,4 @@
 [diff]
     colorMoved = default
 [commit]
-	#gpgsign = true
+	gpgsign = true

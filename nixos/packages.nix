@@ -36,6 +36,10 @@ let packages = {
     postgresql
     jq
     unrar-wrapper
+    pandoc
+    djvu2pdf
+    nushell
+    screen
   ];
 
   clangPkgs = [
@@ -78,6 +82,7 @@ let packages = {
     lightspark
     obs-studio
     # nur.repos.linyinfeng.wemeet
+    typora
   ] ++ (with kdePackages; [
     kolourpaint
     partitionmanager

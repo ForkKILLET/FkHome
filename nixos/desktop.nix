@@ -44,8 +44,8 @@
   # Fonts
   fonts = {
     packages = with pkgs; [
-      noto-fonts
-      noto-fonts-cjk
+      noto-fonts-cjk-sans
+      noto-fonts-cjk-serif
       noto-fonts-emoji
       wqy_microhei
       (nerdfonts.override { fonts = [ "FiraCode" ]; })
@@ -57,9 +57,9 @@
       enable = true;
       defaultFonts = {
         emoji = [ "Noto Color Emoji" ];
-        monospace = [ "Source Han Mono" ];
+        monospace = [ "FiraCode Nerd Font Mono" ];
         sansSerif = [ "Noto Sans CJK SC" ];
-        serif = [ "Source Han Serif" ];
+        serif = [ "Noto Serif CJK SC" ];
       };
     };
     enableDefaultPackages = true;

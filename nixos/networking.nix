@@ -5,17 +5,7 @@ in {
     hostName = "fkni";
     networkmanager.enable = true;
 
-    firewall = {
-      enable = false;
-      allowedTCPPorts = [
-        80
-        443
-        8081 # Expo Go
-      ];
-      allowedUDPPorts = [
-        51820 # Wireguard
-      ];
-    };
+    firewall.enable = false;
 
     wireguard.interfaces = let
       publicKey = "q+J/pOvfzgJMQxGdxL0w1i06z+Qz798yzKr8xU6nK1g=";

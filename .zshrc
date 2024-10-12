@@ -217,8 +217,11 @@ __comp_cargo() {
 
 # CLI UNIFIED NAME {{{
 
-@ fk10 && alias bat=batcat
 has-cmd bat || alias bat=cat
+has-cmd batcat && alias bat=batcat
+bwhich () {
+	which $1 | bat -l zsh
+}
 has-cmd proxychains5 alias px="proxychains5 -q"
 has-cmd proxychains4 && alias px="proxychains4 -q"
 
@@ -238,7 +241,7 @@ has-cmd proxychains4 && alias px="proxychains4 -q"
 		rehash
 	}
 	nbp () {
-		sudo proxychains4 nixos-rebuild switch $@
+		sudo HTTP_PROXY="${PROXY_HTTP}" HTTPS_PROXY="${PROXY_HTTP}" nixos-rebuild switch $@
 		rehash
 	}
 	nbd () {
@@ -370,6 +373,9 @@ cddl () {
 	@ fkte && cd "$H/downloads"
 	return 0
 }
+cdda () {
+	cd "$H/_/2fa"
+}
 
 rnnp () { # ReName: No Parens
 	local name="$(echo "$1" | sed -e 's/ *([0-9]*)//g')"
@@ -416,19 +422,19 @@ cds () {
 		wbl)	d=willbot-legacy						;;
 
 		il)		d=IceLava								;;
-		it)		d=IceLava/Top							;	p=1628						;;
-		mt)		d=IceLava/Top/MazeTest					;	p=1635						;;
+		it)		d=IceLavaTop							;	p=1628						;;
+		mt)		d=IceLavaTop/MazeTest					;	p=1635						;;
 		ib)		d=IceLava/Bottom						;;
-		id)		d=IceLava/Top/FkData					;;
-		tpe)	d=IceLava/Top/TrolleyProblemEmulator	;	p=1636/docs/?debug=1		;;
-		tped)	d=IceLava/Top/TrolleyProblemEmulator	;	p=1636/docs/debug?debug=1	;;
-		hwn)	d=IceLava/Top/HardWayNazo				;	p=1631						;;
-		jc)		d=IceLava/Top/JCer						;;
+		id)		d=IceLavaTop/FkData					;;
+		tpe)	d=IceLavaTop/TrolleyProblemEmulator	;	p=1636/docs/?debug=1		;;
+		tped)	d=IceLavaTop/TrolleyProblemEmulator	;	p=1636/docs/debug?debug=1	;;
+		hwn)	d=IceLavaTop/HardWayNazo				;	p=1631						;;
+		jc)		d=IceLavaTop/JCer						;;
 
 		nd)		d=NyaDict								;;
 
-		som)	d=IceLava/Top/SudoerOfMyself			;	p=1637/docs					;;
-		somos)	d=IceLava/Top/SudoerOfMyself/SOMOS		;;
+		som)	d=IceLavaTop/SudoerOfMyself				;	p=1637/docs					;;
+		somos)	d=IceLavaTop/SudoerOfMyself/SOMOS		;;
 
 		c)		d=cpp									;;
 
@@ -442,6 +448,8 @@ cds () {
 		pob)	d=piterator/oierspace-cli-bag			;;
 
 		soap)	d=py/StackOverflowAnalyseProgram		;;
+
+		pc)		d=parsecond								;;
 
 		u)		d=userscript							;;
 		ua)		d=userscript/all						;;
@@ -480,7 +488,7 @@ cds () {
 has-cmd compdef && compdef __comp_cds cds
 __comp_cds () {
 	local sources=($(which cds | grep -o '([^*]*)' | tr -d '()'))
-	_values $sources
+	_values sources $sources
 }
 
 ### CDS }}}
@@ -546,14 +554,18 @@ log () {
 		;;
 		*)
 			local cmd=vim
+			local post=
 			if [[ $1 = -b || $1 = --bat ]]; then
 				shift
 				cmd="bat -l markdown"
 			elif [[ $1 = -c || $1 = --code  ]]; then
 				shift
 				cmd=code
+			elif [[ $1 = -T || $1 == --typora ]]; then
+				shift
+				cmd='nohup typora'
+				post=" > /dev/null 2>&1 &"
 			fi
-
 			local name="$1"
 			if [[ $1 =~ ^[0-9]+$ ]]; then
 				name="log-$(date -d "$1 day ago" +%Y%m%d)"
@@ -561,7 +573,7 @@ log () {
 				name="log-$(date +%Y%m%d)"
 			fi
 
-			eval "$cmd $H/log/$name"
+			eval "$cmd $H/log/$name $post"
 		;;
 	esac
 	return 0
@@ -584,6 +596,7 @@ __comp_log () {
 				{-t,--traverse}"[traverse all logs]:option:->TRAVERSE" \
 				{-b,--bat}"[bat a log]:$files" \
 				{-c,--code}"[open a log with Code]:$files" \
+				{-T,--typora}"[open a log with Typora]:$files" \
 				"$dft_files"
 			;;
 	esac
@@ -617,17 +630,18 @@ ve () {
 
 ## VIM }}}
 
-## HOST {{{
+## CODE {{{
 
-host-ban () {
-	sudo sed -i "1i\\0.0.0.0 $1" /etc/hosts
-	return 0
+codew () {
+	code ~/src/workspaces/$1
 }
-host-unban () {
-	return 1
+has-cmd compdef && compdef __comp_codew codew
+__comp_codew () {
+	local workspaces=($(ls ~/src/workspaces))
+	_values workspaces $workspaces
 }
 
-## HOST }}}
+## CODE }}}
 
 # CUSTOM COMMAND }}}
 
@@ -719,8 +733,7 @@ has-cmd xdg-icon-resource && has-cmd icotool && has-cmd awk && xicoinstall () {
 		echo '[dash] Creating log'
 		touch "$H/log/log-$today"
 
-		echo '[dash] Updating dash'
-		fk u
+		yn '[dash] Updating dash?' && fk u
 	}
 }
 
