@@ -155,8 +155,9 @@ TRAPUSR1() { rehash }
 
 autoload -U colors && colors
 [[ $USER = root ]] && PS1_ROOT=' [root]'
-export PS1_NORMAL="%F{167}[%D{%H:%M:%S}] %F{46}%~ %F{214}$ID %F{99}Ψ$PS1_ROOT%f "
-export PS1_SHORT="%F{167}[%D{%H:%M:%S}] %F{214}$ID %F{99}Ψ$PS1_ROOT%f "
+w fkhk && export PS1_SYMBOL=">" || export PS1_SYMBOL="Ψ"
+export PS1_NORMAL="%F{167}[%D{%H:%M:%S}] %F{46}%~ %F{214}$ID %F{99}$PS1_SYMBOL$PS1_ROOT%f "
+export PS1_SHORT="%F{167}[%D{%H:%M:%S}] %F{214}$ID %F{99}$PS1_SYMBOL$PS1_ROOT%f "
 prompt () {
 	case $1 in
 		n|normal)	export PS1="$PS1_NORMAL"	;;
@@ -251,7 +252,7 @@ has-cmd proxychains4 && alias px="proxychains4 -q"
 	}
 }
 
-# NIX }}
+# NIX }}}
 
 # CUSTOM COMMAND {{{
 
@@ -609,6 +610,14 @@ __comp_log () {
 alias g="git"
 
 ## GIT }}}
+
+## DOCKER {{{
+
+alias dr="sudo systemctl daemon-reload && sudo systemctl restart docker"
+alias d="sudo docker"
+alias dc="sudo docker compose"
+
+## DOCKER }}}
 
 ## VIM {{{
 
