@@ -106,14 +106,8 @@ esac
 
 ## PATH {{{
 
-[[ -z "$FK_PATH" ]] && {
-	FK_PATH=RESET
-	PATH_ORI="$PATH"
-}
-[[ "$FK_PATH" = RESET ]] && {
-	export PATH="$PATH_ORI:$H/bin:$H/.local/bin:$JAVA_HOME/bin:$CARGO_HOME/bin:$PNPM_HOME:$AYA_PREFIX/bin"
-	FK_PATH=UPDATED
-}
+[[ -z "$OLD_PATH" ]] && export OLD_PATH="$PATH"
+export PATH="$OLD_PATH:$H/bin:$H/.local/bin:$JAVA_HOME/bin:$CARGO_HOME/bin:$PNPM_HOME:$AYA_PREFIX/bin:$H/bin/npm/bin"
 
 ## PATH }}}
 
@@ -155,7 +149,7 @@ TRAPUSR1() { rehash }
 
 autoload -U colors && colors
 [[ $USER = root ]] && PS1_ROOT=' [root]'
-w fkhk && export PS1_SYMBOL=">" || export PS1_SYMBOL="Ψ"
+@ fkhk && export PS1_SYMBOL=">" || export PS1_SYMBOL="Ψ"
 export PS1_NORMAL="%F{167}[%D{%H:%M:%S}] %F{46}%~ %F{214}$ID %F{99}$PS1_SYMBOL$PS1_ROOT%f "
 export PS1_SHORT="%F{167}[%D{%H:%M:%S}] %F{214}$ID %F{99}$PS1_SYMBOL$PS1_ROOT%f "
 prompt () {
@@ -223,7 +217,7 @@ has-cmd batcat && alias bat=batcat
 bwhich () {
 	which $1 | bat -l zsh
 }
-has-cmd proxychains5 alias px="proxychains5 -q"
+has-cmd proxychains5 && alias px="proxychains5 -q"
 has-cmd proxychains4 && alias px="proxychains4 -q"
 
 # CLI UNIFIED NAME }}}
@@ -264,18 +258,22 @@ gohome () {
 	return 0
 }
 
+update-dash () {
+	echo '[dash] Updating dash...'
+	cd $H/_
+	git pull
+}
+
 ## FORKKILLET {{{
 
 fk () {
 	local f="$H/.zshrc"
 	case "$1" in
-		u)	cd $H/_; git pull; fk s		;;
+		u)	update-dash && fk s			;;
 		s)	. $f						;;
 		v)	vim $f						;;
 		vs) vs $f; @ fkar && rehash		;;
-		S)	FK_PATH=RESET; fk s			;;
-		vS) FK_PATH=RESET; fk vs		;;
-		i)	FK_INIT=INIT; fk s			;;
+		i)	FK_INIT=INIT fk s			;;
 
 		*)	echo "@ $ID"
 	esac
@@ -742,7 +740,7 @@ has-cmd xdg-icon-resource && has-cmd icotool && has-cmd awk && xicoinstall () {
 		echo '[dash] Creating log'
 		touch "$H/log/log-$today"
 
-		yn '[dash] Updating dash?' && fk u
+		yn '[dash] Update dash?' && fk u
 	}
 }
 

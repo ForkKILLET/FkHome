@@ -1,5 +1,5 @@
 { pkgs, ... }: {
-  # virtualisation.docker.enable = true;
+  virtualisation.virtualbox.host.enable = true;
 
   programs.nix-ld = {
     enable = true;
@@ -17,7 +17,7 @@
 
   programs.steam = {
     enable = true;
-    fontPackages = with pkgs; [ noto-fonts-cjk ];
+    fontPackages = with pkgs; [ noto-fonts-cjk-sans ];
   };
 
   programs.zsh.enable = true;

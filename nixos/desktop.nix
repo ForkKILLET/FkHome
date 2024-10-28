@@ -50,6 +50,7 @@
       wqy_microhei
       (nerdfonts.override { fonts = [ "FiraCode" ]; })
       sarasa-gothic
+      jetbrains-mono
       ipafont # Japanese fonts
     ];
     fontDir.enable = true;

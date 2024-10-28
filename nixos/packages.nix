@@ -42,6 +42,10 @@ let packages = {
     screen
   ];
 
+  mcuPackages = [
+    sdcc   
+  ];
+
   clangPkgs = [
     gcc
     gdb
@@ -57,6 +61,7 @@ let packages = {
   haskellPkgs = with haskellPackages; [
     ghc
     haskell-language-server
+    stack
   ];
 
   rustPkgs = [
@@ -75,15 +80,15 @@ let packages = {
     google-chrome
     telegram-desktop
     zotero
-    # discord-canary
+    discord-canary
     vlc
     netease-cloud-music-gtk
     libreoffice
     lightspark
     obs-studio
-    # nur.repos.linyinfeng.wemeet
     typora
   ] ++ (with kdePackages; [
+    qtbase
     kolourpaint
     partitionmanager
     filelight
