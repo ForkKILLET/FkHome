@@ -14,6 +14,23 @@
 \=>						⇒
 \<=						⇐
 
+# Latex Raw
+
+\ba						\\begin{align}
+\ea						\\end{align}
+\bd						\\begin{aligned}
+\ed						\\end{aligned}
+\bea					\\begin{align}\n\\end{align}
+\bed					\\begin{aligned}\n\\end{aligned}
+\ncd					\\newcommand{\\d}{\\mathrm d}
+\d						\\mathrm d
+\dydx					\\frac{\\mathrm dy}{\\mathrm dx}
+\dudx					\\frac{\\mathrm du}{\\mathrm dx}
+\yx						\\frac{y}{x}
+\ddx					\\frac{\\mathrm d}{\\mathrm dx}
+\()						\\left(  \\right)
+\||						\\left|  \\right|
+
 # Emoji
 
 :loudly_crying_face:	😭
@@ -22,3 +39,4 @@
 # Identity
 
 ,sid					202400800269
+,bb						https://live.bilibili.com/1729543274

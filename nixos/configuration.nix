@@ -31,7 +31,7 @@
   users.users.forkkillet = {
     isNormalUser = true;
     description = "Fork Killet";
-    extraGroups = [ "networkmanager" "wheel" "kvm" "adbusers" "vboxusers" ];
+    extraGroups = [ "networkmanager" "wheel" "kvm" "adbusers" "vboxusers" "dialout" ];
   };
   users.defaultUserShell = pkgs.zsh;
   security.sudo.wheelNeedsPassword = false;

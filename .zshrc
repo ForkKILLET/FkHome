@@ -102,6 +102,10 @@ esac
 
 @ fkar &&	[[ -f "$CARGO_HOME/env" ]] && source "$CARGO_HOME/env"
 
+for completion in ~/_/completions/*.zsh; do
+	source $completion
+done
+
 ## ENV }}}
 
 ## PATH {{{
@@ -205,8 +209,6 @@ __comp_cargo() {
 }
 
 [[ -f ~/.config/broot/launcher/bash/br ]] && source ~/.config/broot/launcher/bash/br || true
-
-[[ -f ~/.config/tabtab/zsh/__tabtab.zsh ]] && source ~/.config/tabtab/zsh/__tabtab.zsh || true
 
 # CLI TOOLS SETUP }}}
 
@@ -637,6 +639,26 @@ ve () {
 
 ## VIM }}}
 
+## KOISHI {{{
+
+cw () {
+	cd external/w-$1
+}
+has-cmd compdef && compdef __comp_cw cw
+__comp_cw () {
+	if [[ ! -d ./external ]]; then
+		return 1
+	fi
+	local workspaces=($(ls ./external | awk '{printf substr($1, 3) " " }'))
+	_values workspaces $workspaces
+}
+
+cr () {
+	while [[ ! -f package.json && "$(pwd)" != / ]]; do cd ..; done
+}
+
+## }}}
+
 ## CODE {{{
 
 codew () {
@@ -696,7 +718,7 @@ export XMODIFIERS=@im=fcitx
 
 has-cmd xclip && {
 	xcopy () {
-		echo $@ | xclip -selection c
+		echo -n $@ | xclip -selection c
 		return 0
 	}
 }

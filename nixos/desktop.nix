@@ -11,9 +11,17 @@
     };
   };
 
+  # To fix KDE taskbar scale problems in X11.
+  # <https://www.reddit.com/r/kde/comments/xk4r83/kde_display_scale_200_x11_taskbar_stays_the_same/>
+  environment.sessionVariables = {
+    PLASMA_USE_QT_SCALING = "1";
+  };
 
-  # Enable the KDE Plasma Desktop Environment.
-  services.displayManager.sddm.enable = true;
+  # Enable the KDE Plasma Desktop Environment, with the default session set to X11.
+  services.displayManager = {
+    sddm.enable = true;
+    defaultSession = "plasmax11";
+  };
   services.desktopManager.plasma6.enable = true;
 
   # Enable CUPS to print documents.
@@ -26,6 +34,7 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
+    jack.enable = true;
   };
 
   # IME

@@ -40,6 +40,7 @@ let packages = {
     djvu2pdf
     nushell
     screen
+    p7zip
   ];
 
   mcuPackages = [
@@ -50,10 +51,11 @@ let packages = {
     gcc
     gdb
     cmake
+    gnumake
   ];
 
   javascriptPkgs = [
-    nodejs
+    nodejs-slim_latest
     pnpm
     yarn
   ];
@@ -73,27 +75,40 @@ let packages = {
   ];
 
   desktopPkgs = [
+    nur.repos.linyinfeng.wemeet
     xclip
     desktop-file-utils
     vscode
     qq
     google-chrome
+    microsoft-edge
     telegram-desktop
     zotero
     discord-canary
-    vlc
     netease-cloud-music-gtk
     libreoffice
     lightspark
-    obs-studio
-    typora
+    aseprite
   ] ++ (with kdePackages; [
-    qtbase
     kolourpaint
     partitionmanager
     filelight
     kdenlive
+    kmail
+    accounts-qt
+    kmail-account-wizard
+    krita
+    kalendar
   ]);
+
+  videoAndAudioPkgs = [
+    obs-studio
+    vlc
+    peek
+
+    helvum
+    qpwgraph
+  ];
 
   gamePkgs = [
     prismlauncher
@@ -104,6 +119,15 @@ let packages = {
     wineWowPackages.waylandFull
     winetricks
     samba
+  ];
+
+  carPkgs = [
+    socat
+  ];
+
+  notePkgs = [
+    typst
+    typora
   ];
 };
 in {

@@ -10,7 +10,7 @@
 
     initrd.availableKernelModules = [ "nvme" "xhci_pci" "usb_storage" "usbhid" "sd_mod" ];
     initrd.kernelModules = [ "amdgpu" ];
-    kernelModules = [ "kvm-amd" ];
+    kernelModules = [ "kvm-amd" "snd-aloop" ];
     extraModulePackages = [ ];
   };
 
