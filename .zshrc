@@ -178,10 +178,9 @@ bindkey '\e[1;5D' backward-word		# ctrl left
 ## HISTORY {{{
 
 @ fkni ||
-@ fkar &&	[[ $SHELL = /bin/zsh ]] && export HISTFILE="$H/log/log-hist"
-			[[ $SHELL = /bin/bash ]] && export HISTFILE="$H/log/log-hist-bash"
-			export HISTFILESIZE=1000000
-			export HISTSIZE=1000000
+@ fkar &&	[[ $SHELL = /bin/zsh ]] && export HISTFILE="$H/log/hist"
+			export HISTFILESIZE=10000000
+			export HISTSIZE=10000000
 			export SAVEHIST=$HISTSIZE
 
 ## HISTORY }}}
@@ -236,6 +235,11 @@ has-cmd proxychains4 && alias px="proxychains4 -q"
 	nb () {
 		sudo nixos-rebuild switch $@
 		rehash
+	}
+	nb.() {
+		NIXPKGS_ALLOW_UNFREE=1 nix-build -E \
+			'((import <nixpkgs> {}).callPackage (import ./default.nix) {})' \
+			--keep-failed --no-out-link
 	}
 	nbp () {
 		sudo HTTP_PROXY="${PROXY_HTTP}" HTTPS_PROXY="${PROXY_HTTP}" nixos-rebuild switch $@
@@ -507,7 +511,7 @@ rmswp () {
 	return 0
 }
 rmd () {
-	mv "$1" "$H/.trash/$2"
+	mv "$1" "$H/rbin/$2"
 	return 0
 }
 
@@ -529,7 +533,7 @@ log () {
 			shift
 			local rev
 			[[ $1 = -r || $1 = --reversed ]] && rev=-r
-			for file in $(ls $rev ~/log | rg log-); do
+			for file in $(ls $rev ~/log); do
 				div -s
 				yn "Bat <$file> ?" && {
 					div -s;
@@ -569,9 +573,9 @@ log () {
 			fi
 			local name="$1"
 			if [[ $1 =~ ^[0-9]+$ ]]; then
-				name="log-$(date -d "$1 day ago" +%Y%m%d)"
+				name="$(date -d "$1 day ago" +%Y%m%d)"
 			elif [[ -z "$1" ]]; then
-				name="log-$(date +%Y%m%d)"
+				name="$(date +%Y%m%d)"
 			fi
 
 			eval "$cmd $H/log/$name $post"
@@ -581,7 +585,7 @@ log () {
 }
 has-cmd compdef && compdef __comp_log log
 __comp_log () {
-	local files="files:_path_files -W $H/log -g 'log-*'"
+	local files="files:_path_files -W $H/log -g '*'"
 	local dft_files="*:$files"
 	case "$state" in
 		TRAVERSE) _arguments \
@@ -756,11 +760,11 @@ has-cmd xdg-icon-resource && has-cmd icotool && has-cmd awk && xicoinstall () {
 @ fkni ||
 @ fkar && {
 	local today=$(date +%Y%m%d)
-	[[ -z "$FK_INIT" && (-f "$H/log/log-$today" || "$TERM" = linux) ]] || {
+	[[ -z "$FK_INIT" && (-f "$H/log/$today" || "$TERM" = linux) ]] || {
 		FK_INIT=
 
 		echo '[dash] Creating log'
-		touch "$H/log/log-$today"
+		touch "$H/log/$today"
 
 		yn '[dash] Update dash?' && fk u
 	}
@@ -774,11 +778,11 @@ has-cmd xdg-icon-resource && has-cmd icotool && has-cmd awk && xicoinstall () {
 	}
 
 	local today=$(date +%Y%m%d)
-	[[ -z "$FK_INIT" && (-f "$H/log/log-$today" || "$TERM" = linux) ]] || {
+	[[ -z "$FK_INIT" && (-f "$H/log/$today" || "$TERM" = linux) ]] || {
 		FK_INIT=
 
 		echo '[dash] Creating log'
-		touch "$H/log/log-$today"
+		touch "$H/log/$today"
 
 		# write_host
 	}

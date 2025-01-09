@@ -14,7 +14,7 @@ in {
       wg0 = {
         ips = [ "10.0.6.0/8" ];
         listenPort = 51820;
-        privateKeyFile = "${user.home}/.config/wireguard/log-wireguard-private";
+        privateKeyFile = "${user.home}/.config/wireguard/wireguard-private.txt";
         peers = [
           {
             inherit publicKey;

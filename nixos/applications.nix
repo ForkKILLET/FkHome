@@ -16,7 +16,7 @@
   programs.firefox.enable = true;
 
   programs.steam = {
-    enable = true;
+    # enable = true;
     fontPackages = with pkgs; [ noto-fonts-cjk-sans ];
   };
 

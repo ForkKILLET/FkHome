@@ -25,6 +25,7 @@
 \ncd					\\newcommand{\\d}{\\mathrm d}
 \d						\\mathrm d
 \dydx					\\frac{\\mathrm dy}{\\mathrm dx}
+\dtdx					\\frac{\\mathrm dt}{\\mathrm dx}
 \dudx					\\frac{\\mathrm du}{\\mathrm dx}
 \yx						\\frac{y}{x}
 \ddx					\\frac{\\mathrm d}{\\mathrm dx}

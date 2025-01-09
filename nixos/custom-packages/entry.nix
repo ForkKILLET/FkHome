@@ -3,7 +3,7 @@
     nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {
       inherit pkgs;
     };
-    olympus = callPackage ./olympus/package.nix {};
-    baidunetdisk = callPackage ./baidunetdisk/package.nix {};
+    olympus = callPackage ./olympus/default.nix {};
+    baidunetdisk = callPackage ./baidunetdisk/default.nix {};
   };
 }

@@ -23,7 +23,6 @@ let packages = {
     bottom
     procs
     httpie
-    dog
     broot
     wakatime-cli
     tokei
@@ -41,6 +40,14 @@ let packages = {
     nushell
     screen
     p7zip
+    rlwrap
+    rename
+  ];
+
+  packagePackages = [
+    nix-index
+    dpkg
+    patchelf
   ];
 
   mcuPackages = [
@@ -89,6 +96,7 @@ let packages = {
     libreoffice
     lightspark
     aseprite
+    baidunetdisk
   ] ++ (with kdePackages; [
     kolourpaint
     partitionmanager
@@ -96,6 +104,7 @@ let packages = {
     kdenlive
     kmail
     accounts-qt
+    qtbase
     kmail-account-wizard
     krita
     kalendar
@@ -128,6 +137,7 @@ let packages = {
   notePkgs = [
     typst
     typora
+    texliveFull
   ];
 };
 in {

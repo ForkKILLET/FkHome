@@ -57,7 +57,7 @@
       noto-fonts-cjk-serif
       noto-fonts-emoji
       wqy_microhei
-      (nerdfonts.override { fonts = [ "FiraCode" ]; })
+      nerd-fonts.fira-code
       sarasa-gothic
       jetbrains-mono
       ipafont # Japanese fonts
