@@ -227,7 +227,7 @@ has-cmd proxychains4 && alias px="proxychains4 -q"
 
 @ fkni && {
 	ne () {
-		vim /etc/nixos/configuration.nix
+		vim /etc/nixos/${1:-configuration}.nix
 	}
 	nec () {
 		code -n ~/_/nixos
@@ -442,6 +442,7 @@ cds () {
 		somos)	d=IceLavaTop/SudoerOfMyself/SOMOS		;;
 
 		c)		d=cpp									;;
+		cl)		d=cpp/learn								;;
 
 		r)		d=rust									;;
 		rs)		d=rust/switchy							;;
@@ -572,7 +573,7 @@ log () {
 				post=" > /dev/null 2>&1 &"
 			fi
 			local name="$1"
-			if [[ $1 =~ ^[0-9]+$ ]]; then
+			if [[ $1 =~ ^[1-9][0-9]*$ ]]; then
 				name="$(date -d "$1 day ago" +%Y%m%d)"
 			elif [[ -z "$1" ]]; then
 				name="$(date +%Y%m%d)"
@@ -722,19 +723,26 @@ export XMODIFIERS=@im=fcitx
 
 has-cmd xclip && {
 	xcopy () {
-		echo -n $@ | xclip -selection c
-		return 0
+		cat - | xclip -selection c
+	}
+	xpaste() {
+		xclip -selection c -o
 	}
 }
 
 2fa () {
-	local output="$(node ~/_/2fa)"
-	has-cmd xclip && {
-		echo "$output" | awk '{print $2}' | xclip -selection c
+	local output="$(node ~/_/2fa $@)"
+	has-cmd xcopy && {
+		echo "$output" | grep -oP '(?<=<)\d{6}(?=>)' | xcopy
 		echo "$output", copied to clipboard.
 	} || {
 		echo "$output"
 	}
+}
+has-cmd compdef && compdef __comp_2fa 2fa
+__comp_2fa () {
+	local files=($(ls ~/_/2fa/*.2fa | xargs -n1 basename -s .2fa))
+	_values 2fa-files $files
 }
 
 has-cmd xdg-icon-resource && has-cmd icotool && has-cmd awk && xicoinstall () {

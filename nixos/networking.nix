@@ -1,5 +1,5 @@
-{ pkgs, config, ... }: let
-  user = config.users.users.forkkillet;
+{ pkgs, config, ... }:
+let user = config.users.users.forkkillet;
 in {
   networking = {
     hostName = "fkni";

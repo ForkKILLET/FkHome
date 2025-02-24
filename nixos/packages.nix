@@ -7,6 +7,7 @@ let packages = {
     git
     gh
     vim
+    neovim
     lsd
     fzf
     zip
@@ -42,6 +43,9 @@ let packages = {
     p7zip
     rlwrap
     rename
+    bc
+    ngrok
+    nh
   ];
 
   packagePackages = [
@@ -51,26 +55,37 @@ let packages = {
   ];
 
   mcuPackages = [
-    sdcc   
+    sdcc
+    openmv-ide-bin
   ];
 
   clangPkgs = [
     gcc
     gdb
+    clang
+    clang-tools
     cmake
     gnumake
   ];
 
-  javascriptPkgs = [
-    nodejs-slim_latest
+  javascriptPkgs = with nodePackages; [
+    nodejs_latest
     pnpm
     yarn
+
+    tsun
+    node-gyp
   ];
 
   haskellPkgs = with haskellPackages; [
     ghc
     haskell-language-server
     stack
+    Agda
+  ];
+
+  racketPkgs = [
+    racket
   ];
 
   rustPkgs = [
@@ -82,7 +97,7 @@ let packages = {
   ];
 
   desktopPkgs = [
-    nur.repos.linyinfeng.wemeet
+    xorg.xkbcomp
     xclip
     desktop-file-utils
     vscode
@@ -94,9 +109,10 @@ let packages = {
     discord-canary
     netease-cloud-music-gtk
     libreoffice
-    lightspark
-    aseprite
+    # lightspark
+    # aseprite
     baidunetdisk
+    nur.repos.linyinfeng.wemeet
   ] ++ (with kdePackages; [
     kolourpaint
     partitionmanager
@@ -106,7 +122,7 @@ let packages = {
     accounts-qt
     qtbase
     kmail-account-wizard
-    krita
+    # krita
     kalendar
   ]);
 
@@ -125,13 +141,8 @@ let packages = {
   ];
 
   winePkgs = [
-    wineWowPackages.waylandFull
     winetricks
     samba
-  ];
-
-  carPkgs = [
-    socat
   ];
 
   notePkgs = [

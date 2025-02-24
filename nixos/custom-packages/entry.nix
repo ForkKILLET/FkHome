@@ -5,5 +5,6 @@
     };
     olympus = callPackage ./olympus/default.nix {};
     baidunetdisk = callPackage ./baidunetdisk/default.nix {};
+    openmv-ide-bin = callPackage ./openmv-ide-bin/default.nix {};
   };
 }

@@ -1,6 +1,10 @@
 { pkgs, ... }: {
   virtualisation.virtualbox.host.enable = true;
 
+  services.udev.packages = with pkgs; [
+    openmv-ide-bin
+  ];
+
   programs.nix-ld = {
     enable = true;
     package = pkgs.nix-ld-rs;
@@ -16,7 +20,7 @@
   programs.firefox.enable = true;
 
   programs.steam = {
-    # enable = true;
+    enable = true;
     fontPackages = with pkgs; [ noto-fonts-cjk-sans ];
   };
 
@@ -31,12 +35,17 @@
 
   programs.kdeconnect.enable = true;
 
-  services.static-web-server = {
+  services.open-webui = {
     enable = false;
-    listen = "[::]:1627";
-    root = "/var/www/forkkillet";
-    configuration = {
-      directory-listing = false;
+    port = 4242;
+    host = "0.0.0.0";
+    openFirewall = false;
+    environment = {
+        DATA_DIR = "/data/open-webui";
+        ANONYMIZED_TELEMETRY = "False";
+        DO_NOT_TRACK = "True";
+        SCARF_NO_ANALYTICS = "True";
+        WEBUI_AUTH = "False";
     };
   };
 }
