@@ -81,7 +81,7 @@ in pkgs.stdenv.mkDerivation rec {
     ln -s $out/opt/${app}/bin/${bin} $out/bin/${bin}
 
     # share
-    _install 644 share/qtcreator
+    _install 755 share/qtcreator
     
     # metainfo
     _install 644 share/metainfo/

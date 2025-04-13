@@ -16,7 +16,7 @@ let packages = {
     tealdeer
     bat
     wget
-    screenfetch
+    fastfetch
     ripgrep
     duf
     dust
@@ -46,6 +46,7 @@ let packages = {
     bc
     ngrok
     nh
+    devenv
   ];
 
   packagePackages = [
@@ -56,6 +57,7 @@ let packages = {
 
   mcuPackages = [
     sdcc
+    stcgal
     openmv-ide-bin
   ];
 
@@ -72,9 +74,14 @@ let packages = {
     nodejs_latest
     pnpm
     yarn
+    bun
 
-    tsun
+    ts-node
     node-gyp
+  ];
+
+  pythonPkgs = [
+    uv
   ];
 
   haskellPkgs = with haskellPackages; [
@@ -84,16 +91,12 @@ let packages = {
     Agda
   ];
 
-  racketPkgs = [
-    racket
-  ];
-
   rustPkgs = [
     rustup
   ];
 
   androidPkgs = [
-      android-studio
+    android-studio
   ];
 
   desktopPkgs = [
@@ -108,11 +111,12 @@ let packages = {
     zotero
     discord-canary
     netease-cloud-music-gtk
-    libreoffice
     # lightspark
     # aseprite
-    baidunetdisk
-    nur.repos.linyinfeng.wemeet
+    # baidunetdisk
+    wemeet
+    wpsoffice-cn
+    fiddler-everywhere
   ] ++ (with kdePackages; [
     kolourpaint
     partitionmanager
@@ -123,7 +127,7 @@ let packages = {
     qtbase
     kmail-account-wizard
     # krita
-    kalendar
+    merkuro # kalendar
   ]);
 
   videoAndAudioPkgs = [
@@ -141,6 +145,7 @@ let packages = {
   ];
 
   winePkgs = [
+    wine64
     winetricks
     samba
   ];

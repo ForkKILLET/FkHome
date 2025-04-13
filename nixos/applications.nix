@@ -1,5 +1,7 @@
 { pkgs, ... }: {
-  virtualisation.virtualbox.host.enable = true;
+  virtualisation.virtualbox = {
+    host.enable = true;
+  };
 
   services.udev.packages = with pkgs; [
     openmv-ide-bin
@@ -47,5 +49,9 @@
         SCARF_NO_ANALYTICS = "True";
         WEBUI_AUTH = "False";
     };
+  };
+
+  services.todesk = {
+    enable = true;
   };
 }

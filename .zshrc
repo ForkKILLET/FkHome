@@ -430,16 +430,16 @@ cds () {
 		it)		d=IceLavaTop							;	p=1628						;;
 		mt)		d=IceLavaTop/MazeTest					;	p=1635						;;
 		ib)		d=IceLava/Bottom						;;
-		id)		d=IceLavaTop/FkData					;;
-		tpe)	d=IceLavaTop/TrolleyProblemEmulator	;	p=1636/docs/?debug=1		;;
-		tped)	d=IceLavaTop/TrolleyProblemEmulator	;	p=1636/docs/debug?debug=1	;;
+		id)		d=IceLavaTop/FkData						;;
+		tpe)	d=IceLavaTop/TrolleyProblemEmulator		;	p=1636/docs/?debug=1		;;
+		tped)	d=IceLavaTop/TrolleyProblemEmulator		;	p=1636/docs/debug?debug=1	;;
 		hwn)	d=IceLavaTop/HardWayNazo				;	p=1631						;;
 		jc)		d=IceLavaTop/JCer						;;
 
 		nd)		d=NyaDict								;;
 
-		som)	d=IceLavaTop/SudoerOfMyself				;	p=1637/docs					;;
-		somos)	d=IceLavaTop/SudoerOfMyself/SOMOS		;;
+		som)	d=SudoerOfMyself						;	p=1637/docs					;;
+		somos)	d=SudoerOfMyself/SOMOS					;;
 
 		c)		d=cpp									;;
 		cl)		d=cpp/learn								;;
@@ -477,7 +477,7 @@ cds () {
 		*)		d="$1"									;;
 	esac
 	[ $make ] && mcd "$H/src/$d" || cd "$H/src/$d"
-	[ $vscode ] && code -r .
+	[ $vscode ] && code -n .
 	[ $server ] && {
 		[ -z $p ] && echo "Server not defined." || {
 			local url="http://localhost:$p"
@@ -517,7 +517,7 @@ rmd () {
 }
 
 has-cmd lsd && {
-	alias l="lsd -a"
+	alias l="lsd -A"
 	alias ll="lsd -alh"
 }
 

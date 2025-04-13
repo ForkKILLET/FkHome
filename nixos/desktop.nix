@@ -43,7 +43,7 @@
     type = "fcitx5";
     fcitx5.addons = with pkgs; [
       fcitx5-gtk
-      libsForQt5.fcitx5-qt
+      kdePackages.fcitx5-qt
       fcitx5-rime
       fcitx5-anthy
       fcitx5-material-color
@@ -61,6 +61,7 @@
       sarasa-gothic
       jetbrains-mono
       ipafont # Japanese fonts
+      corefonts vistafonts vistafonts-chs # Microsoft fonts
     ];
     fontDir.enable = true;
     fontconfig = {
