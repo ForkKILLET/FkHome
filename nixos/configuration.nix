@@ -49,6 +49,7 @@
 
   # Nix settings
   nix.settings = {
+    trusted-users = [ "root" "forkkillet" ];
     trusted-public-keys = [
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       "hydro.ac:EytfvyReWHFwhY9MCGimCIn46KQNfmv9y8E2NqlNfxQ="

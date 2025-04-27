@@ -300,7 +300,7 @@ c-256 () {
 	return 0
 }
 
-c-csi () {
+c-ansi () {
 	div
 	echo "Foreground:"
 	echo -n "| "
@@ -344,8 +344,6 @@ VIM                 = $VIM
 VIMRC               = $VIMRC
 
 CARGO_HOME          = $CARGO_HOME
-
-XBQG_DATA           = $XBQG_DATA
 
 PS1                 = $PS1
 

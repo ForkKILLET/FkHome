@@ -47,6 +47,7 @@ let packages = {
     ngrok
     nh
     devenv
+    busybox
   ];
 
   packagePackages = [
@@ -58,7 +59,7 @@ let packages = {
   mcuPackages = [
     sdcc
     stcgal
-    openmv-ide-bin
+    # openmv-ide-bin
   ];
 
   clangPkgs = [
@@ -76,7 +77,6 @@ let packages = {
     yarn
     bun
 
-    ts-node
     node-gyp
   ];
 
