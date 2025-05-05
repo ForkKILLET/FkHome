@@ -91,6 +91,10 @@ let packages = {
     Agda
   ];
 
+  dotnetPkgs = [
+    dotnet-sdk
+  ];
+
   rustPkgs = [
     rustup
   ];
@@ -141,7 +145,7 @@ let packages = {
 
   gamePkgs = [
     prismlauncher
-    olympus
+    # olympus
   ];
 
   winePkgs = [
