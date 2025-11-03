@@ -66,14 +66,24 @@
     fontDir.enable = true;
     fontconfig = {
       enable = true;
+      useEmbeddedBitmaps = true;
       defaultFonts = {
         emoji = [ "Noto Color Emoji" ];
         monospace = [ "FiraCode Nerd Font Mono" ];
         sansSerif = [ "Noto Sans CJK SC" ];
         serif = [ "Noto Serif CJK SC" ];
       };
+      localConf = ''
+        <match target="font">
+          <test name="family" qual="first">
+            <string>Noto Color Emoji</string>
+          </test>
+          <edit name="antialias" mode="assign">
+            <bool>false</bool>
+          </edit>
+        </match>
+      '';
     };
     enableDefaultPackages = true;
   };
 }
-

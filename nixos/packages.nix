@@ -59,7 +59,6 @@ let packages = {
   mcuPackages = [
     sdcc
     stcgal
-    # openmv-ide-bin
   ];
 
   clangPkgs = [
@@ -67,7 +66,9 @@ let packages = {
     gdb
     clang
     clang-tools
+    lldb
     cmake
+    xmake
     gnumake
   ];
 
@@ -99,10 +100,6 @@ let packages = {
     rustup
   ];
 
-  androidPkgs = [
-    android-studio
-  ];
-
   desktopPkgs = [
     xorg.xkbcomp
     xclip
@@ -110,18 +107,19 @@ let packages = {
     vscode
     qq
     google-chrome
-    microsoft-edge
     telegram-desktop
     zotero
     discord-canary
     netease-cloud-music-gtk
     # lightspark
     # aseprite
-    # baidunetdisk
+    baidunetdisk
     wemeet
     wpsoffice-cn
-    fiddler-everywhere
+    wechat
+    inkscape
   ] ++ (with kdePackages; [
+    kamoso
     kolourpaint
     partitionmanager
     filelight
@@ -130,8 +128,8 @@ let packages = {
     accounts-qt
     qtbase
     kmail-account-wizard
-    # krita
-    merkuro # kalendar
+    krita
+    merkuro
   ]);
 
   videoAndAudioPkgs = [
@@ -139,13 +137,15 @@ let packages = {
     vlc
     peek
 
-    helvum
-    qpwgraph
+    # helvum
+    # qpwgraph
   ];
 
   gamePkgs = [
     prismlauncher
-    # olympus
+    (olympus.override {
+      celesteWrapper = steam-run;
+    })
   ];
 
   winePkgs = [
@@ -158,6 +158,14 @@ let packages = {
     typst
     typora
     texliveFull
+  ];
+
+  imePkgs = [
+    rime-zhwiki
+  ];
+
+  databasePkgs = [
+    mongodb-compass
   ];
 };
 in {

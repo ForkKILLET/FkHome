@@ -1,5 +1,5 @@
 #!/bin/zsh
-# vim: set fdm=marker :
+# vim: set fdm=marker noexpandtab:
 
 # UTILS {{{
 
@@ -97,8 +97,6 @@ esac
 
 @ fkni ||
 @ fkar &&	export CELESTE="$H/.local/share/Steam/steamapps/common/Celeste"
-@ fkni ||
-@ fkar &&	export CelestePrefix="$CELESTE"
 
 @ fkar &&	[[ -f "$CARGO_HOME/env" ]] && source "$CARGO_HOME/env"
 
@@ -135,7 +133,7 @@ setopt EXTENDED_GLOB
 
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_DISABLE_COMPFIX=true
-plugins=(copypath fancy-ctrl-z gh fzf pip zsh-syntax-highlighting sudo pm2 rust extract httpie)
+plugins=(copypath fancy-ctrl-z gh fzf pip zsh-syntax-highlighting sudo pm2 rust extract httpie docker)
 zstyle ':omz:plugins:yarn' berry yes
 zstyle ':omz:plugins:yarn' aliases no
 zstyle ':omz:plugins:git' aliases no
@@ -155,16 +153,7 @@ autoload -U colors && colors
 [[ $USER = root ]] && PS1_ROOT=' [root]'
 @ fkhk && export PS1_SYMBOL=">" || export PS1_SYMBOL="Ψ"
 export PS1_NORMAL="%F{167}[%D{%H:%M:%S}] %F{46}%~ %F{214}$ID %F{99}$PS1_SYMBOL$PS1_ROOT%f "
-export PS1_SHORT="%F{167}[%D{%H:%M:%S}] %F{214}$ID %F{99}$PS1_SYMBOL$PS1_ROOT%f "
-prompt () {
-	case $1 in
-		n|normal)	export PS1="$PS1_NORMAL"	;;
-		s|short)	export PS1="$PS1_SHORT"		;;
-		*)			return 1					;;
-	esac
-	return 0
-}
-prompt normal
+export PS1="$PS1_NORMAL"
 
 ## PROMPT }}}
 
@@ -504,7 +493,6 @@ mcd () {
 	return 0
 }
 
-alias rm='rm -i'
 rmswp () {
 	rm -f ${1:-.}/.*.swp
 	return 0
@@ -572,9 +560,9 @@ log () {
 			fi
 			local name="$1"
 			if [[ $1 =~ ^[1-9][0-9]*$ ]]; then
-				name="$(date -d "$1 day ago" +%Y%m%d)"
+				name="daily/$(date -d "$1 day ago" +%Y%m%d).md"
 			elif [[ -z "$1" ]]; then
-				name="$(date +%Y%m%d)"
+				name="daily/$(date +%Y%m%d).md"
 			fi
 
 			eval "$cmd $H/log/$name $post"
@@ -614,6 +602,12 @@ alias g="git"
 
 ## GIT }}}
 
+## YARN {{{
+
+alias y="yarn"
+
+## YARN }}}
+
 ## DOCKER {{{
 
 alias dr="sudo systemctl daemon-reload && sudo systemctl restart docker"
@@ -641,26 +635,6 @@ ve () {
 }
 
 ## VIM }}}
-
-## KOISHI {{{
-
-cw () {
-	cd external/w-$1
-}
-has-cmd compdef && compdef __comp_cw cw
-__comp_cw () {
-	if [[ ! -d ./external ]]; then
-		return 1
-	fi
-	local workspaces=($(ls ./external | awk '{printf substr($1, 3) " " }'))
-	_values workspaces $workspaces
-}
-
-cr () {
-	while [[ ! -f package.json && "$(pwd)" != / ]]; do cd ..; done
-}
-
-## }}}
 
 ## CODE {{{
 
@@ -757,6 +731,41 @@ has-cmd xdg-icon-resource && has-cmd icotool && has-cmd awk && xicoinstall () {
 	echo "$installsh" | bash
 }
 
+has-cmd gdb && ,core-copy-latest () {
+	if [[ -z "$EXE" ]]; then
+		echo "missing \$EXE"
+		return 1
+	fi
+	local exename=$(basename "$EXE")
+	local file=$(ls /var/lib/systemd/coredump/core.$exename.* -t | head -n 1)
+	if [ -n "$file" ]; then
+		mkdir -p debug
+		sudo cp "$file" ./debug
+		echo "Copied latest core dump: $file"
+		local basename=$(basename "$file")
+		sudo chown $USER ./debug/$basename
+		zstd -d ./debug/$basename
+		echo "Decompressed core dump: ./debug/$(basename $basename .zst)"
+		rm -f ./debug/$basename
+	else
+		echo "No core dumps found."
+	fi
+}
+
+has-cmd gdb && ,core-debug-latest() {
+	if [[ -z "$EXE" ]]; then
+		echo "missing \$EXE"
+		return 1
+	fi
+	local exename=$(basename "$EXE")
+	local file=$(ls ./debug/core.$exename.* -t | head -n 1)
+	if [ -n "$file" ]; then
+		gdb $EXE "$file"
+	else
+		echo "No core dumps found in ./debug."
+	fi
+}
+
 ## CUSTOM COMMAND }}}
 
 # DESKTOP }}}
@@ -766,31 +775,24 @@ has-cmd xdg-icon-resource && has-cmd icotool && has-cmd awk && xicoinstall () {
 @ fkni ||
 @ fkar && {
 	local today=$(date +%Y%m%d)
-	[[ -z "$FK_INIT" && (-f "$H/log/$today" || "$TERM" = linux) ]] || {
+	[[ -z "$FK_INIT" && (-f "$H/log/daily/$today.md" || "$TERM" = linux) ]] || {
 		FK_INIT=
 
 		echo '[dash] Creating log'
-		touch "$H/log/$today"
+		touch ~/log/daily/$today.md
 
 		yn '[dash] Update dash?' && fk u
 	}
 }
 
-@ fk10 && {
-	has-cmd vcxsrv && setup_vcxsrv () {
-		echo '[dash] Starting vcxsrv'
-		export DISPLAY=$(sudo cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
-		return 0
-	}
-
-	local today=$(date +%Y%m%d)
-	[[ -z "$FK_INIT" && (-f "$H/log/$today" || "$TERM" = linux) ]] || {
-		FK_INIT=
-
-		echo '[dash] Creating log'
-		touch "$H/log/$today"
-
-		# write_host
+has-cmd direnv && {
+	eval "$(direnv hook zsh)"
+	precmd() {
+		if [[ -n "$DIRENV_PROJECT" ]]; then
+			PS1="%F{44}[$DIRENV_PROJECT] $PS1_NORMAL"
+		else
+			PS1="$PS1_NORMAL"
+		fi
 	}
 }
 

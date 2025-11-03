@@ -29,22 +29,22 @@ let
       nfd
     ];
 
-  pname = "olympus";
-  phome = "$out/lib/${pname}";
+  phome = "$out/lib/olympus";
   # The following variables are to be updated by the update script.
-  version = "25.02.07.01";
-  buildId = "4624"; # IMPORTANT: This line is matched with regex in update.sh.
-  rev = "f4cd9dc973e68dc9b6c043941d5ab57f93b63ac4";
+  version = "25.04.20.01";
+  buildId = "4758"; # IMPORTANT: This line is matched with regex in update.sh.
+  rev = "10e01bf182e51d1fc2b6060622108a1fb98ae7b7";
 in
 buildDotnetModule {
-  inherit pname version;
+  pname = "olympus-unwrapped";
+  inherit version;
 
   src = fetchFromGitHub {
     inherit rev;
     owner = "EverestAPI";
     repo = "Olympus";
     fetchSubmodules = true; # Required. See upstream's README.
-    hash = "sha256-I0tDqe7XvieL0kj8njzaNx3taY2VpFewi/SnYRCi4tk=";
+    hash = "sha256-7Xdd6AdDpHQUmQ3ogEyir/OQwvOcVDMtweE3D/v4uuQ=";
   };
 
   nativeBuildInputs = [
@@ -54,7 +54,7 @@ buildDotnetModule {
   nugetDeps = ./deps.json;
   projectFile = "sharp/Olympus.Sharp.csproj";
   executables = [ ];
-  installPath = "${placeholder "out"}/lib/${pname}/sharp";
+  installPath = "${placeholder "out"}/lib/olympus/sharp";
 
   # See the 'Dist: Update src/version.txt' step in azure-pipelines.yml from upstream.
   preConfigure = ''
@@ -68,6 +68,8 @@ buildDotnetModule {
     mkdir -p ${phome}
     makeWrapper ${lib.getExe love} ${phome}/find-love \
       --add-flags "--fused"
+
+    install -Dm755 suppress-output.sh ${phome}/suppress-output
 
     mkdir -p $out/bin
     makeWrapper ${phome}/find-love $out/bin/olympus \
@@ -83,12 +85,10 @@ buildDotnetModule {
   postInstall = ''
     install -Dm644 lib-linux/olympus.desktop $out/share/applications/olympus.desktop
     install -Dm644 src/data/icon.png $out/share/icons/hicolor/128x128/apps/olympus.png
-    install -Dm644 LICENSE $out/share/licenses/${pname}/LICENSE
+    install -Dm644 LICENSE $out/share/licenses/olympus/LICENSE
   '';
 
-  passthru = {
-    updateScript = ./update.sh;
-  };
+  passthru.updateScript = ./update.sh;
 
   meta = {
     description = "Cross-platform GUI Everest installer and Celeste mod manager";

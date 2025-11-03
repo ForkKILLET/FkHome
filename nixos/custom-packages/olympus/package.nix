@@ -1,9 +1,8 @@
 {
   lib,
   makeWrapper,
-  callPackage,
+  olympus-unwrapped,
   symlinkJoin,
-  stdenv,
   buildFHSEnv,
   writeShellScript,
   # These need overriding if you launch Celeste/Loenn/MiniInstaller from Olympus.
@@ -22,9 +21,6 @@
 }:
 let
 
-  olympus-unwrapped = callPackage ./unwrapped.nix { };
-  inherit (olympus-unwrapped) version;
-
   wrapper-to-env =
     wrapper:
     if lib.isDerivation wrapper then
@@ -37,7 +33,7 @@ let
   # When installing Everest, Olympus uses MiniInstaller, which is dynamically linked.
   miniinstaller-fhs = buildFHSEnv {
     pname = "olympus-miniinstaller-fhs";
-    inherit version;
+    version = "1.0.0"; # remains constant, just to prevent complains
     targetPkgs =
       pkgs:
       (with pkgs; [
@@ -53,34 +49,23 @@ let
     else
       (wrapper-to-env miniinstallerWrapper);
 
-  olympus-wrapped = stdenv.mkDerivation {
-    name = "olympus-wrapped-${version}";
-    inherit version;
-    inherit (olympus-unwrapped) src;
-
-    nativeBuildInputs = [ makeWrapper ];
-
-    installPhase = ''
-      mkdir -p $out/bin
-      makeWrapper ${lib.getExe olympus-unwrapped} $out/bin/olympus \
-        --set-default OLYMPUS_CELESTE_WRAPPER "${wrapper-to-env celesteWrapper}" \
-        --set-default OLYMPUS_LOENN_WRAPPER "${wrapper-to-env loennWrapper}"  \
-        --set-default OLYMPUS_MINIINSTALLER_WRAPPER "${miniinstaller-wrapper}" \
-        --set-default OLYMPUS_SKIP_SCHEME_HANDLER_CHECK "${if skipHandlerCheck then "1" else "0"}"
-
-      #not sure we need to do this
-      install -Dm644 lib-linux/olympus.desktop $out/share/applications/olympus.desktop
-    '';
-  };
 in
 symlinkJoin {
-  name = "olympus-${version}";
+
+  inherit (olympus-unwrapped) version meta;
+  pname = "olympus";
 
   paths = [
-    olympus-wrapped
+    olympus-unwrapped
   ];
 
   nativeBuildInputs = [ makeWrapper ];
 
-  meta = olympus-unwrapped.meta;
+  postBuild = ''
+    wrapProgram $out/bin/olympus \
+      --set OLYMPUS_CELESTE_WRAPPER "${wrapper-to-env celesteWrapper}" \
+      --set OLYMPUS_LOENN_WRAPPER "${wrapper-to-env loennWrapper}"  \
+      --set OLYMPUS_MINIINSTALLER_WRAPPER "${miniinstaller-wrapper}" \
+      --set OLYMPUS_SKIP_SCHEME_HANDLER_CHECK "${if skipHandlerCheck then "1" else "0"}"
+  '';
 }

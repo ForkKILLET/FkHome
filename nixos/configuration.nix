@@ -40,7 +40,6 @@
   environment.shells = with pkgs; [ zsh ];
 
   # Generation GC
-  nix.optimise.automatic = true;
   nix.gc = {
     automatic = true;
     dates = "daily";
@@ -57,11 +56,6 @@
     experimental-features = [
       "nix-command"
       "flakes"
-    ];
-    substituters = [
-      "https://mirrors.bfsu.edu.cn/nix-channels/store"
-      "https://mirrors.ustc.edu.cn/nix-channels/store"
-      # "https://nix-bin.hydro.ac"
     ];
     accept-flake-config = true;
     max-jobs = 2;

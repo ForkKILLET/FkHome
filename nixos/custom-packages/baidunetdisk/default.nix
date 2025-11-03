@@ -5,7 +5,7 @@ stdenv.mkDerivation rec {
   version = "4.17.7";
 
   src = fetchurl {
-    url = "https://136892-1863975051.antpcdn.com:19001/b/pkg-ant.baidu.com/issue/netdisk/LinuxGuanjia/${version}/baidunetdisk_${version}_amd64.deb";
+    url = "https://pkg-ant.baidu.com/issue/netdisk/LinuxGuanjia/${version}/baidunetdisk_${version}_amd64.deb";
     hash = "sha256-UOwY8FYmoT9X7wNGMEFtSBaCvBAYU58zOX1ccbxlOz0=";
   };
   sourceRoot = ".";

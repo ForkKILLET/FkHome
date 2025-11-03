@@ -4,21 +4,20 @@ in {
   networking = {
     hostName = "fkni";
     networkmanager.enable = true;
-
     firewall.enable = false;
 
-    wireguard.interfaces = let
-      publicKey = "q+J/pOvfzgJMQxGdxL0w1i06z+Qz798yzKr8xU6nK1g=";
-      endpoint = "genshin.asm.ms:13231";
-    in {
+    wireguard.interfaces = {
       wg0 = {
-        ips = [ "10.0.6.0/8" ];
+        ips = [
+          "192.168.216.4/32"
+          "fc00:0:0:216::4/128"
+        ];
         listenPort = 51820;
         privateKeyFile = "${user.home}/.config/wireguard/wireguard-private.txt";
         peers = [
           {
-            inherit publicKey;
-            inherit endpoint;
+            publicKey = "fbuEQijU23yftndhhXwD6k3i3sHPezDsgmkQ+MA6NFI=";
+            endpoint = "hjp0aj1a3c9.vpn.mynetname.net:1950";
             allowedIPs = [ "192.168.88.0/24" ];
             persistentKeepalive = 25;
           }
@@ -27,7 +26,34 @@ in {
     };
   };
 
+  services.zerotierone = {
+    enable = false;
+    joinNetworks = [
+      # "c7c8172af1bd17e7" # Piterator
+      "60ee7c034a7f95c2" # ForkKILLET
+    ];
+  };
+
   services.v2raya.enable = true;
+
+  services.frp = {
+    enable = true;
+    role = "client";
+    settings = {
+      serverAddr = "192.168.88.4";
+      serverPort = 1650;
+
+      proxies = [
+        {
+          name = "terraria";
+          type = "tcp";
+          localIp = "127.0.0.1";
+          localPort = 7777;
+          remotePort = 7777;
+        }
+      ];
+    };
+  };
 
   programs.proxychains = {
     enable = true;

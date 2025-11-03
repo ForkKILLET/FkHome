@@ -1,6 +1,11 @@
 { pkgs, ... }: {
-  virtualisation.virtualbox = {
-    host.enable = true;
+  virtualisation = {
+    virtualbox = {
+      host.enable = true;
+    };
+    docker = {
+      enable = true;
+    };
   };
 
   services.udev.packages = with pkgs; [
