@@ -239,6 +239,9 @@ has-cmd proxychains4 && alias px="proxychains4 -q"
 		local id=$(echo /nix/var/nix/profiles/system-*-link | rg -o '\d+' | sort -nr | sed -n "${line}p")
 		print-exec nix store diff-closures /nix/var/nix/profiles/system-${id}-link /var/run/current-system
 	}
+	nrf () {
+		nix repl --expr "builtins.getFlake \"$PWD\""
+	}
 }
 
 # NIX }}}
@@ -437,28 +440,17 @@ cds () {
 		rp)		d=rust/pow-logic						;;
 
 		pi)		d=piterator								;;
-		ps)		d=piterator/pisearch					;;
-		pob)	d=piterator/oierspace-cli-bag			;;
-
-		soap)	d=py/StackOverflowAnalyseProgram		;;
 
 		pc)		d=parsecond								;;
 
 		u)		d=userscript							;;
 		ua)		d=userscript/all						;;
-		uw)		d=userscript/WhereIsMyForm				;;
-		us)		d=userscript/SFAR						;;
-		ue)		d=userscript/extend-luogu				;;
-		ues)	d=userscript/exlg-setting-new			;	p=1634						;;
-		ut)		d=userscript/TM-dat						;	p=1633/test.html			;;
-		up)		d=userscript/pkhh						;;
 
 		t)		d=typescript							;;
 		tt)		d=typescript/test						;;
 
 		rel)	d=react/learn							;;
 
-		p)		d=prolog								;;
 		hl)		d=haskell/learn							;;
 
 		*)		d="$1"									;;
@@ -655,10 +647,10 @@ __comp_codew () {
 
 ## WINE {{{
 
+export WINE=wine64
 export WINEDEBUG=-all
-
 export WINEPREFIX=~/.wine
-alias wine32="WINEPREFIX=~/.wine32 WINEARCH=win32 wine"
+alias wine32="WINEPREFIX=~/.wine32 WINEARCH=win32 wine64"
 alias winetricks32="WINEPREFIX=~/.wine32 WINEARCH=win32 winetricks"
 
 ## WINE }}}
@@ -766,6 +758,11 @@ has-cmd gdb && ,core-debug-latest() {
 	fi
 }
 
+,ros-ws() {
+	cd $PROJECT_WS
+	source ./install/setup.zsh
+}
+
 ## CUSTOM COMMAND }}}
 
 # DESKTOP }}}
@@ -781,19 +778,27 @@ has-cmd gdb && ,core-debug-latest() {
 		echo '[dash] Creating log'
 		touch ~/log/daily/$today.md
 
-		yn '[dash] Update dash?' && fk u
+		# yn '[dash] Update dash?' && fk u
 	}
 }
 
+export DIRENV_WARN_TIMEOUT=0s
 has-cmd direnv && {
 	eval "$(direnv hook zsh)"
-	precmd() {
-		if [[ -n "$DIRENV_PROJECT" ]]; then
-			PS1="%F{44}[$DIRENV_PROJECT] $PS1_NORMAL"
-		else
-			PS1="$PS1_NORMAL"
-		fi
-	}
 }
+
+
+precmd() {
+	if [[ -n "$PROJECT" ]]; then
+		PS1="%F{44}[$PROJECT] $PS1_NORMAL"
+	else
+		PS1="$PS1_NORMAL"
+	fi
+}
+
+if [[ -n "$ZSH_RUN" ]]; then
+	eval "$ZSH_RUN"
+	export ZSH_RUN=
+fi
 
 # INIT }}}

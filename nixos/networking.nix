@@ -1,5 +1,7 @@
 { pkgs, config, ... }:
-let user = config.users.users.forkkillet;
+let
+  user = config.users.users.forkkillet;
+  commonDir = "${user.home}/.config/common";
 in {
   networking = {
     hostName = "fkni";
@@ -13,7 +15,7 @@ in {
           "fc00:0:0:216::4/128"
         ];
         listenPort = 51820;
-        privateKeyFile = "${user.home}/.config/wireguard/wireguard-private.txt";
+        privateKeyFile = "${commonDir}/wireguard-private.txt";
         peers = [
           {
             publicKey = "fbuEQijU23yftndhhXwD6k3i3sHPezDsgmkQ+MA6NFI=";
@@ -26,18 +28,17 @@ in {
     };
   };
 
-  services.zerotierone = {
-    enable = false;
-    joinNetworks = [
-      # "c7c8172af1bd17e7" # Piterator
-      "60ee7c034a7f95c2" # ForkKILLET
-    ];
+  services.pixiecore = {
+    enable = true;
+    openFirewall = true;
+    dhcpNoBind = true;
+    kernel = "https://boot.netboot.xyz";
   };
 
   services.v2raya.enable = true;
 
   services.frp = {
-    enable = true;
+    enable = false;
     role = "client";
     settings = {
       serverAddr = "192.168.88.4";

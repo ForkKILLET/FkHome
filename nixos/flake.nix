@@ -18,8 +18,8 @@
   }: {
     nixosConfigurations.fkni = nixpkgs.lib.nixosSystem {
       modules = let
-        configurationModule = ./configuration.nix;
-        chineseFontsModule = { pkgs, ... }: {
+        m-configuration = ./configuration.nix;
+        m-chinese-fonts = { pkgs, ... }: {
           nixpkgs = {
             overlays = [
               inputs.chinese-fonts-overlay.overlays.default
@@ -30,8 +30,8 @@
           ];
         };
       in [
-        configurationModule
-        chineseFontsModule
+        m-configuration
+        m-chinese-fonts
       ];
     };
   };

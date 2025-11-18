@@ -118,6 +118,7 @@ let packages = {
     wpsoffice-cn
     wechat
     inkscape
+    ventoy-bin
   ] ++ (with kdePackages; [
     kamoso
     kolourpaint

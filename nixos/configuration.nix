@@ -28,12 +28,14 @@
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.forkkillet = {
-    isNormalUser = true;
-    description = "Fork Killet";
-    extraGroups = [ "networkmanager" "wheel" "kvm" "adbusers" "vboxusers" "dialout" ];
+  users = {
+    users.forkkillet = {
+      isNormalUser = true;
+      description = "Fork Killet";
+      extraGroups = [ "networkmanager" "wheel" "kvm" "adbusers" "vboxusers" "dialout" ];
+    };
+    defaultUserShell = pkgs.zsh;
   };
-  users.defaultUserShell = pkgs.zsh;
   security.sudo.wheelNeedsPassword = false;
 
   # Shell
@@ -63,6 +65,10 @@
 
   nixpkgs.config = {
     allowUnfree = true;
+
+    permittedInsecurePackages = [
+      "ventoy-1.1.07" # https://github.com/NixOS/nixpkgs/issues/404663
+    ];
   };
 
   system.stateVersion = "24.11";
