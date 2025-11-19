@@ -1,66 +1,67 @@
+[include]
+    path = .gitconfig-local
 [user]
-	email = fork_killet@outlook.com
-	name = ForkΨKILLET
-	signingkey = F817D829499DDE36
+    email = fork_killet@outlook.com
+    name = ForkΨKILLET
 [credential]
-	helper = store
+    helper = store
 [core]
-	editor = env vim
-	pager = delta
-	commentChar = "#"
+    editor = env vim
+    pager = delta
+    commentChar = "#"
 [init]
-	defaultBranch = main
+    defaultBranch = main
 [pull]
-	rebase = false
+    rebase = false
 [http]
-	sslverify = false
+    sslverify = false
 [alias]
-	m	= !vim ~/.gitconfig								# Manage
-	ma	= !vim ./.github/workflows/*					# Manage Action
-	l	= log --graph --all								# Log
-	la	= log -1 HEAD									# Log lAst
-	lo	= log --graph --all --oneline					# Log Oneline
-	lr	= reflog										# RefLog
-	s	= status										# Status
-	d	= diff											# Different
-	dc	= diff --cached									# Different Cached
-	da	= diff --cached HEAD~							# Different lAst
-	a	= add											# Add
-	aa	= add .											# Add All
-	ac	= !git aa && git c								# Add all and Commit
-	ac0	= !HUSKY=0 git ac								# Add all and Commit with HUSKY=0
-	rmc	= rm --cached									# Remove Cached
-	c	= commit										# Commit
-	ca	= commit --amend								# Commit Amend
-	cam	= !git ca -m \"$(echo $(git la --pretty=%B))\"	# Commit Amend with last Message
-	ca0	= !HUSKY=0 git commit --amend					# Commit Amend with HUKSY=0
-	aca	= !git aa && git ca								# Add all and Commit Amend
-	aca0= !HUSKY=0 git aca								# Add all and Commit Amend with HUSKY=0
-	acam= !git aca -m \"$(echo $(git la --pretty=%B))\"	# Add all and Commit Amend with last Message
-	co	= checkout										# CheckOut
-	b	= branch										# Branch
-	bs	= switch										# Branch Switch
-	p	= push											# Push
-	rem	= remote										# REMote
-	ig	= !vim ./.gitignore && git a .gitignore			# IGnore
-	rh	= reset --hard									# Reset Hard
-	re	= reset --hard HEAD@{1}							# REdo
-	r	= rebase										# Rebase
-	ri	= rebase -i										# Rebase Interactive
-	rc	= rebase --continue								# Rebase Continue
-	ra	= rebase --abort								# Remove Abort
-	cp	= cherry-pick									# Cherry Pick
-	cpa	= cherry-pick --abort							# Cherry Pick About
-	cpc	= cherry-pick --continue						# Cherry Pick Continue
+    m   = !vim ~/.gitconfig                             # Manage
+    ml  = !vim ~/.gitconfig-local                       # Manage Local
+    l   = log --graph --all                             # Log
+    la  = log -1 HEAD                                   # Log lAst
+    lo  = log --graph --all --oneline                   # Log Oneline
+    lr  = reflog                                        # RefLog
+    s   = status                                        # Status
+    d   = diff                                          # Different
+    dc  = diff --cached                                 # Different Cached
+    da  = diff --cached HEAD~                           # Different lAst
+    a   = add                                           # Add
+    aa  = add .                                         # Add All
+    ac  = !git aa && git c                              # Add all and Commit
+    ac0 = !HUSKY=0 git ac                               # Add all and Commit with HUSKY=0
+    rmc = rm --cached                                   # Remove Cached
+    c   = commit                                        # Commit
+    ca  = commit --amend                                # Commit Amend
+    cam = !git ca -m \"$(echo $(git la --pretty=%B))\"  # Commit Amend with last Message
+    ca0 = !HUSKY=0 git commit --amend                   # Commit Amend with HUKSY=0
+    aca = !git aa && git ca                             # Add all and Commit Amend
+    aca0= !HUSKY=0 git aca                              # Add all and Commit Amend with HUSKY=0
+    acam= !git aca -m \"$(echo $(git la --pretty=%B))\" # Add all and Commit Amend with last Message
+    co  = checkout                                      # CheckOut
+    b   = branch                                        # Branch
+    bs  = switch                                        # Branch Switch
+    p   = push                                          # Push
+    rem = remote                                        # REMote
+    ig  = !vim ./.gitignore && git a .gitignore         # IGnore
+    rh  = reset --hard                                  # Reset Hard
+    re  = reset --hard HEAD@{1}                         # REdo
+    r   = rebase                                        # Rebase
+    ri  = rebase -i                                     # Rebase Interactive
+    rc  = rebase --continue                             # Rebase Continue
+    ra  = rebase --abort                                # Remove Abort
+    cp  = cherry-pick                                   # Cherry Pick
+    cpa = cherry-pick --abort                           # Cherry Pick About
+    cpc = cherry-pick --continue                        # Cherry Pick Continue
 [interactive]
-	diffFilter = delta --color-only
+    diffFilter = delta --color-only
 [delta]
-	navigate = true
+    navigate = true
 [merge]
-	conflictstyle = diff3
+    conflictstyle = diff3
 [diff]
     colorMoved = default
 [commit]
-	gpgsign = true
+    gpgsign = true
 [push]
-	followTags = true
+    followTags = true

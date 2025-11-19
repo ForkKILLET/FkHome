@@ -1,8 +1,9 @@
+# Secret
 identity
 *.2fa
 
-node_modules
-
+# Local
 fcitx5/conf/cached_layouts
-vim/autoload
-vim/plugged
+
+# Node
+node_modules
