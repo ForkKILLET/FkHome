@@ -28,11 +28,16 @@ in {
     };
   };
 
-  services.pixiecore = {
+  services.openssh = {
     enable = true;
-    openFirewall = true;
-    dhcpNoBind = true;
-    kernel = "https://boot.netboot.xyz";
+    ports = [ 22 ];
+    settings = {
+      PasswordAuthentication = true;
+      AllowUsers = null;
+      UseDns = true;
+      X11Forwarding = false;
+      PermitRootLogin = "prohibit-password";
+    };
   };
 
   services.v2raya.enable = true;
