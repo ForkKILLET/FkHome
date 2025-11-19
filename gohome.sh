@@ -57,20 +57,9 @@ $QB
 	cd ~/_
 $QE
 
-EE "# Calling Fcitx5?"
-$QB
-	_GOHOME_INDENT=1 zsh ./fcitx5/gohome.sh 1
-	cd ~/_
-$QE
-
-EE "# Initializing submodules?"
-$QB
-	${_PROXY_PREFIX}git submodule update --init --recursive
-$QE
-
 EE "# Calling Vim?"
 $QB
-	_GOHOME_INDENT=1 zsh ./FkVim/gohome.sh 1
+	_GOHOME_INDENT=1 zsh ./vim/gohome.sh 1
 	cd ~/_
 $QE
 

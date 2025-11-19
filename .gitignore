@@ -1,4 +1,8 @@
 identity
-fcitx5/conf/cached_layouts
-node_modules
 *.2fa
+
+node_modules
+
+fcitx5/conf/cached_layouts
+vim/autoload
+vim/plugged

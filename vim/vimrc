@@ -92,7 +92,7 @@ cal plug#begin(expand('$VIMFILES/plugged'))
 
     Plug 'pangloss/vim-javascript'
 
-    Plug expand('file://$HOME/_/FkVim'), { 'as': 'FkVim-pie', 'rtp': 'pie/' }
+    Plug expand('file://$HOME/_/vim'), { 'as': 'FkVim-pie', 'rtp': 'pie/' }
 
     Plug 'scrooloose/syntastic'
     let g:syntastic_always_populate_loc_list = 1

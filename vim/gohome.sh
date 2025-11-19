@@ -22,7 +22,7 @@ mkdir -p ~/.vim
 EE "# Linking dotfiles"
 E "    * .vim"
 rm -f ~/.vim/vimrc
-ln -s ~/_/FkVim/vimrc ~/.vim/vimrc
+ln -s ~/_/vim/vimrc ~/.vim/vimrc
 
 EE "# Installing vim-plug?"
 $QB
