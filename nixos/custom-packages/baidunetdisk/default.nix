@@ -75,6 +75,8 @@ stdenv.mkDerivation rec {
     description = "Baidu Netdisk";
     license = licenses.unfree;
     platforms = platforms.linux;
-    maintainers = [ "ForkKILLET" ];
+    maintainers =
+      let me = import ../me.nix;
+      in [ me ];
   };
 }

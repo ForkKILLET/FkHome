@@ -20,8 +20,6 @@ stdenvNoCC.mkDerivation rec {
     install -m444 -Dt $out/share/fonts/opentype/noto-cjk Sans/OTC/*.ttc
   '';
 
-  # passthru.tests.noto-fonts = nixosTests.noto-fonts;
-
   passthru.updateScript = gitUpdater {
     rev-prefix = "Sans";
   };
@@ -44,7 +42,7 @@ stdenvNoCC.mkDerivation rec {
     license = lib.licenses.ofl;
     platforms = lib.platforms.all;
     maintainers =
-      let forkkillet = import ../me.nix;
-      in with lib.maintainers; [ mathnerd314 emily forkkillet ];
+      let me = import ../me.nix;
+      in with lib.maintainers; [ mathnerd314 emily me ];
   };
 }

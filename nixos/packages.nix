@@ -118,7 +118,7 @@ let packages = {
     wpsoffice-cn
     wechat
     inkscape
-    ventoy-bin
+    teamspeak6-client
   ] ++ (with kdePackages; [
     kamoso
     kolourpaint
@@ -137,7 +137,6 @@ let packages = {
     obs-studio
     vlc
     peek
-
     # helvum
     # qpwgraph
   ];
@@ -158,7 +157,7 @@ let packages = {
   notePkgs = [
     typst
     typora
-    texliveFull
+    # texliveFull
   ];
 
   imePkgs = [

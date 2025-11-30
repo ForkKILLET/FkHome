@@ -5,33 +5,17 @@
     nixpkgs = {
       url = "github:NixOS/nixpkgs/nixos-unstable";
     };
-
-    chinese-fonts-overlay = {
-      url = "github:brsvh/chinese-fonts-overlay";
-    };
   };
 
-  outputs = inputs@{
+  outputs = {
     nixpkgs,
-    chinese-fonts-overlay,
     ...
   }: {
     nixosConfigurations.fkni = nixpkgs.lib.nixosSystem {
       modules = let
-        m-configuration = ./configuration.nix;
-        m-chinese-fonts = { pkgs, ... }: {
-          nixpkgs = {
-            overlays = [
-              inputs.chinese-fonts-overlay.overlays.default
-            ];
-          };
-          fonts.packages = with pkgs; [
-            windows-fonts
-          ];
-        };
+        configuration = ./configuration.nix;
       in [
-        m-configuration
-        m-chinese-fonts
+        configuration
       ];
     };
   };

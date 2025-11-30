@@ -55,13 +55,13 @@
     packages = with pkgs; [
       noto-fonts-cjk-sans
       noto-fonts-cjk-serif
-      noto-fonts-emoji
+      noto-fonts-color-emoji
       wqy_microhei
       nerd-fonts.fira-code
       sarasa-gothic
       jetbrains-mono
       ipafont # Japanese fonts
-      corefonts vistafonts vistafonts-chs # Microsoft fonts
+      windows-fonts-local
     ];
     fontDir.enable = true;
     fontconfig = {

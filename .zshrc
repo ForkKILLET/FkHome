@@ -215,23 +215,20 @@ has-cmd proxychains4 && alias px="proxychains4 -q"
 # NIX {{
 
 @ fkni && {
+	export NIX_CONFIG_DIR=~/_/nixos
+
 	ne () {
 		vim /etc/nixos/${1:-configuration}.nix
 	}
 	nec () {
-		code -n ~/_/nixos
+		code -n $NIX_CONFIG_DIR
 	}
 	nb () {
-		sudo nixos-rebuild switch $@
+		nh os switch $NIX_CONFIG_DIR
 		rehash
 	}
-	nb.() {
-		NIXPKGS_ALLOW_UNFREE=1 nix-build -E \
-			'((import <nixpkgs> {}).callPackage (import ./default.nix) {})' \
-			--keep-failed --no-out-link
-	}
 	nbp () {
-		sudo HTTP_PROXY="${PROXY_HTTP}" HTTPS_PROXY="${PROXY_HTTP}" nixos-rebuild switch $@
+		HTTP_PROXY="$PROXY_HTTP" HTTPS_PROXY="$PROXY_HTTP" nh os switch $NIX_CONFIG_DIR
 		rehash
 	}
 	nbd () {

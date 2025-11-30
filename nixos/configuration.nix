@@ -2,16 +2,14 @@
   imports = [
     ./hardware-configuration.nix
     ./networking.nix
-    ./custom-packages/entry.nix
+    ./custom-packages/index.nix
     ./packages.nix
     ./desktop.nix
     ./applications.nix
   ];
 
-  # Set your time zone.
   time.timeZone = "Asia/Shanghai";
 
-  # Select internationalisation properties.
   i18n = {
     defaultLocale = "zh_CN.UTF-8";
     extraLocaleSettings = {
@@ -27,7 +25,6 @@
     };
   };
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
   users = {
     users.forkkillet = {
       isNormalUser = true;
@@ -38,17 +35,14 @@
   };
   security.sudo.wheelNeedsPassword = false;
 
-  # Shell
   environment.shells = with pkgs; [ zsh ];
 
-  # Generation GC
   nix.gc = {
     automatic = true;
     dates = "daily";
     options = "--delete-older-than 7d";
   };
 
-  # Nix settings
   nix.settings = {
     trusted-users = [ "root" "forkkillet" ];
     trusted-public-keys = [
@@ -65,10 +59,6 @@
 
   nixpkgs.config = {
     allowUnfree = true;
-
-    permittedInsecurePackages = [
-      "ventoy-1.1.07" # https://github.com/NixOS/nixpkgs/issues/404663
-    ];
   };
 
   system.stateVersion = "24.11";
