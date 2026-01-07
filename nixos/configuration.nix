@@ -2,7 +2,6 @@
   imports = [
     ./hardware-configuration.nix
     ./networking.nix
-    ./custom-packages/index.nix
     ./packages.nix
     ./desktop.nix
     ./applications.nix
@@ -29,13 +28,31 @@
     users.forkkillet = {
       isNormalUser = true;
       description = "Fork Killet";
-      extraGroups = [ "networkmanager" "wheel" "kvm" "adbusers" "vboxusers" "dialout" ];
+      extraGroups = [ "networkmanager" "wheel" "kvm" "adbusers" "dialout" ];
     };
     defaultUserShell = pkgs.zsh;
   };
   security.sudo.wheelNeedsPassword = false;
 
   environment.shells = with pkgs; [ zsh ];
+
+  environment.etc."xdg/user-dirs.defaults".text = ''
+    DESKTOP=Desktop
+    DOWNLOAD=Downloads
+    TEMPLATES=Templates
+    PUBLICSHARE=Public
+    DOCUMENTS=Documents
+    MUSIC=Music
+    PICTURES=Pictures
+    VIDEOS=Videos
+  '';
+
+  environment.sessionVariables = {
+    XDG_CACHE_HOME  = "$HOME/.cache";
+    XDG_CONFIG_HOME = "$HOME/.config";
+    XDG_DATA_HOME   = "$HOME/.local/share";
+    XDG_STATE_HOME  = "$HOME/.local/state";
+  };
 
   nix.gc = {
     automatic = true;
@@ -48,6 +65,7 @@
     trusted-public-keys = [
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       "hydro.ac:EytfvyReWHFwhY9MCGimCIn46KQNfmv9y8E2NqlNfxQ="
+      "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
     ];
     experimental-features = [
       "nix-command"
@@ -55,10 +73,12 @@
     ];
     accept-flake-config = true;
     max-jobs = 2;
+    substituters = [ "https://attic.xuyh0120.win/lantian" ];
   };
 
   nixpkgs.config = {
     allowUnfree = true;
+    android_sdk.accept_license = true;
   };
 
   system.stateVersion = "24.11";

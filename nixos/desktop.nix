@@ -61,7 +61,7 @@
       sarasa-gothic
       jetbrains-mono
       ipafont # Japanese fonts
-      windows-fonts-local
+      # windows-fonts-local
     ];
     fontDir.enable = true;
     fontconfig = {

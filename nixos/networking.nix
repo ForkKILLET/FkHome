@@ -1,7 +1,7 @@
 { pkgs, config, ... }:
 let
   user = config.users.users.forkkillet;
-  commonDir = "${user.home}/.config/common";
+  privateDir = "${user.home}/log/private";
 in {
   networking = {
     hostName = "fkni";
@@ -15,11 +15,11 @@ in {
           "fc00:0:0:216::4/128"
         ];
         listenPort = 51820;
-        privateKeyFile = "${commonDir}/wireguard-private.txt";
+        privateKeyFile = "${privateDir}/wireguard-private.txt";
         peers = [
           {
             publicKey = "fbuEQijU23yftndhhXwD6k3i3sHPezDsgmkQ+MA6NFI=";
-            endpoint = "hjp0aj1a3c9.vpn.mynetname.net:1950";
+            endpoint = "genshin.asm.ms:1950";
             allowedIPs = [ "192.168.88.0/24" ];
             persistentKeepalive = 25;
           }
@@ -41,25 +41,6 @@ in {
   };
 
   services.v2raya.enable = true;
-
-  services.frp = {
-    enable = false;
-    role = "client";
-    settings = {
-      serverAddr = "192.168.88.4";
-      serverPort = 1650;
-
-      proxies = [
-        {
-          name = "terraria";
-          type = "tcp";
-          localIp = "127.0.0.1";
-          localPort = 7777;
-          remotePort = 7777;
-        }
-      ];
-    };
-  };
 
   programs.proxychains = {
     enable = true;

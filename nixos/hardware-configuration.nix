@@ -12,7 +12,6 @@
     initrd.kernelModules = [ "amdgpu" ];
     kernelModules = [ "kvm-amd" "snd-aloop" ];
     extraModulePackages = [ ];
-    kernelParams = [ "kvm.enable_virt_at_load=0" ]; # <https://github.com/NixOS/nixpkgs/issues/363887#issuecomment-2536693220>
   };
 
   fileSystems."/" = {
@@ -28,7 +27,7 @@
 
   swapDevices = [
     {
-      device = "/dev/nvme0n1p4";
+      device = "/dev/nvme0n1p3";
     }
   ];
 
@@ -47,14 +46,21 @@
     };
   };
 
-  # Fix that rtw88 doesn't work after suspending
   powerManagement = {
     enable = true;
-    resumeCommands = ''
-      /run/current-system/sw/bin/modprobe rtw88_8822ce
-    '';
-    powerDownCommands = ''
-      /run/current-system/sw/bin/modprobe -r rtw88_8822ce
-    '';
+  };
+
+  services.keyd = {
+    enable = true;
+    keyboards = {
+      default = {
+        ids = [ "*" ];
+        settings = {
+          main = {
+            "f23+leftshift+leftmeta" = "layer(control)"; # Copilot -> Ctrl
+          };
+        };
+      };
+    };
   };
 }

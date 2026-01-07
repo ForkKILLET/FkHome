@@ -33,7 +33,6 @@ let packages = {
     wireguard-tools
     ffmpeg
     tree
-    postgresql
     jq
     unrar-wrapper
     pandoc
@@ -57,8 +56,6 @@ let packages = {
   ];
 
   mcuPackages = [
-    sdcc
-    stcgal
   ];
 
   clangPkgs = [
@@ -82,6 +79,7 @@ let packages = {
   ];
 
   pythonPkgs = [
+    python3
     uv
   ];
 
@@ -137,8 +135,6 @@ let packages = {
     obs-studio
     vlc
     peek
-    # helvum
-    # qpwgraph
   ];
 
   gamePkgs = [
@@ -157,7 +153,6 @@ let packages = {
   notePkgs = [
     typst
     typora
-    # texliveFull
   ];
 
   imePkgs = [
@@ -166,6 +161,11 @@ let packages = {
 
   databasePkgs = [
     mongodb-compass
+    postgresql
+  ];
+
+  androidPkgs = [
+    android-studio
   ];
 };
 in {

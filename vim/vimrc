@@ -1,29 +1,29 @@
 " Basic
+    let     mapleader = " "
     set     nocompatible
     set     modeline
     set     modelines=2
 
     set     mouse=a
-    nnor    <silent> <ESC>m :if&mouse=="a"<Bar>set mouse=<Bar>else<Bar>set mouse=a<Bar>endif<CR>
+    nnor    <silent><leader><leader>m :if&mouse=="a"<Bar>set mouse=<Bar>else<Bar>set mouse=a<Bar>endif<CR>
 
     set     backspace=2
 
     set     number
-    nnor    <ESC>n :set nu!<CR>
+    nnor    <leader><leader>n :set nu!<CR>
 
     set     cursorline
 
-    nnor    VE :vnew $VIMRC<CR> 
-    nnor    VS :source $VIMRC<CR>
+    nnor    <leader>e :vnew $VIMRC<CR> 
+    nnor    <leader>s :source $VIMRC<CR>
 
     set     hlsearch
     set     incsearch
-    nnor    <silent> <ESC>f :set hlsearch!<CR>
-    nnor    fiw yiw/\<<C-R>"\><CR>
-    nnor    siw yiw:%s/\<<C-R>"\>/
-    vnor    / y<ESC>/\<<C-R>"\><CR>
-    vnor    s y<ESC>:%s/\<<C-R>"\>/
-    vnor    <C-S> y<ESC>:%s/<C-R>"/
+    nnor    <silent><leader><leader>h :set hlsearch!<CR>
+    nnor    <leader>r yiw:%s/\<<C-r><C-w>\>/<C-r><C-w>/g<Left><Left>
+    nnor    <leader>R yiw:%s/\<<C-r><C-w>\>//g<Left><Left>
+    vnor    / y<ESC>/\<<C-r>"\><CR>
+    vnor    r y<ESC>:%s/\<<C-r><C-w>\>//g<Left><Left>
 
     nnor    S :w<CR>
     nnor    Q :q<CR>
@@ -32,15 +32,12 @@
 
     set     undodir=$VIMFILES/undodir
 
-    nnor    Sg :w<CR>:!gulp<CR>
-    nnor    Sgg :w<CR>:!gulp 
-
     nnor    Sr :w<CR>:!rustc % -o /tmp/vim.rust.out && /tmp/vim.rust.out<CR>
     nnor    Sw :w<CR>:!wasm-pack build -t web<CR>
     nnor    Sn :w<CR>:!node %<CR>
     nnor    Se :w<CR>:!node esbuild.cjs<CR>
-    nnor    Scc :w<CR>:!clang % -lm -o /tmp/vim.cpp.out && /tmp/vim.cpp.out<CR>
-    nnor    Sxx :w<CR>:!clang++ % --std=c++23 -lm -o /tmp/vim.cpp.out && /tmp/vim.cpp.out<CR>
+    nnor    Sc :w<CR>:!clang % -lm -o /tmp/vim.cpp.out && /tmp/vim.cpp.out<CR>
+    nnor    Sx :w<CR>:!clang++ % --std=c++23 -lm -o /tmp/vim.cpp.out && /tmp/vim.cpp.out<CR>
     nnor    Sh :w<CR>:!runhaskell %<CR>
     nnor    Sp :w<CR>:!python3 %<CR>
     nnor    S. :w<CR>:!./%<CR>
@@ -159,6 +156,7 @@ aug FtDetect | au!
     au FileType             markdown        cal Lang_markdown()
     au FileType             yaml            cal Lang_yaml()
     au FileType             nix             cal Lang_nix()
+    au FileType             haskell         cal Lang_haskell()
 aug END
 
 fun! Lang_nix()
@@ -299,11 +297,16 @@ endf
 
 fun! Lang_markdown()
     setl wrap
-    inor <C-S>now <ESC>:r! node -e 'console.log(new Date().toString().replace(/ \(.*/,""))'<CR>i<BS><ESC>A
+    inor <leader>n <ESC>:r! node -e 'console.log(new Date().toString().replace(/ \(.*/,""))'<CR>i<BS><ESC>A
 endf
 
 fun! Lang_yaml()
-    inor <C-S>now <ESC>:r! node -e 'console.log(new Date().toISOString())'<CR>i<BS><ESC>A
+    inor <leader>n <ESC>:r! node -e 'console.log(new Date().toISOString())'<CR>i<BS><ESC>A
+endf
+
+fun! Lang_haskell()
+    setl tabstop=2
+    setl softtabstop=2
 endf
 
 " Utility
