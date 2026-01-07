@@ -176,7 +176,7 @@ source ~/.zshrc
 
 # install oh-my-zsh
 
-install_oh_my_zsh__install_self() {
+install_oh_my_zsh_self() {
     check_env ZSH
 
     if [[ -e $ZSH ]]; then
@@ -187,17 +187,28 @@ install_oh_my_zsh__install_self() {
     output_exec git clone "https://github.com/robbyrussell/oh-my-zsh.git" $ZSH
 }
 
-install_oh_my_zsh__install_plugin_zsh_syntax_highlighting() {
-    output_exec git clone "https://github.com/zsh-users/zsh-syntax-highlighting.git" $ZSH/custom/plugins/zsh-syntax-highlighting
+install_oh_my_zsh_plugin() {
+    local plugin=$1
+    local dst=$ZSH/custom/plugins/$plugin
+
+    if [[ -d $dst ]]; then
+        output "Plugin $plugin already installed"
+        return 0
+    fi
+    output_exec git clone "https://github.com/zsh-users/$plugin.git" $dst
 }
 
-install_oh_my_zsh() {
-    level install_oh_my_zsh__install_self "Installing oh-my-zsh" && \
-    level install_oh_my_zsh__install_plugin_zsh_syntax_highlighting "Installing plugin zsh-syntax-highlighting"
+install_oh_my_zsh_plugins() {
+    local plugins=(zsh-syntax-highlighting zsh-autosuggestions)
+
+    for plugin in $plugins; do
+        level "install_oh_my_zsh_plugin $plugin" "Installing plugin $plugin"
+    done
 }
 
 if confirm "Installing oh-my-zsh?"; then
-    level install_oh_my_zsh
+    level install_oh_my_zsh_self "Installing oh-my-zsh" && \
+    level install_oh_my_zsh_plugins "Installing plugins"
 fi
 
 # configure vim

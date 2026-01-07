@@ -108,7 +108,7 @@ autoload -U compinit && compinit
 
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_DISABLE_COMPFIX=true
-plugins=(copypath fancy-ctrl-z gh fzf pip zsh-syntax-highlighting sudo pm2 rust extract httpie docker)
+plugins=(copypath fancy-ctrl-z gh fzf pip zsh-syntax-highlighting zsh-autosuggestions sudo rust extract httpie docker)
 zstyle ':omz:plugins:yarn' berry yes
 zstyle ':omz:plugins:yarn' aliases no
 zstyle ':omz:plugins:git' aliases no
