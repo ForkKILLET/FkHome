@@ -31,7 +31,7 @@ level() {
     )
     
     local ret=$?
-    if ((ret != 0)); then
+    if ((ret)); then
         ERROR_COUNT=$((ERROR_COUNT + 1))
     fi
 
@@ -59,6 +59,13 @@ check_env() {
     local env=$1
     if [[ -z ${(P)env} ]]; then
         error "\$$env not set"
+    fi
+}
+
+check_cmd() {
+    local cmd=$1
+    if ! whence $cmd >/dev/null; then
+        error "command $cmd not found"
     fi
 }
 
@@ -125,9 +132,22 @@ level_safe_ln() {
     level "output_exec safe_ln $src $dst" "Linking $file"
 }
 
-# enter dash directory
+# main
 
-cd ~/_
+main() {
+
+check_prerequisites() {
+    if ((! zsh_eval_context[(I)file])); then
+        error "This script should be sourced."
+    fi
+    check_cmd git
+    check_cmd grep
+}
+
+if ! level check_prerequisites "Checking prerequisites"; then
+    output_section "Exiting"
+    return 1
+fi
 
 # construct directories
 
@@ -149,10 +169,10 @@ link_files() {
 
 level link_files "Linking files"
 
-# source .zshrc
+# source 1
 
 output_section "Loading .zshrc"
-source .zshrc
+source ~/.zshrc
 
 # install oh-my-zsh
 
@@ -183,7 +203,7 @@ fi
 # configure vim
 
 configure_vim__construct_directories() {
-    output_exec mkdir ~/.vim
+    output_exec mkdir -p ~/.vim
 }
 
 configure_vim__link_files() {
@@ -205,10 +225,15 @@ configure_vim__install_vim_plug() {
     output_exec git clone https://github.com/junegunn/vim-plug.git ~/.vim/autoload
 }
 
+configure_vim__install_plugins() {
+    vim +'PlugInstall --sync' +qa
+}
+
 configure_vim() {
     level configure_vim__construct_directories "Constructing dirctories" && \
     level configure_vim__link_files "Linking files" && \
-    level configure_vim__install_vim_plug "Installing vim-plug"
+    level configure_vim__install_vim_plug "Installing vim-plug" && \
+    level configure_vim__install_plugins "Installing plugins"
 }
 
 if confirm "Configuring vim?"; then
@@ -237,13 +262,36 @@ if confirm "Configuring fcitx5?"; then
     level configure_fcitx
 fi
 
-# done
+# source 2
 
 output_section "Reloading .zshrc"
 fk s
+
+# done
 
 if [[ $ERROR_COUNT = 0 ]]; then
     output_section "Done"
 else
     output_section "Done with \x1B[31m$ERROR_COUNT errors\x1B[0m"
 fi
+
+}
+
+# entry
+
+main
+
+# clear
+
+clear() {
+    unset LEVEL
+    unset INDENT_UNIT
+    unset INDENT
+    unset TEST
+
+    for func in $(<$1 | grep -oP '^[a-z_]+(?=\(\))'); do
+        unset -f $func
+    done
+}
+
+clear $0

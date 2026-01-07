@@ -1,7 +1,7 @@
 { pkgs, config, ... }:
 let
   user = config.users.users.forkkillet;
-  privateDir = "${user.home}/log/private";
+  privateDir = "${user.home}/Logs/private";
 in {
   networking = {
     hostName = "fkni";
