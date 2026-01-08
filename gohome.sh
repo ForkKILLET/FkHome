@@ -5,7 +5,11 @@
 export LEVEL=${LEVEL:-0}
 export INDENT_UNIT="    "
 export INDENT=""
+
 export TEST
+export HTTP_PROXY
+export HTTPS_PROXY
+export NO_PROXY
 
 ERROR_COUNT=0
 
@@ -110,19 +114,17 @@ confirm() {
 }
 
 safe_ln() {
-    local src="$1"
-    local dst="$2"
-
-    if [[ -e $dst ]]; then
-        if [[ -L $dst ]]; then
-            rm "$dst"
-        else
-            error "$dst exists and is not symbolic link"
-            return 1
-        fi
+    local src=$1
+    local dst=$2
+    
+    if [[ -L $dst ]]; then
+        rm $dst
+    elif [[ -e $dst ]]; then
+        error "$dst exists and is not symbolic link"
+        return 1
     fi
 
-    ln -s "$src" "$dst"
+    ln -s $src $dst
 }
 
 level_safe_ln() {

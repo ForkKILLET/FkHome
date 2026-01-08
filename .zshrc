@@ -37,7 +37,7 @@ touch ~/_/identity
 ID=$(cat ~/_/identity)
 ID=${ID:-temp}
 case $ID in
-    fkv2|fkte|fkni)
+    pide|piv2|fkte|fkni)
         ;;
     temp)
         echo "[dash] Temporary identity"
@@ -125,7 +125,7 @@ TRAPUSR1() { rehash }
 ## PROMPT {{{
 
 [[ $USER = root ]] && PS1_ROOT=' [root]'
-export PS1_NORMAL="%F{167}[%D{%H:%M:%S}] %F{46}%~ %F{214}$ID %F{99}Ψ$PS1_ROOT%f "
+export PS1_NORMAL="%F{167}[%D{%H:%M:%S}] %F{46}%~ %F{214}$ID %F{99}\$$PS1_ROOT%f "
 export PS1="$PS1_NORMAL"
 
 ## PROMPT }}}
