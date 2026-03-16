@@ -3,6 +3,10 @@
     docker = {
       enable = true;
     };
+
+    vmware.host = {
+      enable = true;
+    };
   };
 
   services.postgresql = {
@@ -53,6 +57,4 @@
   };
 
   programs.kdeconnect.enable = true;
-
-  services.todesk.enable = true;
 }

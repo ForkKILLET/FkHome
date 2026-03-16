@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+##!/usr/bin/env zsh
 # vim: set fdm=marker:
 
 # UTILS {{{
@@ -34,8 +34,10 @@ print-exec () {
 # ID {{{
 
 touch ~/_/identity
-ID=$(cat ~/_/identity)
+ID=$(< ~/_/identity)
 ID=${ID:-temp}
+export ID
+
 case $ID in
     pide|piv2|fkte|fkni)
         ;;
@@ -81,7 +83,15 @@ esac
 ## PATH {{{
 
 [[ -z "$OLD_PATH" ]] && export OLD_PATH="$PATH"
-export PATH="$OLD_PATH:$HOME/bin:$HOME/.local/bin:$JAVA_HOME/bin:$CARGO_HOME/bin:$PNPM_HOME:$AYA_PREFIX/bin:$HOME/bin/npm/bin"
+
+PATH="$OLD_PATH"
+
+@ fkni && {
+    export LOONG_PREFIX="$HOME/Apps/loongson-gnu-toolchain-8.3-x86_64-loongarch64-linux-gnu-rc1.6"
+    PATH="$PATH:$LOONG_PREFIX/bin"
+}
+
+export PATH
 
 ## PATH }}}
 
@@ -124,9 +134,9 @@ TRAPUSR1() { rehash }
 
 ## PROMPT {{{
 
-[[ $USER = root ]] && PS1_ROOT=' [root]'
-export PS1_NORMAL="%F{167}[%D{%H:%M:%S}] %F{46}%~ %F{214}$ID %F{99}\$$PS1_ROOT%f "
-export PS1="$PS1_NORMAL"
+[[ $USER = root ]] && PROMPT_ROOT=' [root]'
+export PROMPT_NORMAL="%F{167}%D{%H:%M:%S} %F{46}%~ %F{214}$ID %F{99}\$$PROMPT_ROOT%f "
+export PROMPT="$PROMPT_NORMAL"
 
 ## PROMPT }}}
 
@@ -288,7 +298,7 @@ mcd () {
 }
 
 rmswp () {
-    rm -f ${1:-.}/.*.swp
+    rm -f ${1:-.}/*.sw?(D)
 }
 rmd () {
     mv "$1" "$HOME/rbin/$2"
@@ -296,7 +306,8 @@ rmd () {
 
 has-cmd lsd && {
     alias l="lsd -A"
-    alias ll="lsd -alh"
+    alias ll="lsd -Alh"
+    alias lb="lsd -lh"
 }
 
 ## FILE OPS }}}
@@ -419,7 +430,7 @@ ve () {
 ## CODE {{{
 
 codew () {
-    code ~/Projects/workspaces/$1
+    code $(realpath ~/Projects/workspaces/$1)
 }
 compdef _codew codew
 _codew () {
@@ -491,7 +502,7 @@ export XMODIFIERS=@im=fcitx
 
 has-cmd xclip && {
     xcopy () {
-        cat - | xclip -selection c
+        <&0 | xclip -selection c
     }
     xpaste() {
         xclip -selection c -o
@@ -509,8 +520,7 @@ has-cmd xclip && {
 }
 compdef _2fa 2fa
 _2fa () {
-    local files=($(ls ~/_/2fa/*.2fa | xargs -n1 basename -s .2fa))
-    _values 2fa-files $files
+    _files -/ -W ~/_/2fa -g '*.2fa'
 }
 
 has-cmd gdb && ,core-copy-latest () {
@@ -558,10 +568,11 @@ has-cmd gdb && ,core-debug-latest() {
 
 precmd() {
     if [[ -n "$PROJECT" ]]; then
-        PS1="%F{44}[$PROJECT] $PS1_NORMAL"
+        PROMPT="%F{44}[$PROJECT] $PROMPT_NORMAL"
     else
-        PS1="$PS1_NORMAL"
+        PROMPT="$PROMPT_NORMAL"
     fi
 }
+export PROJECT
 
 # INIT }}}

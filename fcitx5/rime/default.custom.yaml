@@ -1,3 +1,4 @@
 patch:
+  style/inline_preedit: true
   switcher/hotkeys:
     - F4

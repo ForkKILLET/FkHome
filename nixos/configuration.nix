@@ -28,7 +28,14 @@
     users.forkkillet = {
       isNormalUser = true;
       description = "Fork Killet";
-      extraGroups = [ "networkmanager" "wheel" "kvm" "adbusers" "dialout" ];
+      extraGroups = [
+        "networkmanager"
+        "wheel"
+        "kvm"
+        "adbusers"
+        "dialout"
+        "libvirtd"
+      ];
     };
     defaultUserShell = pkgs.zsh;
   };

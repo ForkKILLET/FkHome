@@ -40,6 +40,29 @@ in {
     };
   };
 
+  services.frp = {
+    instances = {
+      terraria = {
+        enable = true;
+        role = "client";
+        settings = {
+          serverAddr = "192.168.88.4";
+          serverPort = 1650;
+
+          proxies = [
+            {
+              name = "terraria";
+              type = "tcp";
+              localIp = "127.0.0.1";
+              localPort = 7777;
+              remotePort = 7777;
+            }
+          ];
+        };
+      };
+    };
+  };
+
   services.v2raya.enable = true;
 
   programs.proxychains = {

@@ -65,3 +65,5 @@
     gpgsign = true
 [push]
     followTags = true
+[rerere]
+	enabled = true

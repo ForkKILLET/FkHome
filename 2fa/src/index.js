@@ -16,7 +16,7 @@ const getSecret = async () => {
 	if (env) return env
 
 	try {
-		const file = path.join(url.fileURLToPath(import.meta.url), `../../${name}.2fa`)
+		const file = path.join(url.fileURLToPath(import.meta.url), `../../seeds/${name}.2fa`)
         return await fs.readFile(file, 'utf-8')
 	}
     catch {}

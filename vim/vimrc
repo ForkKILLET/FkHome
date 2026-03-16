@@ -53,7 +53,7 @@
     set     foldmethod=indent
 
     set     nowrap
-    nnor    <silent> <ESC>w :set wrap!<CR>
+    nnor    <silent> <leader><leader>w :set wrap!<CR>
 
     nnor    c'  mqF"r'f"r'`q
     nnor    c"  mqF'r"f'r"`q

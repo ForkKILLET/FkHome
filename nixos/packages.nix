@@ -56,6 +56,7 @@ let packages = {
   ];
 
   mcuPackages = [
+    minicom
   ];
 
   clangPkgs = [
@@ -71,9 +72,10 @@ let packages = {
 
   javascriptPkgs = with nodePackages; [
     nodejs_latest
-    pnpm
-    yarn
     bun
+    (corepack.overrideAttrs (old: {
+      doInstallCheck = false;
+    }))
 
     node-gyp
   ];
@@ -99,7 +101,6 @@ let packages = {
   ];
 
   desktopPkgs = [
-    xorg.xkbcomp
     xclip
     desktop-file-utils
     vscode
@@ -117,6 +118,8 @@ let packages = {
     wechat
     inkscape
     teamspeak6-client
+    masterpdfeditor
+    kitty
   ] ++ (with kdePackages; [
     kamoso
     kolourpaint
