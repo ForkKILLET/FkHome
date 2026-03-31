@@ -57,4 +57,6 @@
   };
 
   programs.kdeconnect.enable = true;
+
+  services.todesk.enable = true;
 }

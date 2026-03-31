@@ -16,11 +16,13 @@
 [http]
     sslverify = false
 [alias]
-    m   = !vim ~/.gitconfig                             # Manage
-    ml  = !vim ~/.gitconfig-local                       # Manage Local
+    e   = !vim ~/.gitconfig                             # Edit config
+    el  = !vim ~/.gitconfig-local                       # Edit Local config
     l   = log --graph --all                             # Log
     la  = log -1 HEAD                                   # Log lAst
     lo  = log --graph --all --oneline                   # Log Oneline
+    ll  = log --graph --all --not --remotes             # Log Local
+    lo  = log --graph --all --oneline --not --remotes   # Log Oneline Local
     lr  = reflog                                        # RefLog
     s   = status                                        # Status
     d   = diff                                          # Different
@@ -29,19 +31,17 @@
     a   = add                                           # Add
     aa  = add .                                         # Add All
     ac  = !git aa && git c                              # Add all and Commit
-    ac0 = !HUSKY=0 git ac                               # Add all and Commit with HUSKY=0
     rmc = rm --cached                                   # Remove Cached
     c   = commit                                        # Commit
     ca  = commit --amend                                # Commit Amend
     cam = !git ca -m \"$(echo $(git la --pretty=%B))\"  # Commit Amend with last Message
-    ca0 = !HUSKY=0 git commit --amend                   # Commit Amend with HUKSY=0
     aca = !git aa && git ca                             # Add all and Commit Amend
-    aca0= !HUSKY=0 git aca                              # Add all and Commit Amend with HUSKY=0
     acam= !git aca -m \"$(echo $(git la --pretty=%B))\" # Add all and Commit Amend with last Message
     co  = checkout                                      # CheckOut
     b   = branch                                        # Branch
     bs  = switch                                        # Branch Switch
     p   = push                                          # Push
+    q   = pull                                          # Pull
     rem = remote                                        # REMote
     ig  = !vim ./.gitignore && git a .gitignore         # IGnore
     rh  = reset --hard                                  # Reset Hard
