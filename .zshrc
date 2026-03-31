@@ -182,6 +182,7 @@ has-cmd direnv && {
 
 has-cmd bat || alias bat=cat
 has-cmd batcat && alias bat=batcat
+has-cmd fdfind && alias fd=fdfind
 bwhich () {
     which $1 | bat -l zsh
 }
@@ -404,9 +405,9 @@ alias y="yarn"
 
 ## DOCKER {{{
 
-alias dr="sudo systemctl daemon-reload && sudo systemctl restart docker"
-alias d="sudo docker"
-alias dc="sudo docker compose"
+alias d="docker"
+alias dc="docker compose"
+alias vdc="vim docker-compose.yml"
 
 ## DOCKER }}}
 
