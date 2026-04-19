@@ -403,6 +403,12 @@ alias y="yarn"
 
 ## YARN }}}
 
+## PNPM {{{
+
+alias p="pnpm"
+
+## PNPM }}}
+
 ## DOCKER {{{
 
 alias d="docker"
@@ -568,10 +574,17 @@ has-cmd gdb && ,core-debug-latest() {
 ,fk-init
 
 precmd() {
+    PROMPT="$PROMPT_NORMAL"
     if [[ -n "$PROJECT" ]]; then
-        PROMPT="%F{44}[$PROJECT] $PROMPT_NORMAL"
-    else
-        PROMPT="$PROMPT_NORMAL"
+        PROMPT="%F{46}[$PROJECT] $PROMPT"
+    fi
+    if [[ -n "$VIRTUAL_ENV_PROMPT" ]]; then
+        PROMPT="%F{50}[venv:$VIRTUAL_ENV_PROMPT] $PROMPT"
+    fi
+    if [[ -n "$STY" ]]; then
+        local STY=${STY#*.}
+        local STY=${STY%.*}
+        PROMPT="%F{208}[scr:${STY}] $PROMPT"
     fi
 }
 export PROJECT
