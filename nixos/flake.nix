@@ -10,18 +10,32 @@
       url = "github:xddxdd/nur-packages";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    chinese-fonts-overlay = {
+      url = "github:brsvh/chinese-fonts-overlay";
+    };
   };
 
   outputs = {
     nixpkgs,
     ...
   }@inputs: {
-    nixosConfigurations.fkni = nixpkgs.lib.nixosSystem {
-      modules = [
-        ./configuration.nix
-        inputs.nur-xddxdd.nixosModules.setupOverlay
-        inputs.nur-xddxdd.nixosModules.nix-cache-attic
-      ];
-    };
+    nixosConfigurations.fkni =
+      let
+        originalPkgs = import nixpkgs {
+          system = "x86_64-linux";
+          config = {
+            allowUnfree = true;
+          };
+        };
+      in nixpkgs.lib.nixosSystem {
+        specialArgs = inputs // { inherit originalPkgs; };
+        modules = [
+          ./configuration.nix
+
+          inputs.nur-xddxdd.nixosModules.setupOverlay
+          inputs.nur-xddxdd.nixosModules.nix-cache-attic
+        ];
+      };
   };
 }

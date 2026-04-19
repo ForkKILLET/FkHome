@@ -1,4 +1,4 @@
-{ pkgs, ... }: with builtins; {
+{ pkgs, ... }@inputs: with builtins; {
   imports = [
     ./hardware-configuration.nix
     ./networking.nix
@@ -6,6 +6,17 @@
     ./desktop.nix
     ./applications.nix
   ];
+
+  nixpkgs = {
+    config = {
+      allowUnfree = true;
+      android_sdk.accept_license = true;
+    };
+
+    overlays = [
+      inputs.chinese-fonts-overlay.overlays.default
+    ];
+  };
 
   time.timeZone = "Asia/Shanghai";
 
@@ -80,12 +91,10 @@
     ];
     accept-flake-config = true;
     max-jobs = 2;
-    substituters = [ "https://attic.xuyh0120.win/lantian" ];
-  };
-
-  nixpkgs.config = {
-    allowUnfree = true;
-    android_sdk.accept_license = true;
+    substituters = [
+      "https://attic.xuyh0120.win/lantian" 
+      "https://cache.nixos.org/"
+    ];
   };
 
   system.stateVersion = "24.11";

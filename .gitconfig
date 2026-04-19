@@ -53,6 +53,8 @@
     cp  = cherry-pick                                   # Cherry Pick
     cpa = cherry-pick --abort                           # Cherry Pick About
     cpc = cherry-pick --continue                        # Cherry Pick Continue
+    sh  = show                                          # SHow
+    shs = show --name-status                            # SHow name Status
 [interactive]
     diffFilter = delta --color-only
 [delta]

@@ -1,176 +1,181 @@
-{ pkgs, ... }:
+{ pkgs, originalPkgs, ... }:
 with pkgs;
 with builtins;
 with (import ./utilities.nix);
-let packages = {
-  cliPkgs = [
-    git
-    gh
-    vim
-    neovim
-    lsd
-    fzf
-    zip
-    unzip
-    delta
-    tealdeer
-    bat
-    wget
-    fastfetch
-    ripgrep
-    duf
-    dust
-    fd
-    bottom
-    procs
-    httpie
-    broot
-    wakatime-cli
-    tokei
-    nil
-    lsof
-    hexyl
-    wireguard-tools
-    ffmpeg
-    tree
-    jq
-    unrar-wrapper
-    pandoc
-    djvu2pdf
-    nushell
-    screen
-    p7zip
-    rlwrap
-    rename
-    bc
-    ngrok
-    nh
-    devenv
-    busybox
-  ];
 
-  packagePackages = [
-    nix-index
-    dpkg
-    patchelf
-  ];
+let
+  noCheck = pkg: pkg.overrideAttrs (old: {
+    doCheck = false;
+    doInstallCheck = false;
+  });
 
-  mcuPackages = [
-    minicom
-  ];
+  packages = {
+    cliPkgs = [
+      git
+      gh
+      vim
+      neovim
+      lsd
+      fzf
+      zip
+      unzip
+      delta
+      tealdeer
+      bat
+      wget
+      fastfetch
+      ripgrep
+      duf
+      dust
+      fd
+      bottom
+      procs
+      httpie
+      broot
+      wakatime-cli
+      tokei
+      nil
+      lsof
+      hexyl
+      wireguard-tools
+      ffmpeg
+      tree
+      jq
+      unrar-wrapper
+      pandoc
+      djvu2pdf
+      nushell
+      screen
+      p7zip
+      rlwrap
+      rename
+      bc
+      ngrok
+      nh
+      devenv
+      busybox
+    ];
 
-  clangPkgs = [
-    gcc
-    gdb
-    clang
-    clang-tools
-    lldb
-    cmake
-    xmake
-    gnumake
-  ];
+    packagePackages = [
+      nix-index
+      dpkg
+      patchelf
+    ];
 
-  javascriptPkgs = with nodePackages; [
-    nodejs_latest
-    bun
-    (corepack.overrideAttrs (old: {
-      doInstallCheck = false;
-    }))
+    mcuPackages = [
+      minicom
+    ];
 
-    node-gyp
-  ];
+    clangPkgs = [
+      gcc
+      gdb
+      clang
+      clang-tools
+      lldb
+      cmake
+      xmake
+      gnumake
+    ];
 
-  pythonPkgs = [
-    python3
-    uv
-  ];
+    javascriptPkgs = [
+      nodejs_latest
+      bun
+      (noCheck corepack)
 
-  haskellPkgs = with haskellPackages; [
-    ghc
-    haskell-language-server
-    stack
-    Agda
-  ];
+      node-gyp
+    ];
 
-  dotnetPkgs = [
-    dotnet-sdk
-  ];
+    pythonPkgs = [
+      python3
+      uv
+    ];
 
-  rustPkgs = [
-    rustup
-  ];
+    haskellPkgs = with haskellPackages; [
+      ghc
+      haskell-language-server
+      stack
+      Agda
+    ];
 
-  desktopPkgs = [
-    xclip
-    desktop-file-utils
-    vscode
-    qq
-    google-chrome
-    telegram-desktop
-    zotero
-    discord-canary
-    netease-cloud-music-gtk
-    # lightspark
-    # aseprite
-    baidunetdisk
-    wemeet
-    wpsoffice-cn
-    wechat
-    inkscape
-    teamspeak6-client
-    masterpdfeditor
-    kitty
-  ] ++ (with kdePackages; [
-    kamoso
-    kolourpaint
-    partitionmanager
-    filelight
-    kdenlive
-    kmail
-    accounts-qt
-    qtbase
-    kmail-account-wizard
-    krita
-    merkuro
-  ]);
+    dotnetPkgs = [
+      dotnet-sdk
+    ];
 
-  videoAndAudioPkgs = [
-    obs-studio
-    vlc
-    peek
-  ];
+    rustPkgs = [
+      rustup
+    ];
 
-  gamePkgs = [
-    prismlauncher
-    (olympus.override {
-      celesteWrapper = steam-run;
-    })
-  ];
+    desktopPkgs = [
+      xclip
+      desktop-file-utils
+      vscode
+      originalPkgs.qq
+      google-chrome
+      telegram-desktop
+      zotero
+      discord-canary
+      netease-cloud-music-gtk
+      # lightspark
+      # aseprite
+      baidunetdisk
+      wemeet
+      wpsoffice-cn
+      wechat
+      inkscape
+      teamspeak6-client
+      masterpdfeditor
+      kitty
+    ] ++ (with kdePackages; [
+      kamoso
+      kolourpaint
+      partitionmanager
+      filelight
+      kdenlive
+      kmail
+      accounts-qt
+      qtbase
+      kmail-account-wizard
+      krita
+      merkuro
+    ]);
 
-  winePkgs = [
-    wine64
-    winetricks
-    samba
-  ];
+    videoAndAudioPkgs = [
+      obs-studio
+      vlc
+      peek
+    ];
 
-  notePkgs = [
-    typst
-    typora
-  ];
+    gamePkgs = [
+      prismlauncher
+      (olympus.override {
+        celesteWrapper = steam-run;
+      })
+    ];
 
-  imePkgs = [
-    rime-zhwiki
-  ];
+    winePkgs = [
+      wine64
+      winetricks
+      samba
+    ];
 
-  databasePkgs = [
-    mongodb-compass
-    postgresql
-  ];
+    notePkgs = [
+      typst
+      typora
+    ];
 
-  androidPkgs = [
-    android-studio
-  ];
-};
+    imePkgs = [
+      rime-zhwiki
+    ];
+
+    databasePkgs = [
+      mongodb-compass
+      postgresql
+    ];
+
+    androidPkgs = [
+      android-studio
+    ];
+  };
 in {
   environment.systemPackages = foldlSet opCon [] packages;
 }
