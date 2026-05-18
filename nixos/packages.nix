@@ -1,4 +1,5 @@
 { pkgs, originalPkgs, ... }:
+
 with pkgs;
 with builtins;
 with (import ./utilities.nix);
@@ -71,6 +72,7 @@ let
       gdb
       clang
       clang-tools
+      libclang.python
       lldb
       cmake
       xmake
@@ -161,6 +163,7 @@ let
     notePkgs = [
       typst
       typora
+      # texlive
     ];
 
     imePkgs = [
@@ -174,6 +177,10 @@ let
 
     androidPkgs = [
       android-studio
+    ];
+
+    aiPkgs = [
+      codex
     ];
   };
 in {

@@ -22,7 +22,7 @@
     la  = log -1 HEAD                                   # Log lAst
     lo  = log --graph --all --oneline                   # Log Oneline
     ll  = log --graph --all --not --remotes             # Log Local
-    lo  = log --graph --all --oneline --not --remotes   # Log Oneline Local
+    lol = log --graph --all --oneline --not --remotes   # Log Oneline Local
     lr  = reflog                                        # RefLog
     s   = status                                        # Status
     d   = diff                                          # Different
@@ -34,9 +34,9 @@
     rmc = rm --cached                                   # Remove Cached
     c   = commit                                        # Commit
     ca  = commit --amend                                # Commit Amend
-    cam = !git ca -m \"$(echo $(git la --pretty=%B))\"  # Commit Amend with last Message
+    can = !git ca --no-edit                             # Commit Amend No edit
     aca = !git aa && git ca                             # Add all and Commit Amend
-    acam= !git aca -m \"$(echo $(git la --pretty=%B))\" # Add all and Commit Amend with last Message
+    acan= !git aa && git can                            # Add all and Commit Amend No edit
     co  = checkout                                      # CheckOut
     b   = branch                                        # Branch
     bs  = switch                                        # Branch Switch
@@ -55,6 +55,7 @@
     cpc = cherry-pick --continue                        # Cherry Pick Continue
     sh  = show                                          # SHow
     shs = show --name-status                            # SHow name Status
+    cf  = clang-format                                  # Clang Format
 [interactive]
     diffFilter = delta --color-only
 [delta]
@@ -68,4 +69,4 @@
 [push]
     followTags = true
 [rerere]
-	enabled = true
+    enabled = true

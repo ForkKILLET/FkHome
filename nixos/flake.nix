@@ -14,6 +14,10 @@
     chinese-fonts-overlay = {
       url = "github:brsvh/chinese-fonts-overlay";
     };
+
+    codex-cli-nix = {
+      url = "github:sadjow/codex-cli-nix";
+    };
   };
 
   outputs = {
