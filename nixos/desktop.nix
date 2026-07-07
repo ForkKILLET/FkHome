@@ -61,8 +61,8 @@
       sarasa-gothic
       jetbrains-mono
       ipafont # Japanese fonts
-      vista-fonts
-      vista-fonts-chs
+      # vista-fonts
+      # vista-fonts-chs
       windows-fonts
       foundertype-fonts
     ];

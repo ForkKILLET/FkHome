@@ -136,7 +136,7 @@ cal plug#end()
 
     let     &background='dark'
     let     g:solarized_termcolors=256
-    color   solarized
+    silent! color solarized
 
     sy      enable
     filet   plugin indent on
@@ -336,4 +336,3 @@ fun! _umap(id, act, mode, opt = {})
         exe 'i' . cmd . '<ESC>' . a:act . 'a'
     endif
 endfun
-

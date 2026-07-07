@@ -1,4 +1,4 @@
-{ pkgs, ... }@inputs: with builtins; {
+{ pkgs, inputs, ... }: with builtins; {
   imports = [
     ./hardware-configuration.nix
     ./networking.nix
@@ -14,6 +14,7 @@
     };
 
     overlays = [
+      inputs.nur-xddxdd.overlays.default
       inputs.chinese-fonts-overlay.overlays.default
     ];
   };
@@ -92,8 +93,8 @@
     accept-flake-config = true;
     max-jobs = 2;
     substituters = [
-      "https://attic.xuyh0120.win/lantian" 
-      "https://cache.nixos.org/"
+      "https://cache.nixos.org"
+      "https://attic.xuyh0120.win/lantian"
     ];
   };
 

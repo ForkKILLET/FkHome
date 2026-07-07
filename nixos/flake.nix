@@ -33,11 +33,13 @@
           };
         };
       in nixpkgs.lib.nixosSystem {
-        specialArgs = inputs // { inherit originalPkgs; };
+        specialArgs = {
+          inherit originalPkgs;
+          inherit inputs;
+        };
         modules = [
           ./configuration.nix
 
-          inputs.nur-xddxdd.nixosModules.setupOverlay
           inputs.nur-xddxdd.nixosModules.nix-cache-attic
         ];
       };
