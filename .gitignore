@@ -1,6 +1,7 @@
 # Secret
 identity
 *.2fa
+.env
 
 # Local
 fcitx5/conf/cached_layouts

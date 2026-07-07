@@ -134,8 +134,9 @@ TRAPUSR1() { rehash }
 
 ## PROMPT {{{
 
-[[ $USER = root ]] && PROMPT_ROOT=' [root]'
-export PROMPT_NORMAL="%F{167}%D{%H:%M:%S} %F{46}%~ %F{214}$ID %F{99}\$$PROMPT_ROOT%f "
+PROMPT_SYM='$'
+[[ $USER = root ]] && PROMPT_SYM='#'
+export PROMPT_NORMAL="%F{167}%D{%H:%M:%S} %F{46}%~ %F{214}$ID %F{99}$PROMPT_SYM%f "
 export PROMPT="$PROMPT_NORMAL"
 
 ## PROMPT }}}

@@ -121,7 +121,7 @@ let
       baidunetdisk
       wemeet
       wpsoffice-cn
-      wechat
+      # wechat
       inkscape
       teamspeak6-client
       masterpdfeditor

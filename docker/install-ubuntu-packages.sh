@@ -9,7 +9,9 @@ required_packages=(
     bash
     ca-certificates
     curl
+    docker.io
     git
+    proxychains-ng
     sudo
     zsh
 )
