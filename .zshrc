@@ -39,7 +39,7 @@ ID=${ID:-temp}
 export ID
 
 case $ID in
-    pide|piv2|fkte|fkni)
+    pide|piv2|fkte|fkni|fkdd)
         ;;
     temp)
         echo "[dash] Temporary identity"
@@ -437,11 +437,11 @@ ve () {
 ## CODE {{{
 
 codew () {
-    code $(realpath ~/Projects/workspaces/$1)
+    code $(realpath ~/Projects/@workspaces/$1)
 }
 compdef _codew codew
 _codew () {
-    _files -W ~/Projects/workspaces
+    _files -W ~/Projects/@workspaces
 }
 
 ## CODE }}}

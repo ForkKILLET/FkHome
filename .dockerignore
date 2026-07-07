@@ -1,0 +1,6 @@
+.git
+2fa/node_modules
+**/.DS_Store
+**/.cache
+**/result
+**/result-*

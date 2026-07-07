@@ -44,8 +44,11 @@
     q   = pull                                          # Pull
     rem = remote                                        # REMote
     ig  = !vim ./.gitignore && git a .gitignore         # IGnore
+    rs  = reset --soft                                  # Reset Soft
     rh  = reset --hard                                  # Reset Hard
     re  = reset --hard HEAD@{1}                         # REdo
+    rsa = reset --soft HEAD~                            # Reset Soft lAst
+    rha = reset --hard HEAD~                            # Reset Hard lAst
     r   = rebase                                        # Rebase
     ri  = rebase -i                                     # Rebase Interactive
     rc  = rebase --continue                             # Rebase Continue

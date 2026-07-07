@@ -1,0 +1,33 @@
+name: devshell-forkkillet
+
+services:
+  devshell:
+    build:
+      context: .
+      args:
+        USERNAME: ${USERNAME:-dev}
+        USER_UID: ${USER_UID:-99}
+        USER_GID: ${USER_GID:-100}
+        IDENTITY: ${IDENTITY:-fkdd}
+        INSTALL_VIM_PLUGINS: ${INSTALL_VIM_PLUGINS:-0}
+        HTTP_PROXY: ${HTTP_PROXY:-}
+        HTTPS_PROXY: ${HTTPS_PROXY:-}
+        NO_PROXY: ${NO_PROXY:-}
+        http_proxy: ${http_proxy:-}
+        https_proxy: ${https_proxy:-}
+        no_proxy: ${no_proxy:-}
+    image: devshell-forkkillet:latest
+    container_name: devshell-forkkillet
+
+    restart: unless-stopped
+    command: sleep infinity
+
+    hostname: devshell
+    group_add:
+      - "${DOCKER_GID:-281}"
+    working_dir: /home/${USERNAME:-dev}
+
+    volumes:
+      - /mnt/user/appdata/devshell/forkkillet:/home/${USERNAME:-dev}
+      - /mnt/user:/mnt/user
+      - /var/run/docker.sock:/var/run/docker.sock

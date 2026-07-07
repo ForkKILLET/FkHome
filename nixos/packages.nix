@@ -1,4 +1,4 @@
-{ pkgs, originalPkgs, ... }:
+{ pkgs, inputs, originalPkgs, ... }:
 
 with pkgs;
 with builtins;
@@ -55,6 +55,7 @@ let
       nh
       devenv
       busybox
+      sqlite
     ];
 
     packagePackages = [
@@ -96,7 +97,6 @@ let
       ghc
       haskell-language-server
       stack
-      Agda
     ];
 
     dotnetPkgs = [
@@ -117,7 +117,6 @@ let
       zotero
       discord-canary
       netease-cloud-music-gtk
-      # lightspark
       # aseprite
       baidunetdisk
       wemeet
@@ -162,7 +161,7 @@ let
 
     notePkgs = [
       typst
-      typora
+      # typora
       # texlive
     ];
 
@@ -176,11 +175,11 @@ let
     ];
 
     androidPkgs = [
-      android-studio
+      # android-studio
     ];
 
     aiPkgs = [
-      codex
+      inputs.codex-cli-nix.packages.${pkgs.system}.codex
     ];
   };
 in {
