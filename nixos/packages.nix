@@ -117,7 +117,6 @@ let
       zotero
       discord-canary
       netease-cloud-music-gtk
-      # aseprite
       baidunetdisk
       wemeet
       wpsoffice-cn
