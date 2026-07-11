@@ -14,6 +14,7 @@ required_packages=(
     proxychains-ng
     sudo
     zsh
+    ssh
 )
 
 # Ubuntu package names corresponding to packages.cliPkgs in nixos/packages.nix.
@@ -22,24 +23,18 @@ required_packages=(
 candidate_packages=(
     bat
     bc
-    bottom
-    broot
     duf
     dust
     fd-find
-    ffmpeg
     fastfetch
     fzf
     gh
     git-delta
-    hexyl
     httpie
     jq
     lsd
     lsof
     neovim
-    nil
-    nushell
     p7zip-full
     procs
     rename
@@ -47,16 +42,12 @@ candidate_packages=(
     rlwrap
     screen
     sqlite3
-    tealdeer
     tokei
     tree
     unrar
     unrar-free
-    unrar-wrapper
     unzip
     vim
-    wakatime
-    wakatime-cli
     wget
     zip
     zstd

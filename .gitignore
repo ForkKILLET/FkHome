@@ -6,5 +6,8 @@ identity
 # Local
 fcitx5/conf/cached_layouts
 
+# Docker
+compose.override.yaml
+
 # Node
 node_modules

@@ -28,7 +28,7 @@ services:
     working_dir: /home/${USERNAME:-dev}
 
     volumes:
-      - /mnt/user/appdata/devshell/forkkillet:/home/${USERNAME:-dev}
+      - /mnt/user/compose/devshell/forkkillet:/home/${USERNAME:-dev}
       - /mnt/user:/mnt/user
-      - /boot/config:/mnt/config
+      - /boot/config:/boot/config
       - /var/run/docker.sock:/var/run/docker.sock
