@@ -52,7 +52,9 @@
     r   = rebase                                        # Rebase
     ri  = rebase -i                                     # Rebase Interactive
     rc  = rebase --continue                             # Rebase Continue
-    ra  = rebase --abort                                # Remove Abort
+    ra  = rebase --abort                                # Rebase Abort
+    m   = merge                                         # Merge
+    ma  = merge --abort                                 # Merge
     cp  = cherry-pick                                   # Cherry Pick
     cpa = cherry-pick --abort                           # Cherry Pick About
     cpc = cherry-pick --continue                        # Cherry Pick Continue

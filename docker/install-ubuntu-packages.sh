@@ -12,6 +12,8 @@ required_packages=(
     git
     sudo
     zsh
+    docker.io
+    proxychains-ng
 )
 
 # Ubuntu package names corresponding to packages.cliPkgs in nixos/packages.nix.
@@ -20,12 +22,8 @@ required_packages=(
 candidate_packages=(
     bat
     bc
-    bottom
-    broot
     duf
-    dust
     fd-find
-    ffmpeg
     fastfetch
     fzf
     gh
@@ -35,9 +33,6 @@ candidate_packages=(
     jq
     lsd
     lsof
-    neovim
-    nil
-    nushell
     p7zip-full
     procs
     rename
@@ -46,15 +41,11 @@ candidate_packages=(
     screen
     sqlite3
     tealdeer
-    tokei
     tree
     unrar
     unrar-free
-    unrar-wrapper
     unzip
     vim
-    wakatime
-    wakatime-cli
     wget
     zip
 )
@@ -77,5 +68,3 @@ if ((${#missing_packages[@]})); then
     printf 'Skipped packages without Ubuntu candidates: %s\n' "${missing_packages[*]}"
 fi
 
-apt-get clean
-rm -rf /var/lib/apt/lists/*

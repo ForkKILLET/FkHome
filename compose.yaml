@@ -30,4 +30,5 @@ services:
     volumes:
       - /mnt/user/appdata/devshell/forkkillet:/home/${USERNAME:-dev}
       - /mnt/user:/mnt/user
+      - /boot/config:/mnt/config
       - /var/run/docker.sock:/var/run/docker.sock
