@@ -59,6 +59,7 @@ candidate_packages=(
     wakatime-cli
     wget
     zip
+    zstd
 )
 
 installable_packages=()
@@ -75,9 +76,30 @@ done
 
 apt-get install -y --no-install-recommends "${required_packages[@]}" "${installable_packages[@]}"
 
+install_fzf_shell_integration() {
+    local examples_dir=/usr/share/doc/fzf/examples
+    local fzf_version
+
+    if ! command -v fzf >/dev/null; then
+        return
+    fi
+
+    fzf_version=$(fzf --version | awk '{ print $1 }')
+    if [[ -z "${fzf_version}" ]]; then
+        return
+    fi
+
+    mkdir -p "${examples_dir}"
+
+    curl -fsSL "https://raw.githubusercontent.com/junegunn/fzf/${fzf_version}/shell/key-bindings.zsh" \
+        -o "${examples_dir}/key-bindings.zsh"
+
+    curl -fsSL "https://raw.githubusercontent.com/junegunn/fzf/${fzf_version}/shell/completion.zsh" \
+        -o "${examples_dir}/completion.zsh"
+}
+
+install_fzf_shell_integration
+
 if ((${#missing_packages[@]})); then
     printf 'Skipped packages without Ubuntu candidates: %s\n' "${missing_packages[*]}"
 fi
-
-apt-get clean
-rm -rf /var/lib/apt/lists/*

@@ -55,6 +55,10 @@ if [[ "${needs_dotfiles}" == "1" || "${needs_vim_plugins}" == "1" ]]; then
     fi
 fi
 
+if [[ "$(id -u)" == "0" ]]; then
+    bash /opt/dotfiles/docker/install-root-dotfiles.sh "${dev_home}"
+fi
+
 if [[ $# -eq 0 ]]; then
     set -- /usr/bin/zsh -l
 fi

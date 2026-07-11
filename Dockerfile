@@ -41,7 +41,7 @@ RUN apt-get update \
 
 COPY . /opt/dotfiles
 
-RUN chmod +x /opt/dotfiles/docker/entrypoint.sh
+RUN chmod +x /opt/dotfiles/docker/entrypoint.sh /opt/dotfiles/docker/install-root-dotfiles.sh
 
 RUN bash /opt/dotfiles/docker/install-ubuntu-packages.sh
 
@@ -64,7 +64,9 @@ RUN if getent group "${USER_GID}" >/dev/null; then \
         http_proxy="${http_proxy:-${HTTP_PROXY:-}}" \
         https_proxy="${https_proxy:-${HTTPS_PROXY:-}}" \
         no_proxy="${no_proxy:-${NO_PROXY:-}}" \
-        bash /opt/dotfiles/docker/install-dotfiles.sh "/home/${USERNAME}" "${USERNAME}"
+        bash /opt/dotfiles/docker/install-dotfiles.sh "/home/${USERNAME}" "${USERNAME}" \
+    && usermod --shell /usr/bin/zsh root \
+    && bash /opt/dotfiles/docker/install-root-dotfiles.sh "/home/${USERNAME}"
 
 ENTRYPOINT ["/opt/dotfiles/docker/entrypoint.sh"]
 WORKDIR /home/${USERNAME}
