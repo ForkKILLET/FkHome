@@ -9,6 +9,8 @@ dotfiles_dir=${image_dotfiles_dir}
 
 install_vim_plugins=${INSTALL_VIM_PLUGINS:-0}
 identity=${IDENTITY:?identity is required}
+http_proxy_value=${http_proxy:-${HTTP_PROXY:-}}
+https_proxy_value=${https_proxy:-${HTTPS_PROXY:-}}
 
 safe_ln() {
     local src=$1
@@ -41,6 +43,14 @@ printf '%s\n' "${identity}" > "${dotfiles_dir}/identity"
 safe_ln "${dotfiles_dir}/.zshrc" "${home_dir}/.zshrc"
 safe_ln "${dotfiles_dir}/.gitconfig" "${home_dir}/.gitconfig"
 safe_ln "${dotfiles_dir}/vim/vimrc" "${home_dir}/.vim/vimrc"
+
+if [[ -n "${http_proxy_value}" ]]; then
+    git config --file "${home_dir}/.gitconfig-local" http.proxy "${http_proxy_value}"
+fi
+
+if [[ -n "${https_proxy_value}" ]]; then
+    git config --file "${home_dir}/.gitconfig-local" https.proxy "${https_proxy_value}"
+fi
 
 if [[ ! -d "${home_dir}/.oh-my-zsh" ]]; then
     git clone https://github.com/ohmyzsh/ohmyzsh.git "${home_dir}/.oh-my-zsh"
